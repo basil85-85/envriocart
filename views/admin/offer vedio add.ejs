@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Upload Form</title>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --success-color: #4bb543;
+            --border-color: #e0e0e0;
+            --text-color: #333;
+            --bg-color: #f8f9fa;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-container {
+            border: 2px dashed var(--primary-color);
+            padding: 2.5rem;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .upload-container:hover {
+            border-color: var(--secondary-color);
+            background: #f5f5f5;
+        }
+
+        .upload-container.dragover {
+            background: #f0f7ff;
+            border-color: var(--success-color);
+        }
+
+        .upload-icon {
+            font-size: 64px;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .upload-text {
+            margin-bottom: 1rem;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .divider {
+            margin: 1rem 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .progress-container {
+            margin: 2rem 0;
+            display: none;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress {
+            width: 0%;
+            height: 100%;
+            background-color: var(--success-color);
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .video-preview {
+            margin: 2rem 0;
+            max-width: 100%;
+            border-radius: 8px;
+            display: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-1px);
+        }
+
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            padding: 0.75rem;
+            background: #fff5f5;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .file-details {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .file-details p {
+            margin: 0.5rem 0;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .form-section {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #444;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
+        }
+
+        select.form-control {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1em;
+        }
+    </style>
+     <script>
+    //     function loadSidebar() {
+    //         fetch("slidebar.html")
+    //             .then(response => response.text())
+    //             .then(data => {
+    //                 document.getElementById("sidebarContainer").innerHTML = data;
+    //             })
+    //             .catch(err => console.error("Sidebar loading failed", err));
+    //     }
+     </script>
+</head>
+<body onload="loadSidebar()">
+    <div id="sidebarContainer"></div>
+
+    <div class="container">
+        <div class="upload-container" id="dropZone">
+            <div class="upload-icon">📤</div>
+            <div class="upload-text">Drag & Drop your video here</div>
+            <div class="divider">or</div>
+            <input type="file" id="videoInput" accept="video/*" style="display: none">
+            <button class="btn" onclick="document.getElementById('videoInput').click()">
+                Choose Video
+            </button>
+        </div>
+
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar">
+                <div class="progress" id="progressBar"></div>
+            </div>
+            <div class="progress-text" id="progressText">0% Uploaded</div>
+        </div>
+
+        <video class="video-preview" id="videoPreview" controls></video>
+
+        <div class="file-details" id="fileDetails">
+            <p id="fileName">File Name: </p>
+            <p id="fileSize">Size: </p>
+            <p id="fileDuration">Duration: </p>
+            <p id="fileType">Type: </p>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+
+        <div class="form-section">
+            <div class="form-group">
+                <label for="videoTitle">Video Title</label>
+                <input type="text" id="videoTitle" class="form-control" placeholder="Enter video title">
+            </div>
+
+            <div class="form-group">
+                <label for="startDate">Start Date</label>
+                <input type="date" id="startDate" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="endDate">End Date</label>
+                <input type="date" id="endDate" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status</label>
+                <select id="status" class="form-control">
+                    <option value="Pending">Pending</option>
+                    <option value="Processing">Processing</option>
+                    <option value="Published">Published</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+
+            <button type="button" class="btn custom-bg-color" onclick="submitVideoDetails()">Submit</button>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropZone = document.getElementById('dropZone');
+            const videoInput = document.getElementById('videoInput');
+            const videoPreview = document.getElementById('videoPreview');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const errorMessage = document.getElementById('errorMessage');
+            const fileDetails = document.getElementById('fileDetails');
+
+            const MAX_FILE_SIZE = 500 * 1024 * 1024;
+
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                const files = e.dataTransfer.files;
+                if (files.length) handleFile(files[0]);
+            });
+
+            videoInput.addEventListener('change', (e) => {
+                if (e.target.files.length) handleFile(e.target.files[0]);
+            });
+
+            function handleFile(file) {
+                resetUploadState();
+
+                if (!file.type.startsWith('video/')) {
+                    showError('Please upload a video file');
+                    return;
+                }
+
+                if (file.size > MAX_FILE_SIZE) {
+                    showError('File size exceeds 500MB limit');
+                    return;
+                }
+
+                displayFileDetails(file);
+                createVideoPreview(file);
+                simulateUpload();
+            }
+
+            function resetUploadState() {
+                errorMessage.style.display = 'none';
+                progressContainer.style.display = 'none';
+                videoPreview.style.display = 'none';
+                fileDetails.style.display = 'none';
+            }
+
+            function displayFileDetails(file) {
+                fileDetails.style.display = 'block';
+                document.getElementById('fileName').textContent = `File Name: ${file.name}`;
+                document.getElementById('fileSize').textContent = `Size: ${formatFileSize(file.size)}`;
+                document.getElementById('fileType').textContent = `Type: ${file.type}`;
+                
+                const video = document.createElement('video');
+                video.src = URL.createObjectURL(file);
+                video.onloadedmetadata = () => {
+                    document.getElementById('fileDuration').textContent = 
+                        `Duration: ${formatDuration(video.duration)}`;
+                };
+            }
+
+            function createVideoPreview(file) {
+                const url = URL.createObjectURL(file);
+                videoPreview.src = url;
+                videoPreview.style.display = 'block';
+            }
+
+            function simulateUpload() {
+                progressContainer.style.display = 'block';
+                let progress = 0;
+                
+                const interval = setInterval(() => {
+                    progress += 1;
+                    progressBar.style.width = `${progress}%`;
+                    progressText.textContent = `${progress}% Uploaded`;
+
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        progressText.textContent = 'Upload Complete!';
+                    }
+                }, 50);
+            }
+
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+            }
+
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            function formatDuration(seconds) {
+                const minutes = Math.floor(seconds / 60);
+                seconds = Math.floor(seconds % 60);
+                return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }
+        });
+
+        function submitVideoDetails() {
+            // Add your submission logic here
+            console.log('Form submitted');
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+.profile-section {
+    display: flex;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.profile-pic img {
+    border: 2px solid #ddd;
+    padding: 5px;
+}
+
+.profile-details h5 {
+    margin: 0;
+    color: #333;
+}
+
+.profile-details p {
+    margin: 0;
+    color: #555;
+}
+
+.tf-btn {
+    text-decoration: none;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+.item-actions {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+.card-product-info {
+    padding: 1rem;
+    position: relative;
+}
+
+.title {
+    display: block;
+    color: #333;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.title:hover {
+    color: #666;
+}
+
+.price {
+    display: block;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 1rem;
+}
+
+.list-color-product {
+    display: flex;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.list-color-item {
+    position: relative;
+    cursor: pointer;
+}
+
+.color-swatch {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px #ddd;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.2s;
+}
+
+.color-swatch:hover {
+    transform: scale(1.1);
+}
+
+.color-swatch.active {
+    box-shadow: 0 0 0 2px #333;
+}
+
+.swatch-value {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.bg_orange-3 { background-color: #FFA07A; }
+.bg_dark { background-color: #000; }
+.bg_white { background-color: #fff; }
+
+.tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s;
+    margin-bottom: 5px;
+}
+
+.tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: #333;
+}
+
+.color-swatch:hover .tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+.item-actions {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.action-btn:hover {
+    transform: scale(1.1);
+}

@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 100">
+  <defs>
+    <linearGradient id="basketGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2ecc71;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#27ae60;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Basket body -->
+  <path d="M20 40 L80 40 L72 80 L28 80 Z" 
+        fill="url(#basketGradient)"/>
+
+  <!-- Handle -->
+  <path d="M32 40 C32 20, 68 20, 68 40" 
+        fill="none" 
+        stroke="#27ae60" 
+        stroke-width="4"
+        stroke-linecap="round"/>
+
+  <!-- Leaf -->
+  <path d="M46 48 C46 48, 42 54, 42 60 C42 66, 46 72, 52 72 C58 72, 62 66, 62 60 C62 54, 58 48, 58 48 C58 48, 52 54, 52 54 C52 54, 46 48, 46 48" 
+        fill="#2ecc71"
+        transform="scale(1.2) translate(10,-8)"/>
+
+  <!-- Heading text -->
+  <text x="90" y="70" 
+        fill="#27ae60" 
+        font-family="Arial, sans-serif" 
+        font-size="40" 
+        font-weight="bold">
+    EnviroCart
+  </text>
+</svg>

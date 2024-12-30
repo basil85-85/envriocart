@@ -1,0 +1,24 @@
+<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="basketGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#2ecc71;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#27ae60;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Simplified basket body -->
+  <path d="M6 12 L26 12 L24 26 L8 26 Z" 
+        fill="url(#basketGradient)"/>
+  
+  <!-- Simplified handle -->
+  <path d="M10 12 C10 6, 22 6, 22 12" 
+        fill="none" 
+        stroke="#27ae60" 
+        stroke-width="2"
+        stroke-linecap="round"/>
+  
+  <!-- Small leaf -->
+  <path d="M14 15 C14 15, 12 17, 12 19 C12 21, 14 23, 16 23 C18 23, 20 21, 20 19 C20 17, 18 15, 18 15 C18 15, 16 17, 16 17 C16 17, 14 15, 14 15" 
+        fill="#2ecc71"
+        transform="scale(0.8) translate(4,-2)"/>
+</svg>
