@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from techzaa.in/larkon/admin/category-add.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 03 Dec 2024 05:43:17 GMT -->
+<head>
+     <!-- Title Meta -->
+     <meta charset="utf-8" />
+     <title>Create Verient |</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="description" content="A fully responsive premium admin dashboard template" />
+     <meta name="author" content="Techzaa" />
+     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+     <!-- App favicon -->
+     <link rel="shortcut icon" href="/assets/images/favicon.svg">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+     <!-- Vendor css (Require in all Page) -->
+     <link href="/assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
+
+     <!-- Icons css (Require in all Page) -->
+     <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+     <!-- App css (Require in all Page) -->
+     <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+   
+     <link href="/assets/css/mycss.css" rel="stylesheet" type="text/css" />
+     <!-- Theme Config js (Require in all Page) -->
+     <script src="/assets/js/config.js"></script>
+
+     <style>
+  
+
+    /* Container for all uploaders */
+.upload-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* Individual upload card */
+.upload-card {
+    flex: 0 0 auto;
+    width: 250px; /* Fixed width for each uploader */
+}
+
+/* Upload zone styling */
+.image-upload-area {
+    border: 2px dashed #ccc;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-upload-area.dragover {
+    border-color: #2196F3;
+    background: #E3F2FD;
+}
+
+.upload-icon {
+    width: 36px;
+    height: 36px;
+    margin-bottom: 8px;
+}
+
+.upload-text {
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+/* Preview container */
+.preview-container {
+    display: none;
+    margin-top: 10px;
+}
+
+.img-preview {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+/* Cropped result */
+.cropped-result {
+    display: none;
+    max-width: 100%;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 4px;
+}
+
+/* Error message */
+.error-message {
+    color: red;
+    display: none;
+    margin-top: 5px;
+    font-size: 0.875rem;
+}
+
+/* Loading spinner */
+.spinner {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-left: 8px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Button styling */
+.remove-image {
+    margin-top: 8px;
+    width: 100%;
+}
+
+/* Status message */
+.upload-status {
+    margin-top: 5px;
+    font-size: 0.875rem;
+}
+
+.upload-status .success {
+    color: #28a745;
+}
+
+.upload-status .error {
+    color: #dc3545;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .upload-container {
+        flex-direction: column;
+    }
+    
+    .upload-card {
+        width: 100%;
+    }
+}
+   </style>
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+     
+     
+</head>
+
+<body>
+
+     <!-- START Wrapper -->
+     <div class="wrapper">
+
+                   
+     <header class="topbar">
+          <div class="container-fluid">
+               <div class="navbar-header">
+                    <div class="d-flex align-items-center">
+                         <!-- Menu Toggle Button -->
+                         <div class="topbar-item">
+                              <button type="button" class="button-toggle-menu me-2">
+                                   <iconify-icon icon="solar:hamburger-menu-broken" class="fs-24 align-middle"></iconify-icon>
+                              </button>
+                         </div>
+
+                         <!-- Menu Toggle Button -->
+                         <div class="topbar-item">
+                              <h4 class="fw-bold topbar-button pe-none text-uppercase mb-0">VERIENT CREATE</h4>
+                         </div>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-1">
+
+                         <div class="dropdown topbar-item">
+                              <button type="button" class="topbar-button position-relative" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                   <iconify-icon icon="solar:bell-bing-bold-duotone" class="fs-24 align-middle"></iconify-icon>
+                                   <span class="position-absolute topbar-badge fs-10 translate-middle badge bg-danger rounded-pill">3<span class="visually-hidden">unread messages</span></span>
+                              </button>
+
+                              </div>
+                              
+                         <!-- <! User --> 
+                         <div class="dropdown topbar-item">
+                              <a type="button" class="topbar-button" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                   <span class="d-flex align-items-center">
+                                        <img class="rounded-circle" width="32" src="/assets/images/users/avatar-1.jpg" alt="avatar-3">
+                                   </span>
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-end">
+                                   <!-- item-->
+                                   <h6 class="dropdown-header">Welcome Gaston!</h6>
+                                   <a class="dropdown-item" href="pages-profile.html">
+                                        <i class="bx bx-user-circle text-muted fs-18 align-middle me-1"></i><span class="align-middle">Profile</span>
+                                   </a>
+                                  
+
+                                   <a class="dropdown-item text-danger" href="auth-signin.html">
+                                        <i class="bx bx-log-out fs-18 align-middle me-1"></i><span class="align-middle">Logout</span>
+                                   </a>
+                              </div>
+                         </div>
+
+                         <!-- App Search-->
+                         <form class="app-search d-none d-md-block ms-2">
+                              <div class="position-relative">
+                                   <input type="search" class="form-control" placeholder="Search..." autocomplete="off" value="">
+                                   <iconify-icon icon="solar:magnifer-linear" class="search-widget-icon"></iconify-icon>
+                              </div>
+                         </form>
+                    </div>
+               </div>
+          </div>
+     </header>
+
+     <!-- Activity Timeline -->
+     <div>
+          <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="theme-activity-offcanvas" style="max-width: 450px; width: 100%;">
+               <div class="d-flex align-items-center bg-primary p-3 offcanvas-header">
+                    <h5 class="text-white m-0 fw-semibold">Activity Stream</h5>
+                    <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+               </div>
+
+               <div class="offcanvas-body p-0">
+                    <div data-simplebar class="h-100 p-4">
+                         <div class="position-relative ms-2">
+                              <span class="position-absolute start-0  top-0 border border-dashed h-100"></span>
+                              <div class="position-relative ps-4">
+                                   <div class="mb-4">
+                                        <span class="position-absolute start-0 avatar-sm translate-middle-x bg-danger d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-20"><iconify-icon icon="iconamoon:folder-check-duotone"></iconify-icon></span>
+                                        <div class="ms-2">
+                                             <h5 class="mb-1 text-dark fw-semibold fs-15 lh-base">Report-Fix / Update </h5>
+                                             <p class="d-flex align-items-center">Add 3 files to <span class=" d-flex align-items-center text-primary ms-1"><iconify-icon icon="iconamoon:file-light"></iconify-icon> Tasks</span></p>
+                                             <div class="bg-light bg-opacity-50 rounded-2 p-2">
+                                                  <div class="row">
+                                                       <div class="col-lg-6 border-end border-light">
+                                                            <div class="d-flex align-items-center gap-2">
+                                                                 <i class="bx bxl-figma fs-20 text-red"></i>
+                                                                 <a href="#!" class="text-dark fw-medium">Concept.fig</a>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-6">
+                                                            <div class="d-flex align-items-center gap-2">
+                                                                 <i class="bx bxl-file-doc fs-20 text-success"></i>
+                                                                 <a href="#!" class="text-dark fw-medium">Envriocart.docs</a>
+                                                            </div>
+                                                       </div>
+                                                  </div>
+                                             </div>
+                                             <h6 class="mt-2 text-muted">Monday , 4:24 PM</h6>
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="position-relative ps-4">
+                                   <div class="mb-4">
+                                        <span class="position-absolute start-0 avatar-sm translate-middle-x bg-success d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-20"><iconify-icon icon="iconamoon:check-circle-1-duotone"></iconify-icon></span>
+                                        <div class="ms-2">
+                                             <h5 class="mb-1 text-dark fw-semibold fs-15 lh-base">Project Status
+                                             </h5>
+                                             <p class="d-flex align-items-center mb-0">Marked<span class=" d-flex align-items-center text-primary mx-1"><iconify-icon icon="iconamoon:file-light"></iconify-icon> Design </span> as <span class="badge bg-success-subtle text-success px-2 py-1 ms-1"> Completed</span></p>
+                                             <div class="d-flex align-items-center gap-3 mt-1 bg-light bg-opacity-50 p-2 rounded-2">
+                                                  <a href="#!" class="fw-medium text-dark">UI/UX Figma Design</a>
+                                                  <div class="ms-auto">
+                                                       <a href="#!" class="fw-medium text-primary fs-18" data-bs-toggle="tooltip" data-bs-title="Download" data-bs-placement="bottom"><iconify-icon icon="iconamoon:cloud-download-duotone"></iconify-icon></a>
+                                                  </div>
+                                             </div>
+                                             <h6 class="mt-3 text-muted">Monday , 3:00 PM</h6>
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="position-relative ps-4">
+                                   <div class="mb-4">
+                                        <span class="position-absolute start-0 avatar-sm translate-middle-x bg-primary d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-16">UI</span>
+                                        <div class="ms-2">
+                                             <h5 class="mb-1 text-dark fw-semibold fs-15">Larkon Application UI v2.0.0 <span class="badge bg-primary-subtle text-primary px-2 py-1 ms-1"> Latest</span>
+                                             </h5>
+                                             <p>Get access to over 20+ pages including a dashboard layout, charts, kanban board, calendar, and pre-order E-commerce & Marketing pages.</p>
+                                             <div class="mt-2">
+                                                  <a href="#!" class="btn btn-light btn-sm">Download Zip</a>
+                                             </div>
+                                             <h6 class="mt-3 text-muted">Monday , 2:10 PM</h6>
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="position-relative ps-4">
+                                   <div class="mb-4">
+                                        <span class="position-absolute start-0 translate-middle-x bg-success bg-gradient d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-20"><img src="assets/images/users/avatar-7.jpg" alt="avatar-5" class="avatar-sm rounded-circle"></span>
+                                        <div class="ms-2">
+                                             <h5 class="mb-0 text-dark fw-semibold fs-15 lh-base">Alex Smith Attached Photos
+                                             </h5>
+                                             <div class="row g-2 mt-2">
+                                                  <div class="col-lg-4">
+                                                       <a href="#!">
+                                                            <img src="/assets/images/small/img-6.jpg" alt="" class="img-fluid rounded">
+                                                       </a>
+                                                  </div>
+                                                  <div class="col-lg-4">
+                                                       <a href="#!">
+                                                            <img src="/assets/images/small/img-3.jpg" alt="" class="img-fluid rounded">
+                                                       </a>
+                                                  </div>
+                                                  <div class="col-lg-4">
+                                                       <a href="#!">
+                                                            <img src="/assets/images/small/img-4.jpg" alt="" class="img-fluid rounded">
+                                                       </a>
+                                                  </div>
+                                             </div>
+                                             <h6 class="mt-3 text-muted">Monday 1:00 PM</h6>
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="position-relative ps-4">
+                                   <div class="mb-4">
+                                        <span class="position-absolute start-0 translate-middle-x bg-success bg-gradient d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-20"><img src="assets/images/users/avatar-6.jpg" alt="avatar-5" class="avatar-sm rounded-circle"></span>
+                                        <div class="ms-2">
+                                             <h5 class="mb-0 text-dark fw-semibold fs-15 lh-base">Rebecca J. added a new team member
+                                             </h5>
+                                             <p class="d-flex align-items-center gap-1"><iconify-icon icon="iconamoon:check-circle-1-duotone" class="text-success"></iconify-icon> Added a new member to Front Dashboard</p>
+                                             <h6 class="mt-3 text-muted">Monday 10:00 AM</h6>
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="position-relative ps-4">
+                                   <div class="mb-4">
+                                        <span class="position-absolute start-0 avatar-sm translate-middle-x bg-warning d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-20"><iconify-icon icon="iconamoon:certificate-badge-duotone"></iconify-icon></span>
+                                        <div class="ms-2">
+                                             <h5 class="mb-0 text-dark fw-semibold fs-15 lh-base">Achievements
+                                             </h5>
+                                             <p class="d-flex align-items-center gap-1 mt-1">Earned a <iconify-icon icon="iconamoon:certificate-badge-duotone" class="text-danger fs-20"></iconify-icon>" Best Product Award"</p>
+                                             <h6 class="mt-3 text-muted">Monday 9:30 AM</h6>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                         <a href="#!" class="btn btn-outline-dark w-100">View All</a>
+                    </div>
+               </div>
+          </div>
+     </div>
+
+     <!-- Right Sidebar (Theme Settings) -->
+     <div>
+          <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="theme-settings-offcanvas">
+               <div class="d-flex align-items-center bg-primary p-3 offcanvas-header">
+                    <h5 class="text-white m-0">Theme Settings</h5>
+                    <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+               </div>
+
+               <div class="offcanvas-body p-0">
+                    <div data-simplebar class="h-100">
+                         <div class="p-3 settings-bar">
+
+                              <div>
+                                   <h5 class="mb-3 font-16 fw-semibold">Color Scheme</h5>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-bs-theme" id="layout-color-light" value="light">
+                                        <label class="form-check-label" for="layout-color-light">Light</label>
+                                   </div>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-bs-theme" id="layout-color-dark" value="dark">
+                                        <label class="form-check-label" for="layout-color-dark">Dark</label>
+                                   </div>
+                              </div>
+
+                              <div>
+                                   <h5 class="my-3 font-16 fw-semibold">Topbar Color</h5>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-topbar-color" id="topbar-color-light" value="light">
+                                        <label class="form-check-label" for="topbar-color-light">Light</label>
+                                   </div>
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-topbar-color" id="topbar-color-dark" value="dark">
+                                        <label class="form-check-label" for="topbar-color-dark">Dark</label>
+                                   </div>
+                              </div>
+
+
+                              <div>
+                                   <h5 class="my-3 font-16 fw-semibold">Menu Color</h5>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-menu-color" id="leftbar-color-light" value="light">
+                                        <label class="form-check-label" for="leftbar-color-light">
+                                             Light
+                                        </label>
+                                   </div>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-menu-color" id="leftbar-color-dark" value="dark">
+                                        <label class="form-check-label" for="leftbar-color-dark">
+                                             Dark
+                                        </label>
+                                   </div>
+                              </div>
+
+                              <div>
+                                   <h5 class="my-3 font-16 fw-semibold">Sidebar Size</h5>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-menu-size" id="leftbar-size-default" value="default">
+                                        <label class="form-check-label" for="leftbar-size-default">
+                                             Default
+                                        </label>
+                                   </div>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-menu-size" id="leftbar-size-small" value="condensed">
+                                        <label class="form-check-label" for="leftbar-size-small">
+                                             Condensed
+                                        </label>
+                                   </div>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-menu-size" id="leftbar-hidden" value="hidden">
+                                        <label class="form-check-label" for="leftbar-hidden">
+                                             Hidden
+                                        </label>
+                                   </div>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-menu-size" id="leftbar-size-small-hover-active" value="sm-hover-active">
+                                        <label class="form-check-label" for="leftbar-size-small-hover-active">
+                                             Small Hover Active
+                                        </label>
+                                   </div>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-menu-size" id="leftbar-size-small-hover" value="sm-hover">
+                                        <label class="form-check-label" for="leftbar-size-small-hover">
+                                             Small Hover
+                                        </label>
+                                   </div>
+                              </div>
+
+                         </div>
+                    </div>
+               </div>
+               <div class="offcanvas-footer border-top p-3 text-center">
+                    <div class="row">
+                         <div class="col">
+                              <button type="button" class="btn btn-danger w-100" id="reset-layout">Reset</button>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+         
+          <!-- ========== Topbar End ========== -->
+
+            <!-- ========== App Menu Start ========== -->
+            <%- include('../partial/admin/header') %>
+
+          <!-- ==================================================== -->
+          <!-- Start right Content here -->
+          <!-- ==================================================== -->
+          <div class="page-content">
+               <div class="container-xxl">
+                   <div class="col-xl-9 col-lg-8">
+                       
+                           <!-- Basic Product Details -->
+                           <div class="card mb-4">
+                               <div class="card-header">
+                                   <h4 class="card-title">Product Details</h4>
+                               </div>
+                               <div class="card-body">
+                                   <!-- Product Name -->
+                                   <div class="row mb-4">
+                                    <div class="d-flex align-items-start"> <!-- Aligns content at the top -->
+                                        <label class="text-muted fs-13 mb-0">Product Name</label>
+                                        <h5 class="ms-2 mb-0 fw-bold text-primary" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"><%=verient.productId.productName%></h5>
+                                    </div>
+                                </div>
+           
+                                   <!-- Category -->
+                                   <div class="container">
+                                    <form id="variantForm" onsubmit="formSubmit(event)" enctype="multipart/form-data">
+                                        <div id="variantContainer">
+                                            <div class="color-section">
+                                                <div class="variant-header">
+                                                    <h3>Color Selection</h3>
+                                                </div>
+                                                <div class="color-options">
+                                                    <input type="color" id="colorPicker" name="color" class="color-circle" value="<%= verient.productcolor %>">
+                                                    <div class="color-preview">Selected Color</div>
+                                                    <span id="error-message-color" class="error-message"></span>
+                                                </div>
+                                            </div>
+                                                <div class="size-section">
+                                                    <div class="variant-header">
+                                                        <h3>Size Selection</h3>
+                                                    </div>
+                                                
+                                                    <div class="size-grid">
+                                                        <% Object.entries(verient.size).forEach(([size, quantity]) => { %>
+                                                            <div class="size-item">
+                                                                <input type="checkbox" id="size-<%= size %>" name="sizes[]" value="<%= size %>">
+                                                                <label for="size-<%= size %>"><%= size %></label>
+                                                                <input type="number" name="sizeQty[<%= size %>]" class="quantity-input" min="0" value="<%= quantity %>" placeholder="Qty">
+                                                            </div>
+                                   
+                                                        <% }) %>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div id="error-message-size" class="error-message"></div>
+                                            </div>
+                                        </div>
+                                </div>
+                              
+                                        <!-- Initial variant row will be added by JavaScript -->
+                                    </div>
+                                  
+                                </div>
+        
+                                <!-- Description -->
+                               
+                               <div class="container">
+                                    <div class="row">
+                                        <% verient.productImg.forEach((val, index) => { %>
+                                            <div class="upload-card col-lg-6 col-xl-3">
+                                                <label class="form-label">Product Image <%= index + 1 %> *</label>
+                                                <div id="uploadZone<%= index %>" class="image-upload-area">
+                                                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                                                    </svg>
+                                                    <p class="upload-text">Drag & drop image or click to upload && remove</p>
+                                                    <input type="file" id="fileInput<%= index %>" name="image" accept="image/*" style="display: none">
+                                                </div>
+                                                <div id="errorMessage<%= index %>" class="error-message"></div>
+                                                <div id="previewContainer<%= index %>" class="preview-container">
+                                                    <img id="image-preview<%= index %>" class="img-preview">
+                                                    <button id="cropButton<%= index %>" class="btn-primary">
+                                                        Crop & Save
+                                                        <div class="spinner" id="spinner<%= index %>"></div>
+                                                    </button>
+                                                </div>
+                                                <img id="croppedResult<%= index %>" name="image" src="/<%= val %>" class="cropped-result">
+                                                <div id="uploadStatus<%= index %>" class="upload-status"></div>
+                                            </div>
+                                        <% }) %>
+                                    </div>
+                                </div>
+                                <span id="error-message-images" class="error-message"></span>                        
+                                <button class="btn btn-success" type="submit" >Save</button> 
+                                <a href="/admin/product/view?id=<%=verient.productId._id%> %>" class="btn btn-danger">Cancel</a>
+                       </form>
+                   </div>
+               </div>
+          </div></div>
+        </div>
+
+           </div>
+           <script src="/assets/js/crop.js"></script>
+           <script src="/assets/js/vendor.js"></script>
+
+           <!-- App Javascript (Require in all Page) -->
+           <script src="/assets/js/app.js"></script>
+           <script>
+                       
+                function formSubmit(event) {
+                    event.preventDefault();
+                    const sizeItems = document.querySelectorAll('.size-item');
+                    let isValid = true;
+                    
+                    clearError("error-message-size")
+                    let hasSelectedSize = false
+                    sizeItems.forEach(sizeItem => {
+                        const checkbox = sizeItem.querySelector('input[type="checkbox"]');
+                        const quantityInput = sizeItem.querySelector('.quantity-input');
+                        if (checkbox.checked) {
+                            hasSelectedSize = true
+                            if (quantityInput.value < 0 || quantityInput.value === '') {
+                                showError("error-message-size", "Please enter a valid quantity");
+                                isValid = false;
+                            }
+                            else if(!Number(quantityInput.value) > 0) {
+                                showError("error-message-size", "Please enter a valid quantity");
+                                isValid = false;
+                                }
+                            
+                        }
+                    });
+                    
+                    
+                    if (!hasSelectedSize) {
+                        showError("error-message-size", "Please select at least one size");
+                        return;
+                    }
+                    
+
+                    //image verification
+                    let imagesValid = true;
+                    let imageData = [];
+                    const croppedImages = document.querySelectorAll('[id^="croppedResult"]');
+                    croppedImages.forEach((img, index) => {
+                        if (!img.src || img.src === window.location.href) {
+                            showError("error-message-images", `Please upload and crop image ${index + 1}`);
+                            imagesValid = false;
+                        } else {
+                            imageData.push(img.src);
+                        }
+                    });
+
+                    if (!imagesValid) {
+                        showError("error-message-images", "Please upload and crop all images.");
+                        isValid = false;
+                    } else {
+                        clearError("error-message-images");
+                    }
+
+                    if (isValid) {
+                        const formData = new FormData(document.getElementById('variantForm'));
+                        
+                        fetch('/admin/product/verient?id=<%=verient.productId.productName%>', {
+                            method: 'PUT',
+                            body: formData,
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                window.location.href = "/admin/product/view?id=<%= verient.productId._id %>";
+                            } else {
+                                alert('Error: ' + data.message);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred.');
+                        });
+                    }
+                }
+
+                 
+    
+           class ImageUploader {
+            constructor(index) {
+            this.index = index;
+            this.uploadZone = document.getElementById(`uploadZone${index}`);
+            this.fileInput = document.getElementById(`fileInput${index}`);
+            this.errorMessage = document.getElementById(`errorMessage${index}`);
+            this.previewContainer = document.getElementById(`previewContainer${index}`);
+            this.imagePreview = document.getElementById(`image-preview${index}`);
+            this.cropButton = document.getElementById(`cropButton${index}`);
+            this.croppedResult = document.getElementById(`croppedResult${index}`);
+            this.uploadStatus = document.getElementById(`uploadStatus${index}`);
+            this.spinner = document.getElementById(`spinner${index}`);
+            this.cropper = null;
+        
+        // Initialize if elements exist
+        if (this.uploadZone) {
+            this.initializeEventListeners();
+            this.initializeExistingImage();
+        }
+    }
+
+    initializeExistingImage() {
+        // If there's an existing image in croppedResult, show it and hide upload zone
+        if (this.croppedResult && this.croppedResult.src && this.croppedResult.src !== 'null' && this.croppedResult.src !== 'undefined') {
+            this.uploadZone.style.display = 'none';
+            this.croppedResult.style.display = 'block';
+            
+            // Add remove button for existing image
+            const removeButton = document.createElement('button');
+            removeButton.className = 'btn btn-danger remove-image';
+            removeButton.textContent = 'Remove';
+            removeButton.onclick = () => this.removeImage();
+            this.croppedResult.parentElement.appendChild(removeButton);
+        }
+    }
+
+    removeImage() {
+        // Clear the cropped result
+        this.croppedResult.src = '';
+        this.croppedResult.style.display = 'none';
+        
+        // Show upload zone again
+        this.uploadZone.style.display = 'block';
+        
+        // Remove the remove button
+        const removeButton = this.croppedResult.parentElement.querySelector('.remove-image');
+        if (removeButton) {
+            removeButton.remove();
+        }
+
+        // Clear file input
+        this.fileInput.value = '';
+    }
+
+    initializeEventListeners() {
+        // Click to upload
+        this.uploadZone.addEventListener('click', () => this.fileInput.click());
+
+        // File input change
+        this.fileInput.addEventListener('change', (e) => this.handleFileSelect(e));
+
+        // Drag and drop
+        this.uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            this.uploadZone.classList.add('dragover');
+        });
+
+        this.uploadZone.addEventListener('dragleave', () => {
+            this.uploadZone.classList.remove('dragover');
+        });
+
+        this.uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            this.uploadZone.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length) {
+                this.fileInput.files = files;
+                this.handleFileSelect({ target: this.fileInput });
+            }
+        });
+
+        // Crop button
+        this.cropButton.addEventListener('click', () => this.cropImage());
+    }
+
+    handleFileSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+            this.showError('Please upload an image file');
+            return;
+        }
+
+      
+        if (file.size > 5 * 1024 * 1024) {
+            this.showError('Image size should be less than 5MB');
+            return;
+        }
+
+        this.clearError();
+        this.showPreview(file);
+    }
+
+    showPreview(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            this.imagePreview.src = e.target.result;
+            this.previewContainer.style.display = 'block';
+            this.uploadZone.style.display = 'none';
+            this.croppedResult.style.display = 'none';
+            
+            // Initialize cropper
+            if (this.cropper) {
+                this.cropper.destroy();
+            }
+            this.cropper = new Cropper(this.imagePreview, {
+                aspectRatio: 1,
+                viewMode: 2,
+                responsive: true,
+                background: true
+            });
+        };
+        reader.readAsDataURL(file);
+    }
+
+    async cropImage() {
+        if (!this.cropper) return;
+
+        this.spinner.style.display = 'block';
+        this.cropButton.disabled = true;
+
+        try {
+            const canvas = this.cropper.getCroppedCanvas({
+                width: 600,
+                height: 600
+            });
+            const blob = await new Promise(resolve => {
+                canvas.toBlob(blob => resolve(blob), 'image/jpeg', 0.8);
+            });
+            this.croppedResult.src = canvas.toDataURL('image/jpeg');
+            this.croppedResult.style.display = 'block';
+            this.previewContainer.style.display = 'none';
+            if (!this.croppedResult.parentElement.querySelector('.remove-image')) {
+                const removeButton = document.createElement('button');
+                removeButton.className = 'btn btn-danger remove-image';
+                removeButton.textContent = 'Remove';
+                removeButton.onclick = () => this.removeImage();
+                this.croppedResult.parentElement.appendChild(removeButton);
+            }
+
+            // Update status
+            this.uploadStatus.innerHTML = '<span class="success">Image cropped successfully!</span>';
+
+        } catch (error) {
+            this.showError('Error processing image');
+            console.error(error);
+        } finally {
+            this.spinner.style.display = 'none';
+            this.cropButton.disabled = false;
+        }
+    }
+
+    showError(message) {
+        this.errorMessage.textContent = message;
+        this.errorMessage.style.display = 'block';
+    }
+
+    clearError() {
+        this.errorMessage.textContent = '';
+        this.errorMessage.style.display = 'none';
+    }
+}
+
+// Initialize uploaders
+document.addEventListener('DOMContentLoaded', () => {
+    // Find all upload zones
+    const uploadZones = document.querySelectorAll('.image-upload-area');
+    
+    // Create uploader instances for each zone
+    uploadZones.forEach(zone => {
+        const index = zone.id.replace('uploadZone', '');
+        new ImageUploader(index);
+    });
+});
+
+
+
+
+
+const qtyInputs = document.querySelectorAll('.quantity-input');
+
+
+
+
+
+
+ function showError(elementId, message) {
+    const errorElement = document.getElementById(elementId);
+    errorElement.textContent = message;
+    errorElement.style.display = 'block';
+}
+
+// Helper function to clear error messages
+function clearError(elementId) {
+    const errorElement = document.getElementById(elementId);
+    errorElement.textContent = '';
+    errorElement.style.display = 'none';
+}
+
+function showSuccessNotification(message) {
+            Swal.fire({
+                title: 'Success',
+                text: message||"sucessfully created",
+                icon: 'success',
+                position: 'top',
+                toast: true,
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                },
+                background: '#fff',
+                color: '#1a1a1a',
+                iconColor: '#4CAF50',
+                customClass: {
+                    popup: 'premium-toast',
+                    title: 'premium-title',
+                    timerProgressBar: 'premium-progress'
+                }
+    }).then(() => {
+        window.location.href = '/admin/editVerient?id=<%=verient.productId._id%>';
+    });
+}
+
+// Error notification function
+function showErrorNotification(message) {
+    Swal.fire({
+        title: 'Error',
+        text: message || 'Verification failed',
+        icon: 'error',
+        position: 'top',
+        toast: true,
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        showClass: {
+            popup: 'animate__animated animate__shakeX'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        },
+        background: '#fff',
+        color: '#1a1a1a',
+        iconColor: '#FF3B30',
+        customClass: {
+            popup: 'premium-error-toast',
+            title: 'premium-error-title',
+            timerProgressBar: 'premium-error-progress'
+        }
+    });
+} 
+
+
+
+
+           </script>
+           </body>
+           </html>
+          
+
+          
+
+           
+        

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        :root {
+            --primary-color: #9c27b0;
+            --secondary-color: #7b1fa2;
+            --accent-color: #e1bee7;
+            --gradient-start: #32b027;
+            --gradient-end: #74e873;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f6f0ff 0%, #ffffff 100%);
+            min-height: 100vh;
+        }
+        .password-wrapper {
+        position: relative;
+    }
+
+    .input-container {
+        position: relative;
+    }
+
+    .toggle-btn {
+        position: absolute;
+        right: 10px; /* Positioning the button to the right */
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #007bff;
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .form-control {
+        padding-right: 40px; /* Make space for the button inside the input field */
+    }
+
+        .login-container {
+            min-height: 80vh;  /* Reduced from 100vh */
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-side {
+            padding: 2rem;  /* Reduced from 4rem */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background: white;
+            position: relative;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .login-title {
+            font-size: 2rem;  /* Reduced from 2.8rem */
+            font-weight: 800;
+            margin-bottom: 1.5rem;  /* Reduced from 2rem */
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .form-control {
+            padding: 0.8rem;  /* Reduced from 1.2rem */
+            border-radius: 12px;  /* Reduced from 16px */
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+            font-size: 1rem;  /* Reduced from 1.1rem */
+            background: #f8f9fa;
+        }
+
+        .btn-login {
+            padding: 0.8rem;  /* Reduced from 1.2rem */
+            border-radius: 12px;
+            background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+            border: none;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 1rem;  /* Reduced from 1.1rem */
+        }
+
+        .dress-collection {
+            background: linear-gradient(135deg, #ffffff 0%, #f3e5f5 100%);
+            padding: 1.5rem;  /* Reduced from 2rem */
+            height: 80vh;  /* Added fixed height */
+            overflow-y: auto;  /* Added scroll for overflow */
+        }
+
+        .collection-title {
+            font-size: 1.5rem;  /* Reduced from 2rem */
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;  /* Reduced from 2rem */
+            text-align: center;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;  /* Reduced from 1.5rem */
+            padding: 0.5rem;  /* Reduced from 1rem */
+        }
+
+        .image-item {
+            position: relative;
+            padding-bottom: 100%;  /* Reduced from 120% */
+            background-size: cover;
+            background-position: center;
+            border-radius: 12px;  /* Reduced from 20px */
+            transition: all 0.4s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .forgot-password {
+            text-decoration: none;
+            color: #000000; /* Blue color for the link */
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .forgot-password:hover {
+            color: #706e6e; /* Darker blue when hovered */
+            text-decoration: underline; /* Underline on hover */
+        }
+
+
+        .social-login {
+            margin-top: 1rem;  /* Reduced from 2rem */
+        }
+
+        .social-buttons {
+            gap: 0.8rem;  /* Reduced from 1rem */
+            margin-top: 0.8rem;  /* Reduced from 1rem */
+        }
+
+        .social-btn {
+            width: 40px;  /* Reduced from 50px */
+            height: 40px;  /* Reduced from 50px */
+            font-size: 1.2rem;  /* Reduced from 1.5rem */
+        }
+
+        .divider {
+            margin: 1rem 0;  /* Reduced from 2rem */
+        }
+
+        .form-label {
+            font-size: 0.9rem;  /* Reduced from 1.1rem */
+            margin-bottom: 0.5rem;  /* Reduced from 0.8rem */
+        }
+
+        .mb-4 {
+            margin-bottom: 1rem !important;  /* Reduced spacing between form elements */
+        }
+        .error {
+            font-size: 0.9em;
+             color: red;
+                margin-top: 5px;
+              }
+              .create-account-link {
+            display: inline-block;
+            font-size: 16px; 
+            font-weight: bold;
+            color: #ffffff; /* Text color */
+            background-color: #007bff; /* Button color */
+            text-decoration: none; /* Remove underline */
+            padding: 10px 20px; /* Add padding for button look */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s ease; /* Smooth hover effect */
+        }
+
+            .create-account-link:hover {
+            background-color: #0056b3; /* Darker shade on hover */
+            text-decoration: underline; /* Optional hover effect */
+          }
+
+
+               /* swall notiction */
+        .swal2-popup.swal-custom-popup {
+            font-size: 14px;
+            padding: 12px;
+            background: #ffe6e6;
+            border-radius: 8px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .swal2-popup.swal-custom-popup .swal2-title {
+            font-size: 16px;
+            margin: 0 0 5px 0;
+            color: #d63031;
+        }
+
+        .swal2-popup.swal-custom-popup .swal2-content {
+            margin: 0;
+            padding: 0;
+        }
+
+        .swal2-popup.swal-custom-popup .swal2-confirm {
+            margin-top: 8px;
+            padding: 8px 16px;
+            background-color: #d63031;
+            color: white;
+            border-radius: 4px;
+        }
+        /* Premium SweetAlert Styles */
+                        /* Ultra Premium SweetAlert Styles */
+                .ultra-premium-container {
+                    z-index: 9999;
+                }
+
+                .ultra-premium-popup {
+                    background: rgba(255, 255, 255, 0.95) !important;
+                    backdrop-filter: blur(10px) saturate(180%) !important;
+                    -webkit-backdrop-filter: blur(10px) saturate(180%) !important;
+                    border-radius: 24px !important;
+                    border: 1px solid rgba(209, 213, 219, 0.3) !important;
+                    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25),
+                                0 0 50px rgba(0, 0, 0, 0.1) !important;
+                    transform-style: preserve-3d !important;
+                    perspective: 1000px !important;
+                    animation: float 6s ease-in-out infinite !important;
+                }
+
+                .ultra-premium-title {
+                    font-size: 2rem !important;
+                    font-weight: 700 !important;
+                    background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 100%) !important;
+                    -webkit-background-clip: text !important;
+                    -webkit-text-fill-color: transparent !important;
+                    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1) !important;
+                    margin-bottom: 1rem !important;
+                    letter-spacing: -0.5px !important;
+                }
+
+                .ultra-premium-content {
+                    font-size: 1.2rem !important;
+                    color: #2c3e50 !important;
+                    font-weight: 500 !important;
+                    line-height: 1.6 !important;
+                    margin: 1.5rem 0 !important;
+                }
+
+                .ultra-premium-confirm {
+                    background: linear-gradient(135deg, #00b09b 0%, #96c93d 100%) !important;
+                    padding: 1rem 2rem !important;
+                    font-size: 1.1rem !important;
+                    font-weight: 600 !important;
+                    text-transform: uppercase !important;
+                    letter-spacing: 1px !important;
+                    border: none !important;
+                    border-radius: 12px !important;
+                    box-shadow: 0 10px 20px rgba(0, 176, 155, 0.3) !important;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+                }
+
+                .ultra-premium-confirm:hover {
+                    transform: translateY(-3px) scale(1.02) !important;
+                    box-shadow: 0 15px 25px rgba(0, 176, 155, 0.4) !important;
+                }
+
+                .ultra-premium-confirm:active {
+                    transform: translateY(-1px) scale(0.98) !important;
+                }
+
+                .ultra-premium-icon {
+                    border: 3px solid #00b09b !important;
+                    padding: 1.5rem !important;
+                    border-radius: 50% !important;
+                    background: rgba(0, 176, 155, 0.1) !important;
+                    animation: iconPulse 2s infinite !important;
+                }
+
+                /* Custom Animations */
+                @keyframes float {
+                    0% { transform: translateY(0px); }
+                    50% { transform: translateY(-10px); }
+                    100% { transform: translateY(0px); }
+                }
+
+                @keyframes iconPulse {
+                    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 176, 155, 0.4); }
+                    70% { transform: scale(1.1); box-shadow: 0 0 0 15px rgba(0, 176, 155, 0); }
+                    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 176, 155, 0); }
+                }
+
+                /* Progress Bar */
+                .swal2-timer-progress-bar {
+                    background: linear-gradient(to right, #00b09b, #96c93d) !important;
+                    height: 4px !important;
+                    border-radius: 2px !important;
+                }
+
+                /* Background Animation */
+                .swal2-backdrop-show {
+                    animation: backdropFade 0.3s ease-out !important;
+                }
+
+                @keyframes backdropFade {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+  
+
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row login-container">
+        <div class="col-lg-5 form-side">
+            <div class="w-100" style="max-width: 400px; margin: 0 auto;">
+                <h1 class="login-title" id="txt">EnviroCart</h1>
+                <form onsubmit="return BtnSubmit(event)">
+                    <div class="mb-4">
+                        <label class="form-label">Email or Phone Number</label>
+                        <input type="text" class="form-control" id="emailOrPhone" name="emailOrPhone" placeholder="Enter your email or phone number">
+                        <span id="emailOrPhone-error" class="error-message"></span>
+                    </div>
+                    <div class="mb-4 password-wrapper">
+                        <label class="form-label">Password </label>
+                        <div class="input-container">
+                            <input type="password" class="form-control" id="password" name="password" oninput="removeSpaces(this)" placeholder="Enter your password" >
+                            <span id="password-error" class="error-message"></span>
+                            <button type="button" class="toggle-btn" onclick="togglePassword()">
+                                <i class="fa fa-eye"></i> <!-- Add eye icon -->
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <a href="/forgot-password" class="forgot-password">Forgot Password?</a>
+                    </div>
+                    <button type="submit" id="login-id" class="btn btn-login btn-success w-100 mb-3">Sign In</button>
+          </form>                
+                <p><u>____________________________________________________________</u></p>
+                <div class="text-center">
+                <a href="/signup" class="create-account-link">Create Account</a>
+                    </div>
+
+                <div class="divider text-center">
+                    <span>or continue with</span>
+                </div>
+                <div class="social-buttons text-center">
+                    <a href="/auth/google" class="social-btn">
+                        <i class="fab fa-google"></i>
+                        oogle 
+                    </a>
+                    <!-- <a href="#" class="social-btn">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="social-btn">
+                        <i class="fab fa-apple"></i>
+                    </a> -->
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-7 dress-collection">
+            <!-- <h2 class="collection-title">Latest Collection</h2> -->
+            <div class="image-grid">
+                <div class="image-item" style="background-image: url('/images/products/white-12.jpg')"></div>
+                <div class="image-item" style="background-image: url('/images/products/kid-11.jpg')"></div>
+                <div class="image-item" style="background-image: url('/assets/images/product/p-3.png')"></div>
+                <div class="image-item" style="background-image: url('/images/products/black-2.jpg')"></div>
+                <div class="image-item" style="background-image: url('/images/products/black-15.jpg')"></div>
+                <div class="image-item" style="background-image: url('/images/products/dark-blue-2.jpg')"></div>
+                <div class="image-item" style="background-image: url('/images/shop/gallery/gallery-12.jpg')"></div>
+                <div class="image-item" style="background-image: url('/images/collections/collection-34.jpg')"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+      async function BtnSubmit(event) {
+
+        event.preventDefault(); // Prevent form submission by default
+        let valid = true;
+        const submitButton = document.getElementById('login-id');
+        submitButton.disabled = true; // Disable button to prevent multiple submissions
+
+        // Email validation
+        const inputEmph = document.getElementById('emailOrPhone').value;
+        if (!validateEmailOrPhone(inputEmph)) {
+            showError('emailOrPhone-error', 'Please enter a valid email address or phone number.');
+            valid = false;
+            styleError('emailOrPhone');
+        } else {
+            clearError('emailOrPhone-error');
+            clearStyle('emailOrPhone');
+        }
+
+        // Password validation
+        const password = document.getElementById('password').value;
+        if (!password) {
+            showError('password-error', 'Please enter your password.');
+            valid = false;
+            styleError('password');
+        } else {
+            clearError('password-error');
+            clearStyle('password');
+        }
+
+        // If validation fails, re-enable the button and return
+        if (!valid) {
+            submitButton.disabled = false;
+            return false;
+        }
+       
+        //back-end fetching
+        try {
+            const userData = {
+                emailOrPhone: inputEmph.trim(), 
+                password: password.trim(),
+            };
+
+            const response = await fetch("/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(userData)
+            });
+
+            if (!response.ok) {
+                throw new Error("Request failed with status " + response.status);
+            }
+          
+            const data = await response.json();
+
+            if (data.success) {
+                Swal.fire({
+                title: 'Success!',
+                text: data.message,
+                icon: 'success',
+                position: 'center', // Changed to center for more premium feel
+                customClass: {
+                    popup: 'ultra-premium-popup',
+                    title: 'ultra-premium-title',
+                    htmlContainer: 'ultra-premium-content',
+                    confirmButton: 'ultra-premium-confirm',
+                    icon: 'ultra-premium-icon',
+                    container: 'ultra-premium-container'
+                },
+                showConfirmButton: true,
+                confirmButtonText: 'Continue',
+                width: '400px',
+                padding: '2rem',
+                backdrop: `
+                    rgba(38, 38, 38, 0.8)
+                    url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.184 20c.357-.13.72-.264 1.088-.402l1.768-.661C33.64 15.347 39.647 14 50 14c10.271 0 15.362 1.222 24.629 4.928.955.383 1.869.74 2.75 1.072h6.225c-2.51-.73-5.139-1.691-8.233-2.928C65.888 13.278 60.562 12 50 12c-10.626 0-16.855 1.397-26.66 5.063l-1.767.662c-2.475.923-4.66 1.674-6.724 2.275h6.335zm0-20C13.258 2.892 8.077 4 0 4V2c5.744 0 9.951-.574 14.85-2h6.334zM77.38 0C85.239 2.966 90.502 4 100 4V2c-6.842 0-11.386-.542-16.396-2h-6.225zM0 14c8.44 0 13.718-1.21 22.272-4.402l1.768-.661C33.64 5.347 39.647 4 50 4c10.271 0 15.362 1.222 24.629 4.928C84.112 12.722 89.438 14 100 14v-2c-10.271 0-15.362-1.222-24.629-4.928C65.888 3.278 60.562 2 50 2 39.374 2 33.145 3.397 23.34 7.063l-1.767.662C13.223 10.84 8.163 12 0 12v2z' fill='%239C92AC' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E")
+                `,
+                timer: 2000,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__zoomIn animate__faster'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__zoomOut animate__faster'
+                }
+            }).then(() => {
+                    window.location.href = '/'; // Redirect to home page
+                });
+            } else {
+                Swal.fire({
+                    title: 'Failed!',
+                    text: data.message,
+                    icon: 'error',
+                    position: 'top-end',
+                    toast: true,
+                    customClass: {
+                        popup: 'swal-custom-popup',
+                        title: 'swal2-title',
+                        content: 'swal2-content',
+                        confirmButton: 'swal2-confirm'
+                    },
+                    showConfirmButton: true,
+                    confirmButtonText: 'Retry',
+                    width: '300px',
+                    timer: 3000,
+                    timerProgressBar: true,
+                });
+            }
+        } catch (error) {
+            showError('global-error', error.message || "An error occurred during registration");
+        } finally {
+            submitButton.disabled = false; // Re-enable the button after the process
+        }
+    }
+
+    function togglePassword() {
+        const passwordField = document.getElementById('password');
+        const passwordIcon = document.querySelector('.toggle-btn i');
+    
+        if (passwordField.type === 'password') {
+            passwordField.type = 'text';
+            passwordIcon.classList.remove('fa-eye');
+            passwordIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordField.type = 'password';
+            passwordIcon.classList.remove('fa-eye-slash');
+            passwordIcon.classList.add('fa-eye');
+        }
+    }
+
+    function showError(id, message) {
+        const errorElement = document.getElementById(id);
+        errorElement.textContent = message;
+        errorElement.style.color = 'red';
+    }
+
+    function clearError(id) {
+        const errorElement = document.getElementById(id);
+        errorElement.textContent = '';
+    }
+
+    function styleError(fieldId) {
+        const inputField = document.getElementById(fieldId);
+        if (inputField) {
+            inputField.style.borderColor = 'red';
+            inputField.style.backgroundColor = '#f8d7da';
+        }
+    }
+
+    function clearStyle(fieldId) {
+        const inputField = document.getElementById(fieldId);
+        if (inputField) {
+            inputField.style.borderColor = '';
+            inputField.style.backgroundColor = '';
+        }
+    }
+  
+    function validateEmailOrPhone(inputEmph) {
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const phoneRegex = /^[0-9]{10}$/; 
+    return emailRegex.test(inputEmph) || phoneRegex.test(inputEmph); 
+}
+     
+function removeSpaces(input) {
+    input.value = input.value.replace(/\s/g, ""); // Remove all spaces
+  }
+
+ </script>
+    
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Email Verification</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   <link href="/css/verify.css" rel="stylesheet">
+</head>
+<body>
+    <video autoplay muted loop class="video-background">
+        <source src="d/images/top 10 img/3195349-uhd_3840_2160_25fps.mp4" type="video/mp4">
+    </video>
+    <div class="overlay"></div>
+    <div class="container">
+        <div class="logo">
+            <svg viewBox="0 0 24 24">
+                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 14c-2.7 0-5.8-1.29-6-2.01V13c1.17.71 3.39 1.5 6 1.5s4.83-.79 6-1.5v3.99c-.2.72-3.3 2.01-6 2.01z"/>
+            </svg>
+        </div>
+        <h1>Verify Your Account</h1>
+        <p>We've sent a verification code to your email.<br>Enter the code below to confirm your identity.</p>
+        
+        <div class="verification-input">
+            <input type="text" name="otp" maxlength="1" autofocus>
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+            <input type="text" maxlength="1">
+        </div>
+       
+        <button onclick="verifyCode()">Verify Now</button>
+        
+        <div class="resend">
+            Didn't receive the code? 
+            <a href="#" onclick="resendCode(event)" id="resendLink" aria-disabled="true" style="pointer-events: none;">
+                Send it again <span id="timer">agin send in after second:60</span>
+            </a>
+        </div>
+        
+    </div>
+
+    <script>
+        // Auto-focus next input
+        const inputs = document.querySelectorAll('.verification-input input');
+        inputs.forEach((input, index) => {
+            input.addEventListener('input', function() {
+                this.value = this.value.replace(/[^0-9]/g, '');
+                if (this.value && index < inputs.length - 1) {
+                    inputs[index + 1].focus();
+                }
+            });
+
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Backspace' && !this.value && index > 0) {
+                    inputs[index - 1].focus();
+                }
+            });
+
+            // Allow paste
+            input.addEventListener('paste', function(e) {
+                e.preventDefault();
+                const pasteData = e.clipboardData.getData('text').split('').filter(char => /[0-9]/.test(char));
+                inputs.forEach((input, i) => {
+                    if (pasteData[i]) {
+                        input.value = pasteData[i];
+                        if (i < inputs.length - 1) inputs[i + 1].focus();
+                    }
+                });
+            });
+        });
+
+      
+
+           
+    function verifyCode() {
+    // Collect all input values
+
+    const code = Array.from(document.querySelectorAll('.verification-input input'))
+        .map(input => input.value)
+        .join('');
+
+    // Check if the code is complete
+    if (code.length === 6) {
+        // Call the backend to verify the code
+        fetch('/verify', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ code ,action:"verify" })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                     title: 'Success',
+                    text: 'Your email has been verified!',
+                    icon: 'success',
+                    position: 'top',
+                    toast: true,
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true,
+                    showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                         },
+                         hideClass: {
+                            popup: 'animate__animated animate__fadeOutUp'
+                           },
+                    background: '#fff',
+                    color: '#1a1a1a',
+                    iconColor: '#4CAF50',
+                     customClass: {
+                    popup: 'premium-toast',
+                    title: 'premium-title',
+                    timerProgressBar: 'premium-progress'
+                    }
+               })              
+            
+
+            //data.sucess then go to home page 
+            .then(() => {
+                window.location.href = "/";
+            });
+            
+            } else {
+                Swal.fire({
+            title: 'Error',
+            text: data.message || 'Verification failed',
+            icon: 'error',
+            position: 'top',
+            toast: true,
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            showClass: {
+                popup: 'animate__animated animate__shakeX'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            },
+            background: '#1a1a1a',
+            color: '#fff',
+            iconColor: '#FF3B30',
+            customClass: {
+                popup: 'premium-error-toast',
+                title: 'premium-error-title',
+                timerProgressBar: 'premium-error-progress'
+            }
+            });
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while verifying your code.');
+        });
+    } else {
+        Swal.fire({
+            title: 'Invalid Code',
+            text: 'Please enter a 6-digit code.',
+            icon: 'warning',
+            position: 'top',
+            toast: true,
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            },
+            background: '#1a1a1a',
+            color: '#fff',
+            iconColor: '#FFA500', // Orange color for warning
+            customClass: {
+                popup: 'premium-warning-toast',
+                title: 'premium-warning-title',
+                timerProgressBar: 'premium-warning-progress'
+            }
+            });
+    }
+}
+
+
+
+    // Check if Rtime is stored in localStorage
+     function startTimer() {
+      // Get the saved end time or set a new one
+      let endTime = localStorage.getItem('timerEndTime');
+      if (!endTime) {
+        endTime = Date.now() + (1 * 1000); 
+        localStorage.setItem('timerEndTime', endTime);
+      }
+      
+      const timerElement = document.getElementById('timer');
+      const resendLink = document.getElementById('resendLink');
+      function updateTimer() {
+        const timeLeft = Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
+        
+        if (timeLeft <= 0) {
+          timerElement.textContent = '0';
+          localStorage.removeItem('timerEndTime');
+          clearInterval(countdown);
+          timerElement.style.visibility = 'hidden'; // or 'display: none' to completely remove it
+            resendLink.style.pointerEvents = 'auto'; // Enable resend link
+            resendLink.ariaDisabled = false; 
+        } else {
+          timerElement.textContent = timeLeft;
+          timerElement.style.visibility = 'visible';
+          resendLink.setAttribute('aria-disabled', 'true');
+        }
+      }
+
+   
+      updateTimer();
+      const countdown = setInterval(updateTimer, 1000);
+    }
+
+  
+//this function for the resendcode 
+function resendCode(event) {
+    localStorage.setItem('timerEndTime', String(Date.now() + (60 * 1000)));
+      
+      
+      startTimer();
+    event.preventDefault();
+  
+    // Show feedback using Swal before making the fetch request
+    Swal.fire({
+    title: 'Code Sent!',
+            text: 'A new verification code is being sent to your email...',
+            icon: 'info',
+            position: 'top',
+            toast: true,
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            },
+            background: '#1a1a1a',
+            color: '#fff',
+            iconColor: '#FFA500', // Orange color for warning
+            customClass: {
+                popup: 'premium-warning-toast',
+                title: 'premium-warning-title',
+                timerProgressBar: 'premium-warning-progress'
+            }
+            });
+
+    // Make the fetch call to resend verification code
+    fetch('/Verify', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ action: "resend" }), // Pass action in the body
+    })
+    .then(response => {
+        console.log('Response received:', response);
+        return response.json(); // Parse response JSON
+    })
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+            title: 'Success!',
+            text: 'A new verification code has been sent to your email.',
+            icon: 'success',
+            position: 'top',
+            toast: true,
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            },
+            background: '#1a1a1a',
+            color: '#fff',
+            iconColor: '#FFA500', // Orange color for warning
+            customClass: {
+                popup: 'premium-warning-toast',
+                title: 'premium-warning-title',
+                timerProgressBar: 'premium-warning-progress'
+            }
+            });
+        } else {
+            Swal.fire({
+            title: 'Error',
+            text: data.message || 'Error sending the verification code. Try again later.',
+            icon: "error",
+            position: 'top',
+            toast: true,
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            showClass: {
+                popup: 'animate__animated animate__fadeInDown'
+            },
+            hideClass: {
+                popup: 'animate__animated animate__fadeOutUp'
+            },
+            background: '#1a1a1a',
+            color: '#fff',
+            iconColor: '#FFA500', // Orange color for warning
+            customClass: {
+                popup: 'premium-warning-toast',
+                title: 'premium-warning-title',
+                timerProgressBar: 'premium-warning-progress'
+            }
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error occurred:', error);
+        Swal.fire({
+            title: 'Error',
+            text: 'An unexpected error occurred while resending the code.',
+            icon: 'error',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+        });
+    });
+   
+}
+window.onload =   startTimer();
+
+
+           
+           
+
+
+
+    </script>
+</body>
+</html>

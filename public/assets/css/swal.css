@@ -1,0 +1,44 @@
+.premium-error-toast {
+    border-radius: 12px !important;
+    box-shadow: 0 8px 20px rgba(255, 59, 48, 0.15) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 59, 48, 0.2) !important;
+    padding: 1.2rem !important;
+    max-width: 400px !important;
+    }
+
+    .premium-error-title {
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+    font-size: 1.25rem !important;
+    }
+
+    .premium-error-progress {
+    background: rgba(255, 59, 48, 0.2) !important;
+    }
+
+    .premium-error-progress:before {
+    background: linear-gradient(to right, #FF3B30, #FF6B6B) !important;
+    }
+    .premium-warning-toast {
+     border-radius: 12px !important;
+    box-shadow: 0 8px 20px rgba(255, 165, 0, 0.15) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(255, 165, 0, 0.2) !important;
+    padding: 1.2rem !important;
+    max-width: 400px !important;
+    }
+
+    .premium-warning-title {
+    font-weight: 600 !important;
+    letter-spacing: 0.5px !important;
+    font-size: 1.25rem !important;
+    }
+
+    .premium-warning-progress {
+    background: rgba(255, 165, 0, 0.2) !important;
+    }
+
+    .premium-warning-progress:before {
+    background: linear-gradient(to right, #FFA500, #FFD700) !important;
+    }
