@@ -2,6 +2,7 @@ import express from 'express'
 import userController from '../controller/user/userController.js'
 const router = express.Router()
 import passport from 'passport'
+import shopController from '../controller/user/shopController.js'
 
 
 
@@ -16,6 +17,12 @@ router.get('/pageNotfound', userController.pageNotfound)
 router.get('/auth/google', passport.authenticate('google', {scope: ['email', 'profile'] }));
 router.get('/auth/google/callback', passport.authenticate('google', { successRedirect:"/", failureRedirect: '/login'  }) )
 router.get("/logout",userController.logout)
+                          
 
+// shopController
+router.get("/shop",shopController.shoppage)
+router.get("/details",shopController.details)
+
+       
 export default router
  

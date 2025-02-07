@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from techzaa.in/larkon/admin/category-add.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 03 Dec 2024 05:43:17 GMT -->
+<head>
+     <!-- Title Meta -->
+     <meta charset="utf-8" />
+     <title>Create Category | Larkon - Responsive Admin Dashboard Template</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="description" content="A fully responsive premium admin dashboard template" />
+     <meta name="author" content="Techzaa" />
+     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+     <!-- App favicon -->
+     <link rel="shortcut icon" href="/assets/images/favicon.svg">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+     <!-- Vendor css (Require in all Page) -->
+     <link href="/assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
+
+     <!-- Icons css (Require in all Page) -->
+     <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+     <!-- App css (Require in all Page) -->
+     <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+ 
+     <link href="/assets/css/mycss.css" rel="stylesheet" type="text/css" />
+
+     <!-- Theme Config js (Require in all Page) -->
+     <script src="/assets/js/config.js"></script>
+     
+</head>
+
+<body>
+
+     <!-- START Wrapper -->
+     <div class="wrapper">
+
+                   
+     <header class="topbar">
+          <div class="container-fluid">
+               <div class="navbar-header">
+                    <div class="d-flex align-items-center">
+                         <!-- Menu Toggle Button -->
+                         <div class="topbar-item">
+                              <button type="button" class="button-toggle-menu me-2">
+                                   <iconify-icon icon="solar:hamburger-menu-broken" class="fs-24 align-middle"></iconify-icon>
+                              </button>
+                         </div>
+
+                         <!-- Menu Toggle Button -->
+                         <div class="topbar-item">
+                              <h4 class="fw-bold topbar-button pe-none text-uppercase mb-0">PRODUCT CREATE</h4>
+                         </div>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-1">
+
+                         <div class="dropdown topbar-item">
+                              <button type="button" class="topbar-button position-relative" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                   <iconify-icon icon="solar:bell-bing-bold-duotone" class="fs-24 align-middle"></iconify-icon>
+                                   <span class="position-absolute topbar-badge fs-10 translate-middle badge bg-danger rounded-pill">3<span class="visually-hidden">unread messages</span></span>
+                              </button>
+
+                              </div>
+                              
+                         <!-- <! User --> 
+                         <div class="dropdown topbar-item">
+                              <a type="button" class="topbar-button" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                   <span class="d-flex align-items-center">
+                                        <img class="rounded-circle" width="32" src="/assets/images/users/avatar-1.jpg" alt="avatar-3">
+                                   </span>
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-end">
+                                   <!-- item-->
+                                   <h6 class="dropdown-header">Welcome Gaston!</h6>
+                                   <a class="dropdown-item" href="pages-profile.html">
+                                        <i class="bx bx-user-circle text-muted fs-18 align-middle me-1"></i><span class="align-middle">Profile</span>
+                                   </a>
+                                   <a class="dropdown-item text-danger" href="/admin/logout">
+                                        <i class="bx bx-log-out fs-18 align-middle me-1"></i><span class="align-middle">Logout</span>
+                                   </a>
+                              </div>
+                         </div>
+
+                         <!-- App Search-->
+                         <form class="app-search d-none d-md-block ms-2">
+                              <div class="position-relative">
+                                   <input type="search" class="form-control" placeholder="Search..." autocomplete="off" value="">
+                                   <iconify-icon icon="solar:magnifer-linear" class="search-widget-icon"></iconify-icon>
+                              </div>
+                         </form>
+                    </div>
+               </div>
+          </div>
+     </header>
+
+     <!-- Activity Timeline -->
+     <div>
+          <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="theme-activity-offcanvas" style="max-width: 450px; width: 100%;">
+               <div class="d-flex align-items-center bg-primary p-3 offcanvas-header">
+                    <h5 class="text-white m-0 fw-semibold">Activity Stream</h5>
+                    <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+               </div>
+
+               <div class="offcanvas-body p-0">
+                    <div data-simplebar class="h-100 p-4">
+                         <div class="position-relative ms-2">
+                              <span class="position-absolute start-0  top-0 border border-dashed h-100"></span>
+                              <div class="position-relative ps-4">
+                                   <div class="mb-4">
+                                        <span class="position-absolute start-0 avatar-sm translate-middle-x bg-danger d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-20"><iconify-icon icon="iconamoon:folder-check-duotone"></iconify-icon></span>
+                                        <div class="ms-2">
+                                             <h5 class="mb-1 text-dark fw-semibold fs-15 lh-base">Report-Fix / Update </h5>
+                                             <p class="d-flex align-items-center">Add 3 files to <span class=" d-flex align-items-center text-primary ms-1"><iconify-icon icon="iconamoon:file-light"></iconify-icon> Tasks</span></p>
+                                             <div class="bg-light bg-opacity-50 rounded-2 p-2">
+                                                  <div class="row">
+                                                       <div class="col-lg-6 border-end border-light">
+                                                            <div class="d-flex align-items-center gap-2">
+                                                                 <i class="bx bxl-figma fs-20 text-red"></i>
+                                                                 <a href="#!" class="text-dark fw-medium">Concept.fig</a>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-6">
+                                                            <div class="d-flex align-items-center gap-2">
+                                                                 <i class="bx bxl-file-doc fs-20 text-success"></i>
+                                                                 <a href="#!" class="text-dark fw-medium">Envriocart.docs</a>
+                                                            </div>
+                                                       </div>
+                                                  </div>
+                                             </div>
+                                             <h6 class="mt-2 text-muted">Monday , 4:24 PM</h6>
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="position-relative ps-4">
+                                   <div class="mb-4">
+                                        <span class="position-absolute start-0 avatar-sm translate-middle-x bg-success d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-20"><iconify-icon icon="iconamoon:check-circle-1-duotone"></iconify-icon></span>
+                                        <div class="ms-2">
+                                             <h5 class="mb-1 text-dark fw-semibold fs-15 lh-base">Project Status
+                                             </h5>
+                                             <p class="d-flex align-items-center mb-0">Marked<span class=" d-flex align-items-center text-primary mx-1"><iconify-icon icon="iconamoon:file-light"></iconify-icon> Design </span> as <span class="badge bg-success-subtle text-success px-2 py-1 ms-1"> Completed</span></p>
+                                             <div class="d-flex align-items-center gap-3 mt-1 bg-light bg-opacity-50 p-2 rounded-2">
+                                                  <a href="#!" class="fw-medium text-dark">UI/UX Figma Design</a>
+                                                  <div class="ms-auto">
+                                                       <a href="#!" class="fw-medium text-primary fs-18" data-bs-toggle="tooltip" data-bs-title="Download" data-bs-placement="bottom"><iconify-icon icon="iconamoon:cloud-download-duotone"></iconify-icon></a>
+                                                  </div>
+                                             </div>
+                                             <h6 class="mt-3 text-muted">Monday , 3:00 PM</h6>
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="position-relative ps-4">
+                                   <div class="mb-4">
+                                        <span class="position-absolute start-0 avatar-sm translate-middle-x bg-primary d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-16">UI</span>
+                                        <div class="ms-2">
+                                             <h5 class="mb-1 text-dark fw-semibold fs-15">Larkon Application UI v2.0.0 <span class="badge bg-primary-subtle text-primary px-2 py-1 ms-1"> Latest</span>
+                                             </h5>
+                                             <p>Get access to over 20+ pages including a dashboard layout, charts, kanban board, calendar, and pre-order E-commerce & Marketing pages.</p>
+                                             <div class="mt-2">
+                                                  <a href="#!" class="btn btn-light btn-sm">Download Zip</a>
+                                             </div>
+                                             <h6 class="mt-3 text-muted">Monday , 2:10 PM</h6>
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="position-relative ps-4">
+                                   <div class="mb-4">
+                                        <span class="position-absolute start-0 translate-middle-x bg-success bg-gradient d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-20"><img src="assets/images/users/avatar-7.jpg" alt="avatar-5" class="avatar-sm rounded-circle"></span>
+                                        <div class="ms-2">
+                                             <h5 class="mb-0 text-dark fw-semibold fs-15 lh-base">Alex Smith Attached Photos
+                                             </h5>
+                                             <div class="row g-2 mt-2">
+                                                  <div class="col-lg-4">
+                                                       <a href="#!">
+                                                            <img src="/assets/images/small/img-6.jpg" alt="" class="img-fluid rounded">
+                                                       </a>
+                                                  </div>
+                                                  <div class="col-lg-4">
+                                                       <a href="#!">
+                                                            <img src="/assets/images/small/img-3.jpg" alt="" class="img-fluid rounded">
+                                                       </a>
+                                                  </div>
+                                                  <div class="col-lg-4">
+                                                       <a href="#!">
+                                                            <img src="/assets/images/small/img-4.jpg" alt="" class="img-fluid rounded">
+                                                       </a>
+                                                  </div>
+                                             </div>
+                                             <h6 class="mt-3 text-muted">Monday 1:00 PM</h6>
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="position-relative ps-4">
+                                   <div class="mb-4">
+                                        <span class="position-absolute start-0 translate-middle-x bg-success bg-gradient d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-20"><img src="assets/images/users/avatar-6.jpg" alt="avatar-5" class="avatar-sm rounded-circle"></span>
+                                        <div class="ms-2">
+                                             <h5 class="mb-0 text-dark fw-semibold fs-15 lh-base">Rebecca J. added a new team member
+                                             </h5>
+                                             <p class="d-flex align-items-center gap-1"><iconify-icon icon="iconamoon:check-circle-1-duotone" class="text-success"></iconify-icon> Added a new member to Front Dashboard</p>
+                                             <h6 class="mt-3 text-muted">Monday 10:00 AM</h6>
+                                        </div>
+                                   </div>
+                              </div>
+                              <div class="position-relative ps-4">
+                                   <div class="mb-4">
+                                        <span class="position-absolute start-0 avatar-sm translate-middle-x bg-warning d-inline-flex align-items-center justify-content-center rounded-circle text-light fs-20"><iconify-icon icon="iconamoon:certificate-badge-duotone"></iconify-icon></span>
+                                        <div class="ms-2">
+                                             <h5 class="mb-0 text-dark fw-semibold fs-15 lh-base">Achievements
+                                             </h5>
+                                             <p class="d-flex align-items-center gap-1 mt-1">Earned a <iconify-icon icon="iconamoon:certificate-badge-duotone" class="text-danger fs-20"></iconify-icon>" Best Product Award"</p>
+                                             <h6 class="mt-3 text-muted">Monday 9:30 AM</h6>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                         <a href="#!" class="btn btn-outline-dark w-100">View All</a>
+                    </div>
+               </div>
+          </div>
+     </div>
+
+     <!-- Right Sidebar (Theme Settings) -->
+     <div>
+          <div class="offcanvas offcanvas-end border-0" tabindex="-1" id="theme-settings-offcanvas">
+               <div class="d-flex align-items-center bg-primary p-3 offcanvas-header">
+                    <h5 class="text-white m-0">Theme Settings</h5>
+                    <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+               </div>
+
+               <div class="offcanvas-body p-0">
+                    <div data-simplebar class="h-100">
+                         <div class="p-3 settings-bar">
+
+                              <div>
+                                   <h5 class="mb-3 font-16 fw-semibold">Color Scheme</h5>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-bs-theme" id="layout-color-light" value="light">
+                                        <label class="form-check-label" for="layout-color-light">Light</label>
+                                   </div>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-bs-theme" id="layout-color-dark" value="dark">
+                                        <label class="form-check-label" for="layout-color-dark">Dark</label>
+                                   </div>
+                              </div>
+
+                              <div>
+                                   <h5 class="my-3 font-16 fw-semibold">Topbar Color</h5>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-topbar-color" id="topbar-color-light" value="light">
+                                        <label class="form-check-label" for="topbar-color-light">Light</label>
+                                   </div>
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-topbar-color" id="topbar-color-dark" value="dark">
+                                        <label class="form-check-label" for="topbar-color-dark">Dark</label>
+                                   </div>
+                              </div>
+
+
+                              <div>
+                                   <h5 class="my-3 font-16 fw-semibold">Menu Color</h5>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-menu-color" id="leftbar-color-light" value="light">
+                                        <label class="form-check-label" for="leftbar-color-light">
+                                             Light
+                                        </label>
+                                   </div>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-menu-color" id="leftbar-color-dark" value="dark">
+                                        <label class="form-check-label" for="leftbar-color-dark">
+                                             Dark
+                                        </label>
+                                   </div>
+                              </div>
+
+                              <div>
+                                   <h5 class="my-3 font-16 fw-semibold">Sidebar Size</h5>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-menu-size" id="leftbar-size-default" value="default">
+                                        <label class="form-check-label" for="leftbar-size-default">
+                                             Default
+                                        </label>
+                                   </div>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-menu-size" id="leftbar-size-small" value="condensed">
+                                        <label class="form-check-label" for="leftbar-size-small">
+                                             Condensed
+                                        </label>
+                                   </div>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-menu-size" id="leftbar-hidden" value="hidden">
+                                        <label class="form-check-label" for="leftbar-hidden">
+                                             Hidden
+                                        </label>
+                                   </div>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-menu-size" id="leftbar-size-small-hover-active" value="sm-hover-active">
+                                        <label class="form-check-label" for="leftbar-size-small-hover-active">
+                                             Small Hover Active
+                                        </label>
+                                   </div>
+
+                                   <div class="form-check mb-2">
+                                        <input class="form-check-input" type="radio" name="data-menu-size" id="leftbar-size-small-hover" value="sm-hover">
+                                        <label class="form-check-label" for="leftbar-size-small-hover">
+                                             Small Hover
+                                        </label>
+                                   </div>
+                              </div>
+
+                         </div>
+                    </div>
+               </div>
+               <div class="offcanvas-footer border-top p-3 text-center">
+                    <div class="row">
+                         <div class="col">
+                              <button type="button" class="btn btn-danger w-100" id="reset-layout">Reset</button>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+          <!-- ========== Topbar End ========== -->
+
+            <!-- ========== App Menu Start ========== -->
+            <%- include('../partial/admin/header') %>
+
+          <!-- ==================================================== -->
+          <!-- Start right Content here -->
+          <!-- ==================================================== -->
+          
+          <div class="page-content">
+               <div class="container-xxl">
+                   <div class="col-xl-9 col-lg-8">
+                       <form action="/admin/create-product" method="POST" enctype="multipart/form-data">
+                           <!-- Basic Product Details -->
+                           <div class="card mb-4">
+                               <div class="card-header">
+                                   <h4 class="card-title">Product Details</h4>
+                               </div>
+                               <div class="card-body">
+                                   <!-- Product Name -->
+                                   <div class="row mb-4">
+                                       <div class="col-lg-12">
+                                           <label for="productName" class="form-label">Product Name *</label>
+                                       <!-- Product Name -->
+                                                <input type="text" id="productName" name="productName" class="form-control" required 
+                                                value="<%= products.productName %>">
+                                               <span id="error-message-productName" class="mt-1"></span>
+                                       </div>
+                                   </div>
+           
+                                   <!-- Category -->
+                                   <div class="row mb-4">
+                                       <div class="col-lg-6">
+                                           <label for="category" class="form-label">Category *</label>
+                                           <select id="category" name="category" class="form-control" required>
+                                            <% if (products) { %>
+                                                <% categories.forEach(Category => { %>
+                                                    <option value="<%= Category.id %>" <%= Category.name === products.categoryName ? "selected" : "" %>><%= Category.name %></option>
+                                                <% }); %>
+                                            <% } else { %>
+                                                <option disabled>No categories available</option>
+                                            <% } %>
+                                        </select>
+                                        
+                                           <span id="error-message-category" class="mt-1"></span>
+                                       </div>
+                                   </div>
+           
+                                   <!-- Pricing -->
+                                   <div class="row mb-4">
+                                       <div class="col-lg-6">
+                                           <label for="regularPrice" class="form-label">Regular Price *</label>
+                                           <div class="input-group">
+                                               <span class="input-group-text"><i class='bx bx-rupee'></i></span>
+                                               <input type="number" id="regularPrice" name="regularPrice" class="form-control" 
+                                               required min="0" step="0.01" value="<%= products.regularPrice %>">
+                                                   
+                                           </div>
+                                           <span id="error-message-rp" class="mt-1"></span>
+                                       </div>
+                                       <div class="col-lg-6">
+                                           <label for="salePrice" class="form-label">Sale Price</label>
+                                           <div class="input-group">
+                                               <span class="input-group-text"><i class='bx bx-rupee'></i></span>
+                                               <input type="number" id="salePrice" name="salePrice" class="form-control" 
+                                                   min="0" step="0.01" value="<%=products.salePrice %>">
+                                                  
+                                           </div>
+                                           <span id="error-message-sp" class="mt-1"></span>
+                                       </div>
+                                   </div>
+                                   <div class="row mb-4">
+                                        <div class="col-12">
+                                            <label for="description" class="form-label">Description *</label>
+                                            <textarea class="form-control" id="description" name="description" rows="5" required 
+                                                placeholder=""><%=products.description%></textarea>
+                                                <span id="error-message-description" class="mt-1"></span>
+                                        </div>
+                                    </div>
+           
+                                  
+                                    
+                                    <button class="btn btn-success" onclick="formSubmit(event)">Save</button>
+                                    <a href="/admin/product" class="btn btn-danger">Cancel</a>
+                                   
+                                 
+                       </form>
+                   </div>
+               </div>
+          </div></div>
+
+           </div>
+          
+           <script>
+              
+              async function formSubmit(event) {
+                         event.preventDefault(); // Prevent form submission
+
+                         // Retrieve field values
+                         let productName = document.getElementById("productName").value.trim();
+                         let categoryName = document.getElementById("category").value;
+                         let regularPrice = document.getElementById("regularPrice").value.trim();
+                         let salePrice = document.getElementById("salePrice").value.trim();
+                         let description = document.getElementById("description").value.trim();
+
+                         // Validation flag
+                         let isValid = true;
+
+                         // Product Name Validation
+                         if (productName.length === 0 || productName.length < 2) {
+                         showError("error-message-productName", "Field is required or the product name is too short.");
+                         isValid = false;
+                         } else if (/\d/.test(productName)) {
+                         showError("error-message-productName", "Product name should not contain numbers.");
+                         isValid = false;
+                         } else {
+                         clearError("error-message-productName");
+                         }
+
+                         // Category Validation
+                         if (categoryName === "") {
+                         showError("error-message-category", "Category is required.");
+                         isValid = false;
+                         } else {
+                         clearError("error-message-category");
+                         }
+
+                         // Regular Price Validation
+                         if (regularPrice.length === 0 || parseFloat(regularPrice) < 0) {
+                         showError("error-message-rp", "Field is required or the input is invalid.");
+                         isValid = false;
+                         } else if (!/^\d+$/.test(regularPrice)) {
+                         showError("error-message-rp", "Only numbers are valid for regular price.");
+                         isValid = false;
+                         } else {
+                         clearError("error-message-rp");
+                         }
+
+                         // Sale Price Validation
+                         if (salePrice.length === 0 || parseFloat(salePrice) < 0) {
+                         showError("error-message-sp", "Field is required or the input is invalid.");
+                         isValid = false;
+                         } else if (!/^\d+$/.test(salePrice)) {
+                         showError("error-message-sp", "Only numbers are valid for sale price.");
+                         isValid = false;
+                         } else {
+                         clearError("error-message-sp");
+                         }
+
+                         // Description Validation
+                         if (description.length === 0) {
+                         showError("error-message-description", "Description is required.");
+                         isValid = false;
+                         } else if (description.length < 10 || description.length > 300) {
+                         showError("error-message-description", "Description must be between 10 and 300 characters.");
+                         isValid = false;
+                         } else {
+                         clearError("error-message-description");
+                         }
+
+                         // If the form is valid, submit or process data
+                         if (!isValid) {
+                              return
+                         }
+                         try {
+                              const formdata={
+                                   productName,
+                                   categoryName,
+                                   regularPrice,
+                                   salePrice,
+                                   description
+                              }
+                              const response = await fetch("/admin/product/editproduct?id=<%=products._id%>",{
+                                   method:"put",
+                                   headers:{
+                                             "content-Type":"application/json"
+                                        },
+                                        body:JSON.stringify(formdata)
+                              })
+                              if(response.ok){
+                                   const result =await response.json()
+                                   showSuccessNotification(result.message)
+
+                              }
+                              else{
+                                   const errorResult =await response.json()
+                                   showErrorNotification(errorResult.message)
+                              }
+
+                              
+                         } catch (error) {
+                              console.log(`error occur in fornent in the of adding product due to ${error}`)
+                              showErrorNotification(error)
+                         }
+                         }
+
+                         // Helper functions
+                         function showError(id, message) {
+                         const errorElement = document.getElementById(id);
+                         if (errorElement) {
+                         errorElement.textContent = message;
+                         errorElement.style.color = "red";
+                         }
+                         }
+
+                         function clearError(id) {
+                         const errorElement = document.getElementById(id);
+                         if (errorElement) {
+                         errorElement.textContent = "";
+                         }
+                         }
+
+
+                         function showSuccessNotification(message) {
+            Swal.fire({
+                title: 'Success',
+                text: message||"sucessfully created",
+                icon: 'success',
+                position: 'top',
+                toast: true,
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                },
+                background: '#fff',
+                color: '#1a1a1a',
+                iconColor: '#4CAF50',
+                customClass: {
+                    popup: 'premium-toast',
+                    title: 'premium-title',
+                    timerProgressBar: 'premium-progress'
+                }
+    }).then(() => {
+        window.location.href = '/admin/product';
+    });
+}
+
+// Error notification function
+function showErrorNotification(message) {
+    Swal.fire({
+        title: 'Error',
+        text: message || 'Verification failed',
+        icon: 'error',
+        position: 'top',
+        toast: true,
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        showClass: {
+            popup: 'animate__animated animate__shakeX'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        },
+        background: '#fff',
+        color: '#1a1a1a',
+        iconColor: '#FF3B30',
+        customClass: {
+            popup: 'premium-error-toast',
+            title: 'premium-error-title',
+            timerProgressBar: 'premium-error-progress'
+        }
+    });
+} 
+
+
+    </script>
+
+          
+
+           
+           <%- include('../partial/admin/footer') %>

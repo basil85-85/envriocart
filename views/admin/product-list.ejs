@@ -201,7 +201,7 @@
 
                                    <!-- <div class="dropdown-divider my-1"></div> -->
 
-                                   <a class="dropdown-item text-danger" href="auth-signin.html">
+                                   <a class="dropdown-item text-danger" href="/admin/logout">
                                         <i class="bx bx-log-out fs-18 align-middle me-1"></i><span class="align-middle">Logout</span>
                                    </a>
                               </div>
@@ -385,7 +385,7 @@
                                                                          <th>Price</th>
                                                                          <th>TotalStock</th>
                                                                          <th>Count of Verient</th>
-                                                                         <th>Category</th>
+                                                                         <!-- <th>Category</th> -->
                                                                          <th>ADD-varient</th>
                                                                          <th>Action</th>
                                                                      </tr>
@@ -435,7 +435,7 @@
                                                                                 <p> <%= product.variantCount %> Variants</p>
                                                                                </td>
                                                                               
-                                                                               <td><%= product.categoryName %></td>
+                                                                             
                                                                                <td>
                                                                                    <div class="d-flex gap-2">
                                                                                        <a href="/admin/product/variants?id=<%= product._id %>" class="btn btn-light btn-sm" title="View Variants">
@@ -446,14 +446,15 @@
                                                                                      <a href="/admin/product/view?id=<%= product._id %>" class="btn btn-light btn-sm shadow-sm" style="color: #495057; background-color: rgba(73, 80, 87, 0.1);" title="View">
                                                                                           <i class="bx bx-show fs-18"></i>
                                                                                       </a>
-                                                                                       <a href="/product/edit/<%= product._id %>" class="btn btn-soft-primary btn-sm">
+                                                                                       <a href="/admin/product/edit?id=<%= product._id %>" class="btn btn-soft-primary btn-sm">
                                                                                            <i class="bx bx-edit fs-18"></i>
                                                                                        </a>
                                                                                        <button onclick="toggleProductStatus('<%= product._id %>', '<%= product.isBlocked %>')" 
-                                                                                           class="btn <%= product.isBlocked ? 'btn-success' : 'btn-soft-danger' %> btn-sm">
-                                                                                           <i class="bx <%= product.isBlocked ? 'bx-lock-open' : 'bx-lock' %> fs-18"></i>
-                                                                                           <%= product.isBlocked ? 'Unblock' : 'Block' %>
-                                                                                       </button>
+                                                                                          class="btn <%= product.isBlocked ? 'btn-success' : 'btn-soft-danger' %> btn-sm">
+                                                                                          <i class="bx <%= product.isBlocked ? 'bx-lock-open' : 'bx-lock' %> fs-18"></i>
+                                                                                          <%= product.isBlocked ? 'Unblock' : 'Block' %>
+                                                                                      </button>
+                                                                                  
                                                                                    </div>
                                                                                </td>
                                                                            </tr>
@@ -479,19 +480,19 @@
                                                              <ul class="pagination justify-content-end mb-0">
                                                                  <% if (pagination.hasPrevPage) { %>
                                                                      <li class="page-item">
-                                                                         <a class="page-link" href="/product?page=<%= pagination.currentPage - 1 %>">Previous</a>
+                                                                         <a class="page-link" href="/admin/product?page=<%= pagination.currentPage - 1 %>">Previous</a>
                                                                      </li>
                                                                  <% } %>
                                                                  
                                                                  <% for(let i = 1; i <= pagination.totalPages; i++) { %>
                                                                      <li class="page-item <%= i === pagination.currentPage ? 'active' : '' %>">
-                                                                         <a class="page-link" href="/product?page=<%= i %>"><%= i %></a>
+                                                                         <a class="page-link" href="/admin/product?page=<%= i %>"><%= i %></a>
                                                                      </li>
                                                                  <% } %>
                                                                  
                                                                  <% if (pagination.hasNextPage) { %>
                                                                      <li class="page-item">
-                                                                         <a class="page-link" href="/product?page=<%= pagination.currentPage + 1 %>">Next</a>
+                                                                         <a class="page-link" href="/admin/product?page=<%= pagination.currentPage + 1 %>">Next</a>
                                                                      </li>
                                                                  <% } %>
                                                              </ul>
@@ -504,9 +505,94 @@
                          </div>
 
                     </div>
-
                </div>
-               <!-- End Container Fluid -->
+              <script>
+             function toggleProductStatus(productId, isBlocked) {
+                    try {
+                         const currentStatus = isBlocked === 'true';
+                         const button = event.currentTarget;
+                         button.disabled = true;
+                         fetch('/admin/product/isblock', {
+                              method: 'PATCH',
+                              headers: {
+                                   'Content-Type': 'application/json'
+                              },
+                              body: JSON.stringify({
+                                   productId: productId,
+                                   isBlocked: !currentStatus
+                              })
+                         })
+                         .then(response => response.json())
+                         .then(data => {
+                              if (data.success) {
+                                   const icon = button.querySelector('i');
+                                   const buttonText = !currentStatus ? 'Unblock' : 'Block';
+                                   const newIconClass = !currentStatus ? 'bx-lock-open' : 'bx-lock';
+                                   const newButtonClass = !currentStatus ? 'btn-success' : 'btn-soft-danger';
+                                   icon.className = `bx ${newIconClass} fs-18`;
+                                   
+                                   // Update button text
+                                   button.innerHTML = `<i class="bx ${newIconClass} fs-18"></i> ${buttonText}`;
+                                   
+                                   // Update button class
+                                   button.classList.remove('btn-success', 'btn-soft-danger');
+                                   button.classList.add(newButtonClass);
+                                   button.setAttribute('onclick', `toggleProductStatus('${productId}', '${!currentStatus}')`)
+                                   showSuccessNotification('Product status updated successfully');
+                              } else {
+                                   throw new Error(data.message || 'Failed to update status');
+                              }
+                         })
+                         .catch(error => {
+                              alert('Error updating product status: ' + error.message);
+                         })
+                         .finally(() => {
+                              button.disabled = false;
+                         });
+                         
+                    } catch (error) {
+                         console.error('Error:', error);
+                         alert('An error occurred while updating product status');
+                         button.disabled = false;
+                    }
+               }
+          
 
+
+
+
+
+
+function showSuccessNotification(message) {
+            Swal.fire({
+                title: 'Success',
+                text: message,
+                icon: 'success',
+                position: 'top',
+                toast: true,
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                },
+                background: '#fff',
+                color: '#1a1a1a',
+                iconColor: '#4CAF50',
+                customClass: {
+                    popup: 'premium-toast',
+                    title: 'premium-title',
+                    timerProgressBar: 'premium-progress'
+                }
+    })
+    .then(()=>{
+     location.reload();     
+                    })
+                    
+}
+              </script>
                <!-- ========== Footer Start ========== -->
                <%- include('../partial/admin/footer') %>

@@ -11,16 +11,16 @@ const customerInfo = async (req, res) => {
         // Handle pagination
         let page = 1;
         if (req.query.page) {
-            page = parseInt(req.query.page, 10); // Ensure it's a number
+            page = parseInt(req.query.page, 10);
         }
         const limit = 3;
 
-        // Fetch user data with filters and pagination
+       
         const userData = await User.find({
             isAdmin: false,
             $or: [
-                { name: { $regex: ".*" + search + ".*", $options: "i" } }, // Case-insensitive search
-                { email: { $regex: ".*" + search + ".*", $options: "i" } } // Case-insensitive search
+                { name: { $regex: ".*" + search + ".*", $options: "i" } }, 
+                { email: { $regex: ".*" + search + ".*", $options: "i" } } 
             ],
         })
             .limit(limit)

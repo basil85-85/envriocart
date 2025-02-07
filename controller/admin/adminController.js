@@ -16,22 +16,22 @@ import {promisify} from "util"
  //rendering login page
 const loadlogin = (req, res) => {
       try {
-            // Check if admin session exists
+           
             if (req.session.admin) {
-                  return res.redirect('/admin/dashboard') // Redirect to admin dashboard if logged in
+                  return res.redirect('/admin/dashboard')
             } else {
-                  return res.render('auth-signin', { message: null }) // Render the admin login page
+                  return res.render('auth-signin', { message: null }) 
             }
       } catch (error) {
-            console.error('Error in loadlogin:', error) // Log errors for debugging
-            res.status(500).send('Something went wrong') // Send a 500 status if an error occurs
+            console.error('Error in loadlogin:', error) 
+            res.status(500).send('Something went wrong')
       }
 }                        
 // in the post of login page
 const login = async (req, res) => {
       try {
             const { email, password } = req.body
-            console.log(req.body)
+            
             const admin = await User.findOne({
                   email: email,
                   isAdmin: true,

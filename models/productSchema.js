@@ -19,10 +19,10 @@ const productSchema = new Schema(
                   type: Number,
                   required: true,
             },
-            categoryName: {
-                  type: String,
-                  required: true,
-            },
+            // categoryName: {
+            //       type: String,    
+            //       required: true,
+            // },
             productOffer: {
                   type: Number,
                   default: 0,
@@ -37,7 +37,11 @@ const productSchema = new Schema(
                   required: true,
                   default: 'Avaiable',
             },
-           
+            categoryName:{
+                  type: mongoose.Schema.Types.ObjectId,
+                  ref:'Category',
+                  required:true
+            },
             variants: [
                   { type: mongoose.Schema.Types.ObjectId, ref: 'Verient' },
             ],

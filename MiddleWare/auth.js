@@ -2,14 +2,13 @@ import User from '../models/userSchema.js';
 
 // Middleware to check user authentication and account status
 const userAuth = (req, res, next) => {
-    if (req.session.user) {
+    if (req.session.userid) {
         User.findById(req.session.user)
             .then(data => {
                 if (data && !data.isBlocked) {
-                    // User exists and is not blocked
                     return next();
                 } else {
-                    // Redirect to login if user is blocked or not found
+                   
                     return res.redirect('/login');
                 }
             })
@@ -19,12 +18,10 @@ const userAuth = (req, res, next) => {
                 return res.status(500).json("Internal Server Error");
             });
     } else {
-        // Redirect to login if no session
+
         return res.redirect('/login');
     }
 };
-
-// Middleware to check admin authentication
 const adminAuth = (req, res, next) => {
     if (req.session.admin) {
         User.findById(req.session.admin)
@@ -60,8 +57,22 @@ const adminAuth = (req, res, next) => {
 // };
 
 
+let checkBan = async (req, res, next) => {
+    if (req.session.userId) {
+      const email =  req.session?.currentEmail || req.session?.user?.email 
+      const user = await User.findOne({ email: email });
+      if (user && user.isBlocked) {
+        return res.render('404');
+      }
+      return next();
+    }
+    return next();
+  }
+  
+
 export default {
     userAuth,
     adminAuth,
+    checkBan
    
 };

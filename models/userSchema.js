@@ -31,7 +31,7 @@ createdAt: {
   password: {
     type: String    // Required false is default, no need to specify
   },
-  isBlocked: {
+ isBlocked : {
     type: Boolean,
     default: false
   },

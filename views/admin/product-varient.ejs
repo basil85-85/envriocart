@@ -80,7 +80,7 @@
                                    </a>
                                   
 
-                                   <a class="dropdown-item text-danger" href="auth-signin.html">
+                                   <a class="dropdown-item text-danger" href="/admin/logout">
                                         <i class="bx bx-log-out fs-18 align-middle me-1"></i><span class="align-middle">Logout</span>
                                    </a>
                               </div>
@@ -732,17 +732,17 @@ async function formSubmit(event) {
 
 // for preventing keyboadr
 
-const qtyInputs = document.querySelectorAll('.quantity-input');
+// const qtyInputs = document.querySelectorAll('.quantity-input');
 
 
-qtyInputs.forEach(input => {
-    input.addEventListener('keydown', function(event) {
+// qtyInputs.forEach(input => {
+//     input.addEventListener('keydown', function(event) {
        
-        if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown' && event.key !== 'Backspace' && event.key !== 'Tab') {
-            event.preventDefault();
-        }
-    });
-});
+//         if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown' && event.key !== 'Backspace' && event.key !== 'Tab') {
+//             event.preventDefault();
+//         }
+//     });
+// });
 
 
 

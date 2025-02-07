@@ -79,7 +79,7 @@
                                    </a>
                                   
 
-                                   <a class="dropdown-item text-danger" href="auth-signin.html">
+                                   <a class="dropdown-item text-danger" href="/admin/logout">
                                         <i class="bx bx-log-out fs-18 align-middle me-1"></i><span class="align-middle">Logout</span>
                                    </a>
                               </div>
@@ -368,7 +368,7 @@
                                              <option value="">Select a category</option>
                                              <% if (categories && categories.length > 0) { %>
                                                   <% categories.forEach(Category => { %>
-                                                      <option value="<%= Category.name %>"><%= Category.name %></option>
+                                                      <option value="<%= Category.id %>"><%= Category.name %></option>
                                                   <% }); %>
                                               <% } else { %>
                                                   <option disabled>No categories available</option>

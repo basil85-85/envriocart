@@ -207,7 +207,7 @@
                                    </a>
                                   
 
-                                   <a class="dropdown-item text-danger" href="auth-signin.html">
+                                   <a class="dropdown-item text-danger" href="/admin/logout">
                                         <i class="bx bx-log-out fs-18 align-middle me-1"></i><span class="align-middle">Logout</span>
                                    </a>
                               </div>
@@ -488,7 +488,7 @@
            
                                    <!-- Category -->
                                    <div class="container">
-                                    <form id="variantForm" onsubmit="formSubmit(event)" enctype="multipart/form-data">
+                                    <form id="variantForm" onsubmit="formSubmit(event)" >
                                         <div id="variantContainer">
                                             <div class="color-section">
                                                 <div class="variant-header">
@@ -518,8 +518,13 @@
                                                 </div>
                                                 
                                                 <div id="error-message-size" class="error-message"></div>
-                                            </div>
-                                        </div>
+                                            
+                                         </div>
+                                         <button class="btn btn-success" type="submit" >Save</button> 
+                                         <a href="/admin/product/view?id=<%=verient.productId._id%> %>" class="btn btn-danger">Cancel</a>
+                                    </form>
+                                     </div>
+
                                 </div>
                               
                                         <!-- Initial variant row will be added by JavaScript -->
@@ -533,32 +538,34 @@
                                     <div class="row">
                                         <% verient.productImg.forEach((val, index) => { %>
                                             <div class="upload-card col-lg-6 col-xl-3">
-                                                <label class="form-label">Product Image <%= index + 1 %> *</label>
-                                                <div id="uploadZone<%= index %>" class="image-upload-area">
-                                                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
-                                                    </svg>
-                                                    <p class="upload-text">Drag & drop image or click to upload && remove</p>
-                                                    <input type="file" id="fileInput<%= index %>" name="image" accept="image/*" style="display: none">
-                                                </div>
-                                                <div id="errorMessage<%= index %>" class="error-message"></div>
-                                                <div id="previewContainer<%= index %>" class="preview-container">
-                                                    <img id="image-preview<%= index %>" class="img-preview">
-                                                    <button id="cropButton<%= index %>" class="btn-primary">
-                                                        Crop & Save
-                                                        <div class="spinner" id="spinner<%= index %>"></div>
-                                                    </button>
-                                                </div>
-                                                <img id="croppedResult<%= index %>" name="image" src="/<%= val %>" class="cropped-result">
-                                                <div id="uploadStatus<%= index %>" class="upload-status"></div>
+                                                <form id="imageform-data-<%= index %>" enctype="multipart/form-data">
+                                                    <label class="form-label">Product Image <%= index + 1 %> *</label>
+                                                    <div id="uploadZone<%= index %>" class="image-upload-area" onclick="triggerFileInput(<%= index %>)">
+                                                        <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+                                                        </svg>
+                                                        <p class="upload-text">Drag & drop image or click to upload && remove</p>
+                                                        <input type="file" id="fileInput<%= index %>" name="image" accept="image/*" style="display: none" onchange="previewImage(event, <%= index %>)">
+                                                    </div>
+                                                    <div id="errorMessage<%= index %>" class="error-message"></div>
+                                                    <div id="previewContainer<%= index %>" class="preview-container">
+                                                        <img id="image-preview<%= index %>" class="img-preview">
+                                                        <button type="button" id="cropButton<%= index %>" class="btn-primary" onclick="uploadImage(<%= index %>)">
+                                                            Upload
+                                                            <div class="spinner" id="spinner<%= index %>"></div>
+                                                        </button>
+                                                    </div>
+                                                    <img id="croppedResult<%= index %>" name="image" src="/<%= val %>" class="cropped-result">
+                                                    <div id="uploadStatus<%= index %>" class="upload-status"></div>
+                                                </form>
                                             </div>
-                                        <% }) %>
+                                            <% }) %>
                                     </div>
                                 </div>
                                 <span id="error-message-images" class="error-message"></span>                        
-                                <button class="btn btn-success" type="submit" >Save</button> 
+                                
                                 <a href="/admin/product/view?id=<%=verient.productId._id%> %>" class="btn btn-danger">Cancel</a>
-                       </form>
+                      
                    </div>
                </div>
           </div></div>
@@ -571,81 +578,69 @@
            <!-- App Javascript (Require in all Page) -->
            <script src="/assets/js/app.js"></script>
            <script>
-                       
-                function formSubmit(event) {
-                    event.preventDefault();
-                    const sizeItems = document.querySelectorAll('.size-item');
-                    let isValid = true;
-                    
-                    clearError("error-message-size")
-                    let hasSelectedSize = false
-                    sizeItems.forEach(sizeItem => {
-                        const checkbox = sizeItem.querySelector('input[type="checkbox"]');
-                        const quantityInput = sizeItem.querySelector('.quantity-input');
-                        if (checkbox.checked) {
-                            hasSelectedSize = true
-                            if (quantityInput.value < 0 || quantityInput.value === '') {
-                                showError("error-message-size", "Please enter a valid quantity");
-                                isValid = false;
-                            }
-                            else if(!Number(quantityInput.value) > 0) {
-                                showError("error-message-size", "Please enter a valid quantity");
-                                isValid = false;
-                                }
-                            
-                        }
-                    });
-                    
-                    
-                    if (!hasSelectedSize) {
-                        showError("error-message-size", "Please select at least one size");
-                        return;
-                    }
-                    
+            function formSubmit(event) {
+    event.preventDefault();
+    
+    const form = document.getElementById('variantForm');
+    if (!form) {
+        console.error("Form not found!");
+        return;
+    }
 
-                    //image verification
-                    let imagesValid = true;
-                    let imageData = [];
-                    const croppedImages = document.querySelectorAll('[id^="croppedResult"]');
-                    croppedImages.forEach((img, index) => {
-                        if (!img.src || img.src === window.location.href) {
-                            showError("error-message-images", `Please upload and crop image ${index + 1}`);
-                            imagesValid = false;
-                        } else {
-                            imageData.push(img.src);
-                        }
-                    });
+    const sizeItems = document.querySelectorAll('.size-item');
+    let isValid = true;
+    let hasSelectedSize = false;
 
-                    if (!imagesValid) {
-                        showError("error-message-images", "Please upload and crop all images.");
-                        isValid = false;
-                    } else {
-                        clearError("error-message-images");
-                    }
+    clearError("error-message-size");
 
-                    if (isValid) {
-                        const formData = new FormData(document.getElementById('variantForm'));
-                        
-                        fetch('/admin/product/verient?id=<%=verient.productId.productName%>', {
-                            method: 'PUT',
-                            body: formData,
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                window.location.href = "/admin/product/view?id=<%= verient.productId._id %>";
-                            } else {
-                                alert('Error: ' + data.message);
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('An error occurred.');
-                        });
-                    }
-                }
+    sizeItems.forEach(sizeItem => {
+        const checkbox = sizeItem.querySelector('input[type="checkbox"]');
+        const quantityInput = sizeItem.querySelector('.quantity-input');
+        if (checkbox.checked) {
+            hasSelectedSize = true;
+            if (!quantityInput.value.trim() || Number(quantityInput.value) <= 0) {
+                showError("error-message-size", "Please enter a valid quantity");
+                isValid = false;
+            }
+        }
+    });
 
-                 
+    if (!hasSelectedSize) {
+        showError("error-message-size", "Please select at least one size");
+        return; 
+    }
+
+    if (isValid) {
+
+
+        const formData = new FormData(form);
+
+        // Debug FormData
+        for (const pair of formData.entries()) {
+            console.log(pair[0], pair[1]);
+        }
+
+        const variantId = encodeURIComponent("<%= verient._id %>");
+        fetch(`/admin/product/verient?id=${variantId}`, {
+            method: 'PUT',
+            body: formData, 
+        })
+        .then(response => response.json().catch(() => ({ success: false, message: "Invalid server response" })))
+        .then(data => {
+            if (data.success) {
+                showSuccessNotification(data.success);
+            } else {
+                showSuccessNotification(data.message);
+            }
+        })
+        .catch(error => {
+            console.error(error);
+            showErrorNotification('An error occurred.');
+        });
+    }
+}
+
+    
     
            class ImageUploader {
             constructor(index) {
@@ -834,14 +829,56 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+function triggerFileInput(index) {
+        document.getElementById(`fileInput${index}`).click();
+    }
 
+    function previewImage(event, index) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById(`image-preview${index}`).src = e.target.result;
+                document.getElementById(`previewContainer${index}`).style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
 
+    function uploadImage(index) {
+        const form = document.getElementById(`imageform-data-${index}`);
+        const formData = new FormData(form);
+        const fileInput = document.getElementById(`fileInput${index}`);
+        const uploadStatus = document.getElementById(`uploadStatus${index}`);
+        const spinner = document.getElementById(`spinner${index}`);
 
+        if (!fileInput.files.length) {
+            uploadStatus.innerText = "Please select an image!";
+            return;
+        }
 
-const qtyInputs = document.querySelectorAll('.quantity-input');
+        spinner.style.display = "inline-block"; 
 
-
-
+        fetch(`/admin/product/image-upload?id=<%= verient._id %>&index=${index}`, {
+            method: "PUT",
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            spinner.style.display = "none"; 
+            if (data.success) {
+                uploadStatus.innerText = "Upload successful!";
+                document.getElementById(`croppedResult${index}`).src = data.imageUrl; 
+            } else {
+                uploadStatus.innerText = "Upload failed!";
+            }
+        })
+        .catch(error => {
+            spinner.style.display = "none";
+            console.error("Upload error:", error);
+            uploadStatus.innerText = "An error occurred!";
+        });
+    }
 
 
 
@@ -883,7 +920,7 @@ function showSuccessNotification(message) {
                     timerProgressBar: 'premium-progress'
                 }
     }).then(() => {
-        window.location.href = '/admin/editVerient?id=<%=verient.productId._id%>';
+        window.location.href = '/admin/product/view?id=<%=verient.productId._id%>';
     });
 }
 

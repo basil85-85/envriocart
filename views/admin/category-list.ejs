@@ -203,7 +203,7 @@
 
                                         <!-- <div class="dropdown-divider my-1"></div> -->
 
-                                        <a class="dropdown-item text-danger" href="auth-signin.html">
+                                        <a class="dropdown-item text-danger" href="/admin/logout">
                                              <i class="bx bx-log-out fs-18 align-middle me-1"></i><span class="align-middle">Logout</span>
                                         </a>
                                    </div>
@@ -558,8 +558,8 @@
                                                                          <!-- <button onclick="EditingCategory('<%= category._id %>')" class="btn btn-soft-primary btn-sm">
                                                                            <i class="iconify" data-icon="solar:pen-2-broken">Edit</i>
                                                                        </button> -->
-                                                                         <button onclick="updatingCategory('<%= category._id %>')" class="btn btn-sm <%= category.isListed ? 'btn-success' : 'btn-danger' %>">
-                                                                             <i class="iconify" data-icon="solar:trash-bin-minimalistic-2-broken"><%= category.isListed? 'List' : 'Unlist' %></i>
+                                                                         <button onclick="updatingCategory('<%= category._id %>')" class="btn btn-sm <%= category.isListed ? 'btn-danger' : 'btn-success' %>">
+                                                                             <i class="iconify" data-icon="solar:trash-bin-minimalistic-2-broken"><%= category.isListed? 'Unlist' : 'List' %></i>
                                                                          </button>
                                                                       
                                                                      </div>

@@ -1,0 +1,1689 @@
+<%- include('../partial/user/header') %>
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- ElevateZoom Plugin -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/elevatezoom/3.0.8/jquery.elevatezoom.min.js"></script>
+<style>
+
+.product-gallery {
+        position: relative;
+        margin-bottom: 30px;
+    }
+
+    /* .product-slick {
+        border: 1px solid #eee;
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 10px;
+    } */
+
+    .product-image-item {
+        position: relative;
+        padding-top: 100%; /* 1:1 Aspect Ratio */
+        overflow: hidden;
+    }
+
+    .product-image-item img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .product-image-item img:hover {
+        transform: scale(1.05);
+    }
+
+    .slider-nav {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 10px 0;
+        scrollbar-width: none; /* Firefox */
+    }
+
+    .slider-nav::-webkit-scrollbar {
+        display: none; /* Chrome, Safari, Edge */
+    }
+
+    .thumbnail-item {
+        flex: 0 0 80px;
+        height: 80px;
+        border-radius: 4px;
+        overflow: hidden;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: border-color 0.3s ease;
+    }
+
+    .thumbnail-item.active {
+        border-color: #2874f0;
+    }
+
+    .thumbnail-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+    .color-selector{
+        width: 30px;
+        height: 30px;
+        border-radius: 10px;
+    }
+    .display-none {
+        display: none;
+    }
+
+ /* Add these styles to your existing CSS */
+.product-slick {
+    position: relative;
+    cursor: none; /* Hide default cursor when hovering */
+}
+
+.magnifier-lens {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    pointer-events: none;
+    display: none;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
+    background: rgba(255,255,255,0.1);
+}
+
+.magnified-view {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border: 1px solid #ddd;
+    background-repeat: no-repeat;
+    background-size: 400% 400%;
+    display: none;
+    pointer-events: none;
+    z-index: 100;
+    right: -320px;
+    top: 0;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 1200px) {
+    .magnified-view {
+        display: none !important;
+    }
+    
+    .magnifier-lens {
+        display: none !important;
+    }
+    
+    .product-slick {
+        cursor: zoom-in;
+    }
+}
+    
+
+</style>
+
+    <!-- breadcrumb start -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <h2>Black Printed Suit</h2>
+            <nav class="theme-breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    <li class="breadcrumb-item">Product</li>
+                    <li class="breadcrumb-item active">Black Printed Suit</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- breadcrumb End -->
+
+
+
+
+    
+    <section>
+        
+        <div class="container">
+            <div class="collection-wrapper">
+                <div class="row g-sm-4">
+                    <div class="product-images-cont col-lg-6" id="product-images-cont0">
+                        <div class="product-gallery">
+                            <!-- Main Product Image -->
+                            <div class="product-slick">
+                                    <div class="product-image-item">
+                                        <img id="main-image0" src=" <%= products.variants[0].productImg[0] %>" 
+                                             alt="Product Image">
+                                    </div>
+                            </div>
+                    
+                            <!-- Thumbnail Navigation -->
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="slider-nav">
+                                        <% products.variants[0].productImg.forEach((img, index) => { %>
+                                            <div class="thumbnail-item" onclick="changeMainImage('<%= index %>', 0)">
+                                                <img id="thumbnail0-image<%= index %>" src="<%= img %>" 
+                                                     alt="Thumbnail" 
+                                                     style="width:100%;height: 100%;">
+                                            </div>
+                                        <% }); %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <% if(products && products.variants.length>1) { %>
+                        <% for(let i = 1; i<products.variants.length; i++) { %>
+                        <div class="product-images-cont col-lg-6 display-none" id="product-images-cont<%= i %>">
+                            <div class="product-gallery">
+                                <!-- Main Product Image -->
+                                <div class="product-slick">
+                                
+                                        <div class="product-image-item">
+                                            <img id="main-image<%= i %>" src="<%= products.variants[i].productImg[0] %>" 
+                                                 alt="Product Image">
+                                        </div>
+                               
+                                </div>
+                        
+                                <!-- Thumbnail Navigation -->
+                                <div class="row mt-3">
+                                    <div class="col-12">
+                                        <div class="slider-nav">
+                                            <% products.variants[i].productImg.forEach((img, index) => { %>
+                                                <div class="thumbnail-item"  onclick="changeMainImage('<%= index %>', '<%= i %>')">
+                                                    <img src="<%= img %>" 
+                                                    id="thumbnail<%= i %>-image<%= index %>"
+                                                         class="" style="width:100%;height: 100%;">
+                                                </div>
+                                            <% }); %>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                    <% } %>
+                    
+                    <div class="col-lg-6 rtl-text position-relative">
+                        <div class="product-page-details">
+                            <h2 class="main-title"><%=products.productName%></h2>
+                            <div class="product-rating">
+                                <div class="rating-list">
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-fill"></i>
+                                    <i class="ri-star-line"></i>
+                                </div>
+
+                                
+                            </div>
+                            <div class="price-text">
+                                <h3><span class="fw-normal">Rs:</span> <%=products.regularPrice %>
+                                    <del> 
+                                        <%=products.salePrice %> </del><span class="discounted-price">  </span>
+                                </h3>
+                                
+                            </div>
+                            <p class="description-text">
+                                <%=products.description%>
+                            </p>
+                            <div class="size-delivery-info">
+                                <a href="" data-bs-toggle="modal" class=""><i class="ri-truck-line"></i>
+                                    Delivery &amp; Return </a>
+                                <span></span>
+                             
+
+                            </div>
+                            <% if (products.variants && products.variants.length > 0) { %>
+                                <div class="variation-box color-box mt-3">
+                                    <h4 class="sub-title">Color :</h4>
+                                    <ul class="color-variant custom-variations d-flex">
+                                        <% products.variants.forEach((variant, index) => { %>
+                                            <% if (variant.productcolor) { %>
+                                                <li class="<%= index === 0 ? 'active' : '' %>">
+                                                    <button 
+                                                        type="button"
+                                                        data-color="<%= variant.productcolor %>"
+                                                        onclick="variantDynamicDisplay('<%= index %>')"
+                                                        class="color-selector circle"
+                                                        style="background-color: <%= variant.productcolor %>; border: 2px solid #ddd;"
+                                                        title="<%= variant.productcolor %>"
+                                                    >
+                                                    </button>
+                                                </li>
+                                            <% } %>
+                                        <% }) %>
+                                    </ul>
+                                </div>
+                            <% } %>
+
+                        <div class="product-size-cont" id="product-size-cont0">
+                            <div class="variation-box size-box mt-3 ">
+                                <h4 class="sub-title">Size:</h4>
+                                <ul class="quantity-variant custom-variations circle d-inline-flex">
+                                    <% 
+                                    // Define size order to ensure consistent display
+                                    const sizeOrder = ['S', 'M', 'L', 'XL', 'XXL'];
+                                    
+                                    // Filter and sort sizes
+                                    const availableSizes = sizeOrder.filter(size => 
+                                        products.variants[0].size && 
+                                        products.variants[0].size[size] && 
+                                        products.variants[0].size[size] > 0
+                                    );
+                    
+                                    availableSizes.forEach((size, index) => { 
+                                    %>
+                                        <li class="<%= index === 0 ? 'active' : '' %>">
+                                            <button 
+                                                type="button" 
+                                                data-variant-index=""
+                                                data-size="<%= size %>"
+                                                data-stock="<%= products.variants[0].size[size] %>"
+                                                class="size-selector"
+                                            >
+                                                <%= size %>
+                                            </button>
+                                        </li>
+                                    <% }); %>
+                                </ul>
+                            </div>
+                        </div>
+
+                            <% if (products.variants && products.variants.length > 1) { %>
+                                <% for(let i = 1; i<products.variants.length; i++) { %>
+                                <div class="product-size-cont display-none" id="product-size-cont<%= i %>">
+                                    <div class="variation-box size-box mt-3">
+                                        <h4 class="sub-title">Size:</h4>
+                                        <ul class="quantity-variant custom-variations circle d-inline-flex">
+                                            <% 
+                                            // Define size order to ensure consistent display
+                                            const sizeOrder = ['S', 'M', 'L', 'XL', 'XXL'];
+                                            
+                                            // Filter and sort sizes
+                                            const availableSizes = sizeOrder.filter(size => 
+                                            products.variants[i].size && 
+                                            products.variants[i].size[size] && 
+                                            products.variants[i].size[size] > 0
+                                            );
+                            
+                                            availableSizes.forEach((size, index) => { 
+                                            %>
+                                                <li class="<%= index === 0 ? 'active' : '' %>">
+                                                    <button 
+                                                        type="button" 
+                                                        data-variant-index="<%= i %>"
+                                                        data-size="<%= size %>"
+                                                        data-stock="<%= products.variants[i].size[size] %>"
+                                                        class="size-selector"
+                                                    >
+                                                        <%= size %>
+                                                    </button>
+                                                </li>
+                                            <% }); %>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <% } %>
+                            <% } %>
+                            
+                    
+                            <div class="product-buttons">
+                                <div class="qty-section">
+                                    <div class="qty-box">
+                                        <div class="input-group">
+                                            <span class="input-group-prepend">
+                                                <button type="button" 
+                                                        class="btn quantity-left-minus" 
+                                                        data-type="minus">
+                                                    <i class="ri-arrow-left-s-line"></i>
+                                                </button>
+                                            </span>
+                                            <input type="text" 
+                                                name="quantity" 
+                                                class="form-control input-number" 
+                                                value="1" 
+                                                min="1" 
+                                                max="99"
+                                                readonly>
+                                            <span class="input-group-prepend">
+                                                <button type="button" 
+                                                        class="btn quantity-right-plus" 
+                                                        data-type="plus">
+                                                    <i class="ri-arrow-right-s-line"></i>
+                                                </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex align-items-center gap-3">
+                                    <button class="btn btn-animation btn-solid hover-solid scroll-button" type="button">
+                                        <i class="ri-shopping-cart-line me-1"></i> Add To Cart</button>
+                                    <a href="#!" class="btn btn-solid buy-button">Buy Now</a>
+                                </div>
+                            </div>
+                            <div class="buy-box">
+                                <a href="">
+                                    <i class="ri-heart-line"></i>
+                                    <span>Add To Wishlist</span>
+                                </a>
+
+                                <a href="#!" class="add-compare">
+                                    <i class="ri-refresh-line"></i>
+                                    <span>Add To Compare</span>
+                                </a>
+
+                                <a href="" data-bs-toggle="modal">
+                                    <i class="ri-share-line"></i>
+                                    <span>Share</span>
+                                </a>
+                            </div>
+
+                          
+
+
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-product m-0">
+                <div class="row">
+                    <div class="col-sm-12 col-lg-12">
+                        <ul class="nav nav-tabs nav-material" id="top-tab" role="tablist">
+                            <li class="nav-item"><a class="nav-link active" id="top-home-tab" data-bs-toggle="tab"
+                                    href="#top-home" role="tab" aria-selected="true"><i
+                                        class="icofont icofont-ui-home"></i>Description</a>
+                            </li>
+
+                            <li class="nav-item"><a class="nav-link" id="review-top-tab" data-bs-toggle="tab"
+                                    href="#top-review" role="tab" aria-selected="false"><i
+                                        class="icofont icofont-contacts"></i>Review</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" id="contact-top-tab" data-bs-toggle="tab"
+                                    href="#top-contact" role="tab" aria-selected="false"><i
+                                        class="icofont icofont-contacts"></i>Q & A</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content nav-material" id="top-tabContent">
+                            <div class="tab-pane fade show active" id="top-home" role="tabpanel"
+                                aria-labelledby="top-home-tab">
+                                <div class="product-tab-description">
+                                    <div class="part">
+                                        <p>The Model is wearing a white blouse from our stylist's
+                                            collection, see the image for a mock-up of what the actual
+                                            blouse would look like.it has text written on it in a black
+                                            cursive language which looks great on a white color.</p>
+                                    </div>
+                                    <div class="part">
+                                        <h5 class="inner-title">fabric:</h5>
+                                        <p>Art silk is manufactured by synthetic fibres like rayon. It's
+                                            light in weight and is soft on the skin for comfort in
+                                            summers.Art silk is manufactured by synthetic fibres like rayon.
+                                            It's light in weight and is soft on the skin for comfort in
+                                            summers.</p>
+                                    </div>
+                                    <div class="part">
+                                        <h5 class="inner-title">size & fit:</h5>
+                                        <p>The model (height 5'8") is wearing a size S</p>
+                                    </div>
+                                    <div class="part">
+                                        <h5 class="inner-title">Material & Care:</h5>
+                                        <p>Top fabric: pure cotton</p>
+                                        <p>Bottom fabric: pure cotton</p>
+                                        <p>Hand-wash</p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="tab-pane fade" id="top-review" role="tabpanel" aria-labelledby="review-top-tab">
+                                <div class="single-product-tables">
+                                    <div class="row g-3 w-100">
+                                        <div class="col-xl-5">
+                                            <div class="product-rating-box">
+                                                <div class="row">
+                                                    <div class="col-xl-12">
+                                                        <div class="d-flex align-items-center gap-2">
+                                                            <h2 class="mb-0 rating-number">4.00</h2>
+                                                            <div>
+                                                                <span class="base-rating">
+                                                                    <i class="ri-star-s-fill"></i>
+                                                                    <i class="ri-star-s-fill"></i>
+                                                                    <i class="ri-star-s-fill"></i>
+                                                                    <i class="ri-star-s-fill"></i>
+                                                                    <i class="ri-star-s-line"></i>
+                                                                </span>
+                                                                <h4 class="rating-count">Based on 25 Rating</h4>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="review-title-2">
+                                                            <h4>Review this product
+                                                            </h4>
+                                                            <p>Let other customers know what you think</p>
+                                                            <ul class="product-rating-list">
+                                                                <li>
+                                                                    <div class="rating-product">
+                                                                        <h5>5<i class="ri-star-fill"></i></h5>
+                                                                        <div class="progress" role="progressbar"
+                                                                            aria-label="Basic example"
+                                                                            aria-valuenow="100" aria-valuemin="0"
+                                                                            aria-valuemax="100">
+                                                                            <div class="progress-bar"
+                                                                                style="width: 90%">
+                                                                            </div>
+                                                                        </div>
+                                                                        <h5 class="total">9 </h5>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="rating-product">
+                                                                        <h5>4<i class="ri-star-fill"></i></h5>
+                                                                        <div class="progress" role="progressbar"
+                                                                            aria-label="Basic example"
+                                                                            aria-valuenow="100" aria-valuemin="0"
+                                                                            aria-valuemax="100">
+                                                                            <div class="progress-bar"
+                                                                                style="width: 75%">
+                                                                            </div>
+                                                                        </div>
+                                                                        <h5 class="total">7
+                                                                        </h5>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="rating-product">
+                                                                        <h5>3<i class="ri-star-fill"></i></h5>
+                                                                        <div class="progress" role="progressbar"
+                                                                            aria-label="Basic example"
+                                                                            aria-valuenow="100" aria-valuemin="0"
+                                                                            aria-valuemax="100">
+                                                                            <div class="progress-bar"
+                                                                                style="width: 50%">
+                                                                            </div>
+                                                                        </div>
+                                                                        <h5 class="total">5
+                                                                        </h5>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="rating-product">
+                                                                        <h5>2<i class="ri-star-fill"></i></h5>
+                                                                        <div class="progress" role="progressbar"
+                                                                            aria-label="Basic example"
+                                                                            aria-valuenow="100" aria-valuemin="0"
+                                                                            aria-valuemax="100">
+                                                                            <div class="progress-bar"
+                                                                                style="width: 25%">
+                                                                            </div>
+                                                                        </div>
+                                                                        <h5 class="total">3
+                                                                        </h5>
+                                                                    </div>
+                                                                </li>
+                                                                <li>
+                                                                    <div class="rating-product">
+                                                                        <h5>1<i class="ri-star-fill"></i></h5>
+                                                                        <div class="progress" role="progressbar"
+                                                                            aria-label="Basic example"
+                                                                            aria-valuenow="100" aria-valuemin="0"
+                                                                            aria-valuemax="100">
+                                                                            <div class="progress-bar"
+                                                                                style="width: 10%">
+                                                                            </div>
+                                                                        </div>
+                                                                        <h5 class="total">1
+                                                                        </h5>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                            <button class="btn" data-bs-toggle="modal"
+                                                                data-bs-target="#write-review" type="submit">
+                                                                Write Review
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-7">
+                                            <div class="review-people">
+                                                <ul class="review-list">
+                                                    <li>
+                                                        <div class="people-box">
+                                                            <div>
+                                                                <div class="people-image people-text">
+                                                                    <div class="user-round">
+                                                                        <h4>J</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="people-comment">
+                                                                <div class="people-name">
+                                                                    <a href="#!" class="name">John Due</a>
+                                                                    <h6 class="text-content"> 10 Aug 2024 11:05:AM </h6>
+                                                                    <ul class="product-rating">
+                                                                        <li class="star-rating">
+                                                                            <i class="ri-star-fill"></i>
+                                                                        </li>
+                                                                        <li class="star-rating">
+                                                                            <i class="ri-star-fill"></i>
+                                                                        </li>
+                                                                        <li class="star-rating">
+                                                                            <i class="ri-star-fill"></i>
+                                                                        </li>
+                                                                        <li class="star-rating">
+                                                                            <i class="ri-star-line"></i>
+                                                                        </li>
+                                                                        <li class="star-rating">
+                                                                            <i class="ri-star-line"></i>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="reply">
+                                                                    <p>"Wow! This fashion product exceeded all my
+                                                                        expectations! From the moment I opened the
+                                                                        package, I could tell it was something special.
+                                                                        The quality of the materials is outstanding.
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="people-box">
+                                                            <div>
+                                                                <div class="people-image people-text">
+                                                                    <div class="user-round">
+                                                                        <h4>R</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="people-comment">
+                                                                <div class="people-name">
+                                                                    <a href="#!" class="name">Rhoda Mayer</a>
+                                                                    <h6 class="text-content"> 10 Aug 2024 11:05:AM
+                                                                    </h6>
+                                                                    <ul class="product-rating">
+                                                                        <li class="star-rating">
+                                                                            <i class="ri-star-fill"></i>
+                                                                        </li>
+                                                                        <li class="star-rating">
+                                                                            <i class="ri-star-fill"></i>
+                                                                        </li>
+                                                                        <li class="star-rating">
+                                                                            <i class="ri-star-fill"></i>
+                                                                        </li>
+                                                                        <li class="star-rating">
+                                                                            <i class="ri-star-fill"></i>
+                                                                        </li>
+                                                                        <li class="star-rating">
+                                                                            <i class="ri-star-fill"></i>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="reply">
+                                                                    <p>"Nice the attention to detail in the
+                                                                        craftsmanship is truly impressive. Not only
+                                                                        does
+                                                                        it look fabulous, but it feels incredibly
+                                                                        comfortable too. I've received so many
+                                                                        compliments whenever I wear it!
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="people-box">
+                                                            <div>
+                                                                <div class="people-image people-text">
+                                                                    <div class="user-round">
+                                                                        <h4>J</h4>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="people-comment">
+                                                                <div class="people-name">
+                                                                    <a href="#!" class="name">Jack Deo</a>
+                                                                    <h6 class="text-content"> 10 Aug 2024 11:05:AM </h6>
+                                                                    <ul class="product-rating">
+                                                                        <li class="star-rating">
+                                                                            <i class="ri-star-fill"></i>
+                                                                        </li>
+                                                                        <li class="star-rating">
+                                                                            <i class="ri-star-fill"></i>
+                                                                        </li>
+                                                                        <li class="star-rating">
+                                                                            <i class="ri-star-fill"></i>
+                                                                        </li>
+                                                                        <li class="star-rating">
+                                                                            <i class="ri-star-fill"></i>
+                                                                        </li>
+                                                                        <li class="star-rating">
+                                                                            <i class="ri-star-line"></i>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="reply">
+                                                                    <p>"The product boasts impressive craftsmanship,
+                                                                        meticulous attention to detail, and a stunning
+                                                                        appearance, resulting in a comfortable feel and
+                                                                        numerous compliments."
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="top-contact" role="tabpanel"
+                                aria-labelledby="contact-top-tab">
+                                <div class="post-question-box">
+                                    <h4>Have Doubts Regarding This Product ? <a href="#ask-question"
+                                            data-bs-toggle="modal">Post Your Question</a>
+                                    </h4>
+                                </div>
+                                <div class="question-answer">
+                                    <ul>
+                                        <li>
+                                            <div class="question-box">
+                                                <h5>Q1</h5>
+                                                <h6 class="font-weight-bold que">Does
+                                                    the dress offer any UV
+                                                    protection?</h6>
+                                                <ul class="link-dislike-box">
+                                                    <li><a href="#!"><span><i class="ri-thumb-up-fill"></i>
+                                                                0</span></a></li>
+                                                    <li><a href="#!"><span><i class="ri-thumb-down-fill"></i>
+                                                                0</span></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="answer-box">
+                                                <div class="answer-box">
+                                                    <h5>A1</h5>
+                                                    <p class="ans">Yes, the dress
+                                                        offers UV protection. It blocks
+                                                        harmful UV rays, providing an additional layer of sun
+                                                        safety. </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="question-box">
+                                                <h5>Q2</h5>
+                                                <h6 class="font-weight-bold que">Are
+                                                    there any pockets, and if so,
+                                                    how many and where are they located?</h6>
+                                                <ul class="link-dislike-box">
+                                                    <li><a href="#!"><span><i class="ri-thumb-up-fill"></i>
+                                                                0</span></a></li>
+                                                    <li><a href="#!"><span><i class="ri-thumb-down-fill"></i>
+                                                                0</span></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="answer-box">
+                                                <div class="answer-box">
+                                                    <h5>A2</h5>
+                                                    <p class="ans">Yes, there are
+                                                        pockets. There are two pockets,
+                                                        one on each side of the garment. </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="question-box">
+                                                <h5>Q3</h5>
+                                                <h6 class="font-weight-bold que">Is the
+                                                    fabric breathable and
+                                                    quick-drying?</h6>
+                                                <ul class="link-dislike-box">
+                                                    <li><a href="#!"><span><i class="ri-thumb-up-fill"></i>
+                                                                0</span></a></li>
+                                                    <li><a href="#!"><span><i class="ri-thumb-down-fill"></i>
+                                                                0</span></a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <div class="answer-box">
+                                                <div class="answer-box">
+                                                    <h5>A3</h5>
+                                                    <p class="ans">Yes, the fabric is
+                                                        breathable, allowing for
+                                                        excellent airflow. Additionally, it is quick-drying,
+                                                        ensuring comfort during and after
+                                                        activities. </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section ends -->
+
+
+    <!-- related products -->
+
+
+    <!-- Footer Section Start -->
+    <footer class="footer-style-1">
+        <section class="section-b-space darken-layout">
+            <div class="container">
+                <div class="row footer-theme g-md-5 g-2">
+                    <div class="col-xl-3 col-lg-5 col-md-6 sub-title">
+                        <div>
+                            <div class="footer-logo"><a href="index.html"><img alt="logo" class="img-fluid"
+                                        src="../assets copy/images/logo-white.png">
+                                </a></div>
+                            <p> Discover the latest trends and enjoy seamless shopping
+                                with our exclusive collections.
+                            </p>
+
+                            <ul class="contact-list">
+                                <li><i class="ri-map-pin-line"></i>
+                                    Multikart Demo Store, Demo Store India 345-659 </li>
+
+                                <li><i class="ri-phone-line"></i>
+                                    Call Us: 123-456-7898 </li>
+                                <li><i class="ri-mail-line"></i>
+                                    Email Us: Support@Multikart.com </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-md-6">
+                        <div class="sub-title">
+                            <div class="footer-title">
+                                <h4>Categories</h4>
+                            </div>
+                            <div class="footer-content">
+                                <ul>
+                                    <li><a href="product-page(thumbnail).html" class="text-content">Baby
+                                            Essentials</a></li>
+                                    <li><a href="product-page(thumbnail).html" class="text-content">Bag
+                                            Emporium</a></li>
+                                    <li><a href="product-page(thumbnail).html" class="text-content">Books</a>
+                                    </li>
+                                    <li><a href="product-page(thumbnail).html" class="text-content">Christmas</a>
+                                    </li>
+                                    <li><a href="product-page(thumbnail).html" class="text-content">Classic
+                                            Furnishings</a></li>
+                                    <li><a href="product-page(thumbnail).html" class="text-content">Crystal
+                                            Clarity Optics</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl col-lg-3 col-md-3">
+                        <div class="sub-title">
+                            <div class="footer-title">
+                                <h4>Useful Links</h4>
+                            </div>
+                            <div class="footer-content">
+                                <ul>
+                                    <li><a class="text-content" href="index.html">Home</a></li>
+                                    <li><a class="text-content" href="collection.html">Collections</a>
+                                    </li>
+                                    <li><a class="text-content" href="about-page.html">About Us</a>
+                                    </li>
+                                    <li><a class="text-content" href="blog(right-sidebar).html">Blogs</a></li>
+                                    <li><a class="text-content" href="offers.html">Offers</a></li>
+                                    <li><a class="text-content" href="search.html">Search</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-2 col-md-3">
+                        <div class="sub-title">
+                            <div class="footer-title">
+                                <h4>Help Center</h4>
+                            </div>
+                            <div class="footer-content">
+                                <ul>
+                                    <li><a class="text-content" href="dashboard.html">My
+                                            Account</a></li>
+                                    <li><a class="text-content" href="dashboard.html">My
+                                            Orders</a>
+                                    </li>
+                                    <li><a class="text-content" href="order-tracking.html">Track
+                                            Order</a></li>
+                                    <li><a class="text-content" href="wishlist.html">Wishlist</a>
+                                    </li>
+                                    <li><a class="text-content" href="faq.html">Faq's</a></li>
+                                    <li><a class="text-content" href="contact.html">Contact
+                                            Us</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="sub-title">
+                            <div class="footer-title">
+                                <h4>Follow Us</h4>
+                            </div>
+                            <div class="footer-content">
+                                <p class="mb-cls-content">Never Miss Anything From
+                                    Store By Signing Up To Our Newsletter.</p>
+                                <form novalidate="" class="form-inline">
+                                    <div class="form-group me-sm-3 mb-2"><input type="email" class="form-control"
+                                            placeholder="Enter Email Address">
+                                    </div>
+                                    <button class="btn btn-solid mb-2" type="submit">Subscribe</button>
+                                </form>
+                                <div class="footer-social">
+                                    <ul>
+                                        <li><a target="_blank" href="https://facebook.com/"><i
+                                                    class="ri-facebook-fill"></i></a>
+                                        </li>
+                                        <li><a target="_blank" href="https://twitter.com/"><i
+                                                    class="ri-twitter-fill"></i></a>
+                                        </li>
+                                        <li><a target="_blank" href="https://instagram.com/"><i
+                                                    class="ri-instagram-fill"></i></a>
+                                        </li>
+                                        <li><a target="_blank" href="https://pinterest.com/"><i
+                                                    class="ri-pinterest-fill"></i></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="sub-footer dark-subfooter">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-6 col-md-6 col-sm-12">
+                        <div class="footer-end">
+                            <p><i class="ri-copyright-line"></i> 2024-25 themeforest powered by
+                                pixelstrap</p>
+                        </div>
+                    </div>
+                    <div class="col-xl-6 col-md-6 col-sm-12">
+                        <div class="payment-card-bottom">
+                            <img alt="payment options" src="../assets copy/images/payment.png" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+
+
+
+
+
+
+    <!-- Add to cart modal popup start-->
+    <div class="modal fade bd-example-modal-lg theme-modal cart-modal" id="addtocart" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body modal1">
+                    <div class="container-fluid p-0">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="modal-bg addtocart">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span>&times;</span>
+                                    </button>
+                                    <div class="media">
+                                        <a href="#!">
+                                            <img class="img-fluid blur-up lazyload pro-img"
+                                                src="../assets copy/images/fashion/product/55.jpg" alt="">
+                                        </a>
+                                        <div class="media-body align-self-center text-center">
+                                            <a href="#!">
+                                                <h6>
+                                                    <i class="fa fa-check"></i>Item
+                                                    <span>men full sleeves</span>
+                                                    <span> successfully added to your Cart</span>
+                                                </h6>
+                                            </a>
+                                            <div class="buttons">
+                                                <a href="#!" class="view-cart btn btn-solid">Your cart</a>
+                                                <a href="#!" class="checkout btn btn-solid">Check out</a>
+                                                <a href="#!" class="continue btn btn-solid">Continue shopping</a>
+                                            </div>
+
+                                            <div class="upsell_payment">
+                                                <img src="../assets copy/images/payment_cart.png"
+                                                    class="img-fluid blur-up lazyload" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-section">
+                                        <div class="col-12 product-upsell text-center">
+                                            <h4>Customers who bought this item also.</h4>
+                                        </div>
+                                        <div class="row" id="upsell_product">
+                                            <div class="product-box col-sm-3 col-6">
+                                                <div class="img-wrapper">
+                                                    <div class="front">
+                                                        <a href="#!">
+                                                            <img src="../assets copy/images/fashion/product/1.jpg"
+                                                                class="img-fluid blur-up lazyload mb-1"
+                                                                alt="cotton top">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <h6><a href="#!"><span>cotton top</span></a></h6>
+                                                        <h4><span>$25</span></h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="product-box col-sm-3 col-6">
+                                                <div class="img-wrapper">
+                                                    <div class="front">
+                                                        <a href="#!">
+                                                            <img src="../assets copy/images/fashion/product/34.jpg"
+                                                                class="img-fluid blur-up lazyload mb-1"
+                                                                alt="cotton top">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <h6><a href="#!"><span>cotton top</span></a></h6>
+                                                        <h4><span>$25</span></h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="product-box col-sm-3 col-6">
+                                                <div class="img-wrapper">
+                                                    <div class="front">
+                                                        <a href="#!">
+                                                            <img src="../assets copy/images/fashion/product/13.jpg"
+                                                                class="img-fluid blur-up lazyload mb-1"
+                                                                alt="cotton top">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <h6><a href="#!"><span>cotton top</span></a></h6>
+                                                        <h4><span>$25</span></h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="product-box col-sm-3 col-6">
+                                                <div class="img-wrapper">
+                                                    <div class="front">
+                                                        <a href="#!">
+                                                            <img src="../assets copy/images/fashion/product/19.jpg"
+                                                                class="img-fluid blur-up lazyload mb-1"
+                                                                alt="cotton top">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <h6><a href="#!"><span>cotton top</span></a></h6>
+                                                        <h4><span>$25</span></h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add to cart modal popup end-->
+
+
+    <!-- ask question starts -->
+    <div class="modal fade question-answer-modal theme-modal-2" id="ask-question" tabindex="-1">
+        <div class=" modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="fw-semibold">Ask A Question</h3>
+                    <button class="btn btn-close" type="submit" data-bs-dismiss="modal">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="product-review-form">
+                        <div class="product-wrapper">
+                            <div class="product-image"><img class="img-fluid"
+                                    src="../assets copy/images/product-details/product/3.jpg" alt="Sport Set"></div>
+                            <div class="product-content">
+                                <h5 class="name"> Wide Leg Shorts </h5>
+                                <div class="product-review-rating">
+                                    <div class="product-rating">
+                                        <h6 class="price-number">$9.00</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="review-box form-box"><label for="content" class="form-label">Your Questions
+                                *</label><textarea id="content" rows="3" class="form-control"
+                                placeholder="Your Questions"></textarea></div>
+                    </form>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline" type="button" data-bs-dismiss="modal">Cancel</button>
+                        <button class="btn btn-solid" type="submit" data-bs-dismiss="modal">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ask question end -->
+
+
+    <!-- Quick-view modal popup start-->
+    <div class="modal fade theme-modal-2 quick-view-modal" id="quickView">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="ri-close-line"></i>
+                </button>
+                <div class="modal-body">
+                    <div class="wrap-modal-slider">
+                        <div class="row g-sm-4 g-3">
+                            <div class="col-lg-6">
+                                <div class="row g-3">
+                                    <div class="col-12">
+                                        <div class="view-main-slider">
+                                            <div>
+                                                <img src="../assets copy/images/fashion-1/product/1.jpg" class="img-fluid"
+                                                    alt="">
+                                            </div>
+                                            <div>
+                                                <img src="../assets copy/images/fashion-1/product/1-1.jpg" class="img-fluid"
+                                                    alt="">
+                                            </div>
+                                            <div>
+                                                <img src="../assets copy/images/fashion-1/product/1-2.jpg" class="img-fluid"
+                                                    alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="view-thumbnail-slider no-arrow">
+                                            <div>
+                                                <div class="slider-image">
+                                                    <img src="../assets copy/images/fashion-1/product/1.jpg"
+                                                        class="img-fluid" alt="">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="slider-image">
+                                                    <img src="../assets copy/images/fashion-1/product/1-1.jpg"
+                                                        class="img-fluid" alt="">
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="slider-image">
+                                                    <img src="../assets copy/images/fashion-1/product/1-2.jpg"
+                                                        class="img-fluid" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6">
+                                <div class="right-sidebar-modal">
+                                    <a class="name" href="product-page(accordian).html">Boyfriend Shirts</a>
+                                    <div class="product-rating">
+                                        <ul class="rating-list">
+                                            <li>
+                                                <i class="ri-star-line"></i>
+                                            </li>
+                                            <li>
+                                                <i class="ri-star-line"></i>
+                                            </li>
+                                            <li>
+                                                <i class="ri-star-line"></i>
+                                            </li>
+                                            <li>
+                                                <i class="ri-star-line"></i>
+                                            </li>
+                                            <li>
+                                                <i class="ri-star-line"></i>
+                                            </li>
+                                        </ul>
+                                        <div class="divider">|</div>
+                                        <a href="#!">0 Review</a>
+                                    </div>
+                                    <div class="price-text">
+                                        <h3>
+                                            <span class="fw-normal">MRP:</span>
+                                            $10.56
+                                            <del>$12.00</del>
+                                            <span class="discounted-price">12% off</span>
+                                        </h3>
+                                        <span class="text">Inclusive all the text</span>
+                                    </div>
+                                    <p class="description-text">Boyfriend shirts are oversized, relaxed-fit shirts
+                                        originally inspired by men's fashion. They offer a comfortable and effortlessly
+                                        chic look, often characterized by a loose silhouette and rolled-up sleeves.
+                                        Perfect for a casual yet stylish vibe</p>
+                                    <div class="qty-box">
+                                        <div class="input-group qty-container">
+                                            <button class="btn qty-btn-minus">
+                                                <i class="ri-arrow-left-s-line"></i>
+                                            </button>
+                                            <input type="number" readonly="" name="qty" class="form-control input-qty"
+                                                value="1">
+                                            <button class="btn qty-btn-plus">
+                                                <i class="ri-arrow-right-s-line"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="product-buy-btn-group">
+                                        <button
+                                            class="btn btn-animation btn-solid buy-button hover-solid scroll-button">
+                                            <span class="d-inline-block ring-animation">
+                                                <i class="ri-shopping-cart-line me-1"></i>
+                                            </span>
+                                            Add To Cart
+                                        </button>
+                                        <button class="btn btn-solid buy-button">Buy Now</button>
+                                    </div>
+
+                                    <div class="buy-box compare-box">
+                                        <a href="#!">
+                                            <i class="ri-heart-line"></i>
+                                            <span>Add To Wishlist</span>
+                                        </a>
+                                        <a href="#!">
+                                            <i class="ri-refresh-line"></i>
+                                            <span>Add To Compare</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Quick-view modal popup end-->
+
+
+    <!-- write review question starts -->
+    <div class="modal fade question-answer-modal theme-modal-2" id="write-review" tabindex="-1">
+        <div class=" modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="fw-semibold">Write A Review</h3>
+                    <button class="btn btn-close" type="submit" data-bs-dismiss="modal">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form class="product-review-form">
+                        <div class="product-wrapper">
+                            <div class="product-image"><img class="img-fluid"
+                                    src="../assets copy/images/product-details/product/3.jpg" alt="Sport Set"></div>
+                            <div class="product-content">
+                                <h5 class="name"> Wide Leg Shorts </h5>
+                                <div class="product-review-rating">
+                                    <div class="product-rating d-flex align-items-center gap-2">
+                                        <h6 class="price-number">Rating</h6>
+                                        <span class="d-flex align-items-center">
+                                            <i class="ri-star-s-line"></i>
+                                            <i class="ri-star-s-line"></i>
+                                            <i class="ri-star-s-line"></i>
+                                            <i class="ri-star-s-line"></i>
+                                            <i class="ri-star-s-line"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-review-rating">
+                            <div class="product-rating d-flex align-items-center gap-2">
+                                <h6 class="price-number">Rating</h6>
+                                <span class="d-flex align-items-center">
+                                    <i class="ri-star-s-line"></i>
+                                    <i class="ri-star-s-line"></i>
+                                    <i class="ri-star-s-line"></i>
+                                    <i class="ri-star-s-line"></i>
+                                    <i class="ri-star-s-line"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="review-box form-box">
+                            <label for="content1" class="form-label">Review Content </label>
+                            <textarea id="content1" rows="3" class="form-control" placeholder="Your Questions">
+                            </textarea>
+                        </div>
+                    </form>
+                    <div class="modal-footer">
+                        <button class="btn btn-outline" type="button" data-bs-dismiss="modal">Cancel</button>
+                        <button class="btn btn-solid" type="submit" data-bs-dismiss="modal">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- write review question starts -->
+
+    <!-- return delivery modal starts -->
+    <div class="modal fade theme-modal-2" id="return" tabindex="-1">
+        <div class=" modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="fw-semibold">Delivery & Return</h3>
+                    <button class="btn btn-close" type="submit" data-bs-dismiss="modal">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="modal-body policy-body">
+                    <p>Shipping and Returns are integral parts of your shopping experience, and we aim to make
+                        them
+                        as
+                        smooth as possible. We prioritize efficient shipping, striving to deliver your orders
+                        promptly
+                        within the estimated delivery window, typically ranging from 5 to 7 days. We understand
+                        that
+                        sometimes your purchase may not meet your expectations, so we offer a straightforward
+                        return
+                        policy. If you find yourself unsatisfied with your order, eligible items can be returned
+                        within 30 days of purchase, ensuring you have ample time to make a decision. Our
+                        commitment
+                        is
+                        to ensure your satisfaction and convenience throughout your shopping journey with us,
+                        and
+                        we're here to assist you every step of the way.</p>
+                    <p><strong>Our Shipping Commitment:</strong></p>
+                    <ul>
+                        <li>
+                            <p>Timely and reliable delivery within 5-7 days.</p>
+                        </li>
+                        <li>
+                            <p>Real-time tracking for your orders.</p>
+                        </li>
+                        <li>
+                            <p>Exceptional packaging to ensure your items arrive in perfect condition.</p>
+                        </li>
+                        <li>
+                            <p></p>
+                        </li>
+                    </ul>
+                    <p><strong>Our Hassle-Free Returns:</strong></p>
+                    <ul>
+                        <li>
+                            <p>Eligible items can be returned within 30 days.</p>
+                        </li>
+                        <li>
+                            <p>Easy return initiation through our website.</p>
+                        </li>
+                        <li>
+                            <p>Prompt processing of returns for a hassle-free experience.</p>
+                        </li>
+                        <li>
+                            <p>&nbsp;</p>
+                        </li>
+                    </ul>
+                    <p>We understand that your shopping needs may vary, and we are here to accommodate them
+                        while
+                        providing exceptional service.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- return delivery modal starts -->
+
+    <!-- share modal Start -->
+    <div class="modal fade theme-modal-2 share-modal" id="share" tabindex="-1">
+        <div class=" modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="fw-semibold">Share It</h3>
+                    <button class="btn btn-close" type="submit" data-bs-dismiss="modal">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ul class="nav nav-pills product-social mb-3" id="pills-tab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="pills-facebook-tab" data-bs-toggle="pill"
+                                data-bs-target="#pills-facebook" type="button"><i class="ri-facebook-line"></i></button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-twitter-tab" data-bs-toggle="pill"
+                                data-bs-target="#pills-twitter" type="button"><i class="ri-twitter-line"></i></button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-linkedin-tab" data-bs-toggle="pill"
+                                data-bs-target="#pills-linkedin" type="button"><i class="ri-linkedin-line"></i></button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-whatsapp-tab" data-bs-toggle="pill"
+                                data-bs-target="#pills-whatsapp" type="button"><i class="ri-mail-line"></i></button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="pills-mail-tab" data-bs-toggle="pill"
+                                data-bs-target="#pills-mail" type="button"><i class="ri-whatsapp-line"></i></button>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane show active" id="pills-facebook">
+                            <form>
+                                <div class="gap-3 input-group form-box">
+                                    <input type="email" name="email" class="form-control"
+                                        value="https://www.facebook.com/">
+
+                                    <button type="button" class="btn btn-solid buy-button">Copy Link</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="pills-twitter">
+                            <form>
+                                <div class="gap-3 input-group form-box">
+                                    <input type="email" name="email" class="form-control" value="https://twitter.com/">
+
+                                    <button type="button" class="btn btn-solid buy-button">Copy Link</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="pills-linkedin">
+                            <form>
+                                <div class="gap-3 input-group form-box">
+                                    <input type="email" name="email" class="form-control"
+                                        value="https://www.linkedin.com/">
+
+                                    <button type="button" class="btn btn-solid buy-button">Copy Link</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="pills-whatsapp">
+                            <form>
+                                <div class="gap-3 input-group form-box">
+                                    <input type="email" name="email" class="form-control"
+                                        value="https://www.whatsapp.com/">
+
+                                    <button type="button" class="btn btn-solid buy-button">Copy Link</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="tab-pane" id="pills-mail">
+                            <form>
+                                <div class="gap-3 input-group form-box">
+                                    <input type="email" name="email" class="form-control"
+                                        value="https://mail.google.com/">
+
+                                    <button type="button" class="btn btn-solid buy-button">Copy Link</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- share modal End -->
+
+    <!-- tap to top start -->
+    <div class="tap-top">
+        <div>
+            <i class="ri-arrow-up-double-line"></i>
+        </div>
+    </div>
+    <!-- tap to top end -->
+
+    <!-- compare button start -->
+    <div class="compare-btn-box" id="compareDiv">
+        <a href="compare.html" class="btn solid-btn compare-btn">
+            compare (01)
+        </a>
+    </div>
+    <!-- compare button end -->
+
+    <!-- added to cart notification -->
+    <div class="added-notification">
+        <img src="../assets copy/images/fashion/pro/1.jpg" class="img-fluid" alt="">
+        <h3>added to cart</h3>
+    </div>
+    <!-- added to cart notification -->
+
+
+    <!-- latest jquery-->
+    <script src="../assets copy/js/jquery-3.3.1.min.js"></script>
+
+    <!-- menu js-->
+    <script src="../assets copy/js/menu.js"></script>
+
+    <!-- lazyload js-->
+    <script src="../assets copy/js/lazysizes.min.js"></script>
+
+    <!-- sticky cart bottom js-->
+    <script src="../assets copy/js/sticky-cart-bottom.js"></script>
+
+
+
+    <!-- Bootstrap js-->
+    <script src="../assets copy/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap Notification js-->
+    <script src="../assets copy/js/bootstrap-notify.min.js"></script>
+
+    <!-- Zoom js-->
+    <script src="../assets copy/js/jquery.elevatezoom.js"></script>
+
+    <!-- Theme js-->
+    <script src="../assets copy/js/theme-setting.js"></script>
+    <script src="../assets copy/js/script.js"></script>
+
+    <script>
+
+
+        function openSearch() {
+            document.getElementById("search-overlay").style.display = "block";
+        }
+
+        function closeSearch() {
+            document.getElementById("search-overlay").style.display = "none";
+        }
+    
+        
+      
+  
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all quantity selectors on the page
+    const quantitySelectors = document.querySelectorAll('.qty-section');
+    
+    quantitySelectors.forEach(selector => {
+        const minusButton = selector.querySelector('.quantity-left-minus');
+        const plusButton = selector.querySelector('.quantity-right-plus');
+        const input = selector.querySelector('.input-number');
+        
+        // Set initial state of minus button
+        minusButton.disabled = input.value <= input.getAttribute('min');
+        
+        // Minus button click handler
+        minusButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            let currentValue = parseInt(input.value);
+            if (currentValue > parseInt(input.getAttribute('min'))) {
+                input.value = currentValue - 1;
+                // Enable plus button
+                plusButton.disabled = false;
+            }
+            // Disable minus button at min value
+            if (input.value <= input.getAttribute('min')) {
+                minusButton.disabled = true;
+            }
+        });
+        
+        // Plus button click handler
+        plusButton.addEventListener('click', function(e) {
+            e.preventDefault();
+            let currentValue = parseInt(input.value);
+            if (currentValue < parseInt(input.getAttribute('max'))) {
+                input.value = currentValue + 1;
+                // Enable minus button
+                minusButton.disabled = false;
+            }
+            // Disable plus button at max value
+            if (input.value >= input.getAttribute('max')) {
+                plusButton.disabled = true;
+            }
+        });
+        
+        // Input change handler
+        input.addEventListener('change', function() {
+            let value = parseInt(this.value);
+            const min = parseInt(this.getAttribute('min'));
+            const max = parseInt(this.getAttribute('max'));
+            
+            // Ensure value stays within bounds
+            if (value < min) {
+                this.value = min;
+            } else if (value > max) {
+                this.value = max;
+            }
+        });
+    });
+
+  
+
+});
+    function variantDynamicDisplay (index) {
+        console.log(index)
+    
+        document.querySelectorAll('.product-size-cont').forEach(element => {
+            element.style.display = 'none'
+        });
+        document.querySelectorAll('.product-images-cont').forEach(element => {
+            element.style.display = 'none'
+        });
+        document.getElementById(`product-images-cont${index}`).style.display = 'block';
+        document.getElementById(`product-size-cont${index}`).style.display = 'block';
+    } 
+    function changeMainImage(index1, index2) {
+        const src = document.getElementById(`thumbnail${index2}-image${index1}`).src;
+        document.getElementById(`main-image${index2}`).src = src
+    }
+    
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+    // Add this to your existing JavaScript file
+function initMagnifier() {
+    const productSlicks = document.querySelectorAll('.product-slick');
+    
+    productSlicks.forEach(slick => {
+        const img = slick.querySelector('img');
+        const magnifierSize = 150; // Size of the magnifier lens
+        
+        // Create magnifier lens element
+        const lens = document.createElement('div');
+        lens.classList.add('magnifier-lens');
+        slick.appendChild(lens);
+        
+        // Create magnified view container
+        const magnifiedView = document.createElement('div');
+        magnifiedView.classList.add('magnified-view');
+        slick.appendChild(magnifiedView);
+        
+        // Calculate magnified image position
+        function getMagnifiedPosition(e) {
+            const rect = slick.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            // Calculate position as percentage
+            const xPercentage = (x / rect.width) * 100;
+            const yPercentage = (y / rect.height) * 100;
+            
+            return { x, y, xPercentage, yPercentage };
+        }
+        
+        // Update magnifier and magnified view
+        function updateMagnifier(e) {
+            const pos = getMagnifiedPosition(e);
+            
+            // Position the lens
+            const lensLeft = pos.x - magnifierSize / 2;
+            const lensTop = pos.y - magnifierSize / 2;
+            
+            lens.style.left = `${lensLeft}px`;
+            lens.style.top = `${lensTop}px`;
+            
+            // Update magnified view
+            magnifiedView.style.backgroundImage = `url(${img.src})`;
+            magnifiedView.style.backgroundPosition = `${pos.xPercentage}% ${pos.yPercentage}%`;
+        }
+        
+        // Event listeners
+        slick.addEventListener('mousemove', (e) => {
+            lens.style.display = 'block';
+            magnifiedView.style.display = 'block';
+            updateMagnifier(e);
+        });
+        
+        slick.addEventListener('mouseleave', () => {
+            lens.style.display = 'none';
+            magnifiedView.style.display = 'none';
+        });
+    });
+}
+
+// Initialize magnifier when DOM is loaded
+document.addEventListener('DOMContentLoaded', initMagnifier);
+
+// Call initMagnifier after changing images
+function changeMainImage(index, variantIndex) {
+    const mainImage = document.getElementById(`main-image${variantIndex}`);
+    const thumbnailImage = document.getElementById(`thumbnail${variantIndex}-image${index}`);
+    mainImage.src = thumbnailImage.src;
+    
+    // Update active thumbnail
+    const thumbnails = document.querySelectorAll(`#product-images-cont${variantIndex} .thumbnail-item`);
+    thumbnails.forEach(thumb => thumb.classList.remove('active'));
+    thumbnailImage.parentElement.classList.add('active');
+    
+    // Reinitialize magnifier for new image
+    initMagnifier();
+}
+
+
+</script>
+</body>
+
+</html>

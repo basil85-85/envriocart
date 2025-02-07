@@ -9,7 +9,7 @@ import productController from "../controller/admin/productController.js"
 import multer from 'multer'
 import path from 'path'
 
-// Multer storage configuration
+
 const storage = multer.diskStorage({
       destination: (req, file, cb) => {
             cb(null, 'uploads/') // Folder to store files
@@ -19,10 +19,9 @@ const storage = multer.diskStorage({
       },
 })
 
-// Multer upload configuration for multiple files
 const upload = multer({
       storage:storage,
-      limits: { fileSize: 2 * 1024 * 1024 }, // Set size limit to 5MB per file
+      limits: { fileSize: 2 * 1024 * 1024 }, 
       fileFilter: (req, file, cb) => {
             const fileTypes = /jpeg|jpg|png|gif/
             const extName = fileTypes.test(
@@ -59,12 +58,16 @@ router.get("/category/edit",auth.adminAuth,categoryController.EditCategory)
 router.put("/categoryedit",auth.adminAuth,categoryController.EditingCategory)
 
 //product mangement
-router.get("/product",productController.productInfo)
-router.get("/addproduct",productController.Addproduct)
-router.post("/product/addproduct",productController.Addingproduct)
-router.get("/product/variants",productController.Addvariants)
-router.post("/product/addverient", upload.array('image', 3) ,productController.Addingvariant)
-router.get("/product/view",productController.Viewproduct)
-router.get("/product/editVarient",productController.editvariants)
-router.put("/product/verient",upload.array('image', 3),productController.editingvariant)
+router.get("/product",auth.adminAuth,productController.productInfo)
+router.get("/addproduct",auth.adminAuth,productController.Addproduct)
+router.post("/product/addproduct",auth.adminAuth,productController.Addingproduct)
+router.get("/product/variants",auth.adminAuth,productController.Addvariants)
+router.post("/product/addverient",auth.adminAuth, upload.array('image', 3) ,productController.Addingvariant)
+router.get("/product/view",auth.adminAuth,productController.Viewproduct)
+router.get("/product/editVarient",auth.adminAuth,productController.editvariants)
+router.put("/product/verient",auth.adminAuth,productController.editingvariant)
+router.get("/product/edit",auth.adminAuth,productController.editproduct)
+router.put("/product/editproduct",auth.adminAuth,productController.editingProduct)
+router.patch("/product/isblock",auth.adminAuth,productController.isblocked)
+router.put("/product/image-upload",auth.adminAuth,upload.array('image', 3),productController.ImageUpdate)
 export default router
