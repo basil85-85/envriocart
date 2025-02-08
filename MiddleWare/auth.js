@@ -45,16 +45,7 @@ const adminAuth = (req, res, next) => {
     }
 };
 
-// Middleware to prevent logged-in users from accessing login/signup pages
-// const guestAuth = (req, res, next) => {
-//     if (req.session.user || req.session.admin) {
-     
-//         return res.redirect('/');
-//     } else {
-     
-//         return next();
-//     }
-// };
+
 
 
 let checkBan = async (req, res, next) => {

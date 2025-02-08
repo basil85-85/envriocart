@@ -131,16 +131,17 @@
     <!-- breadcrumb start -->
     <div class="breadcrumb-section">
         <div class="container">
-            <h2>Black Printed Suit</h2>
+            <h2><%= products.productName %></h2> <!-- Dynamic Product Name -->
             <nav class="theme-breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="/">Home</a></li>
-                    <li class="breadcrumb-item">Product</li>
-                    <li class="breadcrumb-item active">Black Printed Suit</li>
+                    <li><a href="/">Home</a> /</li>
+                    <li><a href="/shop">Shop</a> /</li>
+                    <li class="active"><%= products.productName %></li>
                 </ol>
             </nav>
         </div>
     </div>
+    
     <!-- breadcrumb End -->
 
 
@@ -227,9 +228,9 @@
                                 
                             </div>
                             <div class="price-text">
-                                <h3><span class="fw-normal">Rs:</span> <%=products.regularPrice %>
+                                <h3><span class="fw-normal">Rs:</span> <%= products.salePrice %>
                                     <del> 
-                                        <%=products.salePrice %> </del><span class="discounted-price">  </span>
+                                      <%= products.regularPrice %></del><span class="discounted-price">        <%= ((products.regularPrice - products.salePrice) / products.regularPrice * 100).toFixed() %>% off  </span>
                                 </h3>
                                 
                             </div>
@@ -338,33 +339,7 @@
                             
                     
                             <div class="product-buttons">
-                                <div class="qty-section">
-                                    <div class="qty-box">
-                                        <div class="input-group">
-                                            <span class="input-group-prepend">
-                                                <button type="button" 
-                                                        class="btn quantity-left-minus" 
-                                                        data-type="minus">
-                                                    <i class="ri-arrow-left-s-line"></i>
-                                                </button>
-                                            </span>
-                                            <input type="text" 
-                                                name="quantity" 
-                                                class="form-control input-number" 
-                                                value="1" 
-                                                min="1" 
-                                                max="99"
-                                                readonly>
-                                            <span class="input-group-prepend">
-                                                <button type="button" 
-                                                        class="btn quantity-right-plus" 
-                                                        data-type="plus">
-                                                    <i class="ri-arrow-right-s-line"></i>
-                                                </button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
+                                
                                 <div class="d-flex align-items-center gap-3">
                                     <button class="btn btn-animation btn-solid hover-solid scroll-button" type="button">
                                         <i class="ri-shopping-cart-line me-1"></i> Add To Cart</button>

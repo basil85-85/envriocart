@@ -167,12 +167,12 @@ const Loadlogin = async (req, res) => {
 const login = async (req, res) => {
       try {
             const { emailOrPhone, password } = req.body
-            console.log(req.body)
+            
 
             // Find user with email or phone, and make sure the user isn't blocked
             const Finduser = await User.findOne({
-                  $or: [{ email: emailOrPhone }, { phone: emailOrPhone }],
-                  isBlocked: false,
+                  $or: [{ email: emailOrPhone }, { phone: emailOrPhone }]
+                
             })
 
             if (!Finduser) {
@@ -182,6 +182,9 @@ const login = async (req, res) => {
                               'User not found. Please check your credentials.',
                   })
             }
+            if (Finduser.isBlocked) {
+                  return res.json({ success: false, message: "Your account is blocked. Please contact support." });
+              }
 
             // Check if the provided password matches the stored hash
             const isPasswordValid = await bcrypt.compare(

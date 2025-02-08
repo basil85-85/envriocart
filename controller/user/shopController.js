@@ -17,6 +17,7 @@ const shoppage = async (req, res) => {
                   variants: { $exists: true, $ne: [] },
             })
                   .populate('variants')
+                  .populate("categoryName")
                   .skip(skip)
                   .limit(limit)
             const totalProducts = await Product.countDocuments({

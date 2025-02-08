@@ -133,17 +133,18 @@
                                                             </div>
                                                             <h6><%= product.description %></h6>
                                                             <h4 class="price">
-                                                                $<%= product.salePrice %> 
-                                                                <del>$<%= product.regularPrice %></del>
+                                                                Rs : <%= product.salePrice %>
+                                                                <del>Rs : <%= product.regularPrice %></del>
                                                                 <span class="discounted-price">
-                                                                    <%= product.productOffer %>% Off
+                                                                    <%= ((product.regularPrice - product.salePrice) / product.regularPrice * 100).toFixed() %>% Off
                                                                 </span>
                                                             </h4>
+                                                            
                                                         </div>
                                                         <ul class="offer-panel">
                                                             <li><span class="offer-icon">
                                                                 <i class="ri-discount-percent-fill"></i></span>
-                                                                Limited Time Offer: <%= product.productOffer %>% off
+                                                                Limited Time Offer:                                <%= ((product.regularPrice - product.salePrice) / product.regularPrice * 100).toFixed() %>% off
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -794,6 +795,7 @@
 
     <script>
         let islogin =<%=isLoggedIn%>;
+
 
         if(islogin==false){
         $(window).on('load', function () {

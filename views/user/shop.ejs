@@ -598,7 +598,7 @@
 
                                       
                                         <div class="product-wrapper-grid">
-                                            <div class="row g-3 g-sm-4">
+                                            <div class="row g-md-4 g-sm-4">
                                                 <% products.forEach((val)=>{ %>
                                                 <div class="col-xl-4 col-6 col-grid-box">
                                                     <div class="basic-product theme-product-1">
@@ -643,7 +643,7 @@
                                                                            
                                                                         </div>
                                                                     </div>
-                                                                    <h4><%=val.categoryName %></h4>
+                                                                    <h4><%=val.categoryName.name %></h4>
                                                                     <p><%=val.description %>
                                                                     </p>
                                                                     <h4 class="price">Rs:<%=val. salePrice%><del>Rs:<%=val.regularPrice%></del><span
@@ -656,13 +656,13 @@
                                                                 <ul class="offer-panel">
                                                                     <li><span class="offer-icon"><i
                                                                                 class="ri-discount-percent-fill"></i></span>
-                                                                        Limited Time Offer: 5% off</li>
+                                                                        Limited Time Offer:                            <%= ((val.regularPrice - val.salePrice) / val.regularPrice * 100).toFixed() %>% Off</li>
                                                                     <li><span class="offer-icon"><i
                                                                                 class="ri-discount-percent-fill"></i></span>
-                                                                        Limited Time Offer: 5% off</li>
+                                                                        Limited Time Offer:                            <%= ((val.regularPrice - val.salePrice) / val.regularPrice * 100).toFixed() %>% Off</li>
                                                                     <li><span class="offer-icon"><i
                                                                                 class="ri-discount-percent-fill"></i></span>
-                                                                        Limited Time Offer: 5% off</li>
+                                                                        Limited Time Offer:                             <%= ((val.regularPrice - val.salePrice) / val.regularPrice * 100).toFixed() %>% Off</li>
                                                                 </ul>
                                                             </div>
                                                         </div>

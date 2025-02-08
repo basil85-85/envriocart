@@ -8,6 +8,8 @@
    <link href="/css/verify.css" rel="stylesheet">
 </head>
 <body>
+    <link rel="icon" href="/assets copy/images/favicon.svg" type="image/x-icon">
+    <link rel="shortcut icon" href="../assets copy/images/fashion-4/favicon.svg" type="image/x-icon">
     <video autoplay muted loop class="video-background">
         <source src="d/images/top 10 img/3195349-uhd_3840_2160_25fps.mp4" type="video/mp4">
     </video>
@@ -187,37 +189,46 @@
 
 
     // Check if Rtime is stored in localStorage
-     function startTimer() {
-      // Get the saved end time or set a new one
-      let endTime = localStorage.getItem('timerEndTime');
-      if (!endTime) {
-        endTime = Date.now() + (1 * 1000); 
-        localStorage.setItem('timerEndTime', endTime);
-      }
-      
-      const timerElement = document.getElementById('timer');
-      const resendLink = document.getElementById('resendLink');
-      function updateTimer() {
-        const timeLeft = Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
-        
-        if (timeLeft <= 0) {
-          timerElement.textContent = '0';
-          localStorage.removeItem('timerEndTime');
-          clearInterval(countdown);
-          timerElement.style.visibility = 'hidden'; // or 'display: none' to completely remove it
-            resendLink.style.pointerEvents = 'auto'; // Enable resend link
-            resendLink.ariaDisabled = false; 
-        } else {
-          timerElement.textContent = timeLeft;
-          timerElement.style.visibility = 'visible';
-          resendLink.setAttribute('aria-disabled', 'true');
-        }
-      }
+    function startTimer() {
+    const timerElement = document.getElementById('timer');
+    const resendLink = document.getElementById('resendLink');
 
-   
-      updateTimer();
-      const countdown = setInterval(updateTimer, 1000);
+    let endTime = localStorage.getItem('timerEndTime');
+
+    // If no timer is set OR if the timer has already expired, reset it
+    if (!endTime || Date.now() > parseInt(endTime)) {
+        endTime = Date.now() + (30 * 1000); // Set new 30 seconds timer
+        localStorage.setItem('timerEndTime', endTime);
+    } else {
+        endTime = parseInt(endTime); // Convert stored string to number
     }
+
+    function updateTimer() {
+        const timeLeft = Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
+
+        if (timeLeft <= 0) {
+            timerElement.textContent = '0';
+            localStorage.removeItem('timerEndTime');
+            clearInterval(countdown);
+            timerElement.style.display = 'none'; // Hide timer
+            resendLink.removeAttribute('aria-disabled'); // Enable resend link
+            resendLink.removeAttribute('disabled'); 
+            resendLink.style.pointerEvents = 'auto'; 
+        } else {
+            timerElement.textContent = timeLeft;
+            timerElement.style.display = 'inline';
+            resendLink.setAttribute('aria-disabled', 'true'); // Disable resend link
+            resendLink.setAttribute('disabled', 'true');
+            resendLink.style.pointerEvents = 'none'; 
+        }
+    }
+
+    updateTimer(); // Update immediately
+    const countdown = setInterval(updateTimer, 1000);
+}
+
+// Call function when page loads
+document.addEventListener("DOMContentLoaded", startTimer);
 
   
 //this function for the resendcode 
