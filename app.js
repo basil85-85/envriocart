@@ -46,7 +46,7 @@ app.set('views', [
       path.join(__dirname, 'views/user'),
       path.join(__dirname, 'views/admin'),
 ])
-
+   
 // Serving static files
 app.use("/",express.static(path.join(__dirname, 'public')))
 app.use("/admin",express.static(path.join(__dirname, 'public')))

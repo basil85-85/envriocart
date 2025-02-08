@@ -1,25 +1,32 @@
 import User from '../models/userSchema.js';
 
-// Middleware to check user authentication and account status
-const userAuth = (req, res, next) => {
-    if (req.session.userid) {
-        User.findById(req.session.user)
-            .then(data => {
-                if (data && !data.isBlocked) {
-                    return next();
-                } else {
-                   
-                    return res.redirect('/login');
-                }
-            })
-            .catch(err => {
-                console.error('Error fetching user:', err);
-                // Internal server error
-                return res.status(500).json("Internal Server Error");
-            });
-    } else {
+const userAuth = async (req, res, next) => {
+    try {
+        let userId = req.session?.passport?.user || req.session.userId;
 
-        return res.redirect('/login');
+        if (!userId) {
+            return res.status(401).redirect("/");
+        }
+
+        const userData = await User.findOne({ _id: userId, isBlocked: false });
+
+        if (!userData) {
+            return req.session.destroy((err) => {
+                if (err) {
+                    console.error("Logout error:", err);
+                    return res.status(500).render("404");
+                }
+                return res.redirect("/");
+            });
+        }
+
+        req.session.userId = userId; // Ensure session is updated
+        req.user = userData; // Attach user data for later use
+
+        next();
+    } catch (error) {
+        console.error("Error in authentication middleware:", error);
+        res.status(500).json({ message: "Internal server error" });
     }
 };
 const adminAuth = (req, res, next) => {

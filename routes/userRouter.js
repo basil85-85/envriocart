@@ -4,6 +4,10 @@ const router = express.Router()
 import passport from 'passport'
 import shopController from '../controller/user/shopController.js'
 
+import userDetails from '../controller/user/userDetails.js'
+
+import auth from '../MiddleWare/auth.js'
+
 
 
 router.get('/', userController.loadLogHomepage)
@@ -22,6 +26,12 @@ router.get("/logout",userController.logout)
 // shopController
 router.get("/shop",shopController.shoppage)
 router.get("/details",shopController.details)
+
+
+//details
+router.get("/profile",auth.userAuth,userDetails.profile)
+router.put("/profile",auth.userAuth,userDetails.editDetails)
+router.put("/changePassword",auth.userAuth,userDetails.changePassword)
 
        
 export default router

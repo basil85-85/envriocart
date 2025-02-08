@@ -57,8 +57,16 @@ const details = async (req, res) => {
         } 
         userId=req.session.userId;
         const id =req.query.id
-        let products = await Product.findById( id).populate("variants")
+        let products = await Product.findById(id).populate("variants").populate("categoryName")
 
+        
+        let relatedProducts = await Product.find({
+            categoryName: products.categoryName, 
+            _id: { $ne: id } 
+        }).populate("variants")
+        .limit(4)
+        
+        
         let isLoggedIn = false;
         if (userId) {
             const userData = await User.findOne({ _id: userId, isBlocked: false });
@@ -68,7 +76,7 @@ const details = async (req, res) => {
             }
         }
 
-        return res.render('details', { isLoggedIn, products });
+        return res.render('details', { isLoggedIn, products,relatedProducts});
 
     } catch (error) {
         console.error('Error rendering home page:', error);

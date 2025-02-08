@@ -1,0 +1,2225 @@
+<%- include('../partial/user/header') %>
+
+
+    <!-- breadcrumb start -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <h2>Dashboard</h2>
+            <nav class="theme-breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li class="breadcrumb-item active">Dashboard</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- breadcrumb End -->
+
+
+    <!--  dashboard section start -->
+    <section class="dashboard-section section-b-space user-dashboard-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="dashboard-sidebar">
+                        <button class="btn back-btn">
+                            <i class="ri-close-line"></i><span>Close</span>
+                        </button>
+                        <div class="profile-top">
+                            <div class="profile-top-box">
+                                <div class="profile-image">
+                                    <div class="position-relative">
+                                        <div class="user-round">
+                                            <h4>J</h4>
+                                        </div>
+                                        <div class="user-icon"><input type="file" accept="image/*"><i
+                                                class="ri-image-edit-line d-lg-block d-none"></i><i
+                                                class="ri-pencil-fill edit-icon d-lg-none"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="profile-detail">
+                                <h5><%=details.name%></h5>
+                                <h6><%=details.email%></h6>
+                            </div>
+                        </div>
+                        <div class="faq-tab">
+                            <ul id="pills-tab" role="tablist" class="nav nav-tabs">
+                                <li role="presentation" class="nav-item">
+                                    <button class="nav-link active" id="info-tab" data-bs-toggle="tab"
+                                        data-bs-target="#info-tab-pane" type="button" role="tab">
+                                        <i class="ri-home-line"></i> dashboard
+                                    </button>
+                                </li>
+                            
+                              
+                                <li role="presentation" class="nav-item">
+                                    <button class="nav-link" id="wallet-tab" data-bs-toggle="tab"
+                                        data-bs-target="#wallet-tab-pane" type="button" role="tab">
+                                        <i class="ri-wallet-line"></i> My Wallet
+                                    </button>
+                                </li>
+                               
+                                <li role="presentation" class="nav-item">
+                                    <button class="nav-link" id="order-tab" data-bs-toggle="tab"
+                                        data-bs-target="#order-tab-pane" type="button" role="tab">
+                                        <i class="ri-file-text-line"></i>My Orders
+                                    </button>
+                                </li>
+
+                                <!-- <li role="presentation" class="nav-item">
+                                    <button class="nav-link" id="refund-tab" data-bs-toggle="tab"
+                                        data-bs-target="#refund-tab-pane" type="button" role="tab">
+                                        <i class="ri-money-dollar-circle-line"></i> Refund History </button>
+                                </li> -->
+                                <li role="presentation" class="nav-item">
+                                    <button class="nav-link" id="address" data-bs-toggle="tab"
+                                        data-bs-target="#address-tab-pane" type="button" role="tab">
+                                        <i class="ri-map-pin-line"></i> Saved Address
+                                    </button>
+                                </li>
+                                <li role="presentation" class="nav-item logout-cls">
+                                    <a href="#logout" data-bs-toggle="modal" class="btn loagout-btn">
+                                        <i class="ri-logout-box-r-line"></i> Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-9">
+                    <button class="show-btn btn d-lg-none d-block">Show Menu</button>
+                    <div class="faq-content tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="info-tab-pane" role="tabpanel">
+                            <div class="counter-section">
+                                <div class="welcome-msg">
+                                    <h4>hello ! <%=details.name%></h4>
+                                    <p>From your My Account Dashboard you have the ability to view a snapshot of your
+                                        recent account activity and update your account information. Select a link below
+                                        to view or edit information.</p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="counter-box">
+                                            <img src="../assets copy/images/dashboard/balance.png" alt="" class="img-fluid">
+                                            <div>
+                                                <h3>$12.46</h3>
+                                                <h5>Total Order</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="col-md-4">
+                                        <div class="counter-box">
+                                            <img src="../assets copy/images/dashboard/order.png" alt="" class="img-fluid">
+                                            <div>
+                                                <h3>15</h3>
+                                                <h5>Total Orders</h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="box-account box-info">
+                                    <div class="box-head">
+                                        <h4>Account Information</h4>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="box">
+                                                <ul class="box-content">
+                                                    <li class="w-100">
+                                                        <h6>Name: <%=details.name%></h6>
+                                                    </li>
+                                                    <% if(details.phone){ %>
+                                                         <li class="w-100">
+                                                        <h6>Phone : <%=details.phone%></h6>
+                                                    </li>
+                                                 <%   } else{  %>
+                                                    <li class="w-100">
+                                                        <h6>Phone: No phone</h6>
+                                                    </li>
+                                                <% }%>
+                                                
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="box mt-3">
+                                        <div class="box-head">
+                                            <h4>Login Details</h4>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <h6>Email : <%=details.email%> %></h6><a href="#edit-profile"
+                                                    data-bs-toggle="modal">Edit</a>
+                                            </div>
+                                            <% if(details.googleId){ %>
+
+                                          <%  }else{%>
+                                            <div class="col-sm-6">
+                                            <h6>Password : ●●●●●●</h6><a href="#edit-password"
+                                                data-bs-toggle="modal">Edit</a>
+                                            </div>
+                                           <% } %>
+        
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="notification-tab-pane" role="tabpanel">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card mb-0 mt-0 mb-0">
+                                        <div class="card-body">
+                                            <div class="top-sec">
+                                                <h3>Notifications</h3>
+                                            </div>
+                                            <ul class="notification-list">
+                                                <li>
+                                                    <h4>Your order has been successfully placed. Order ID:
+                                                        #1013. Thank you for
+                                                        choosing us.</h4>
+                                                    <h5><i class="ri-time-line"></i> 24 Jun 2024
+                                                        02:29:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Your Refund request status has been rejected</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        05:42:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Your order has been successfully placed. Order ID:
+                                                        #1012. Thank you for
+                                                        choosing us.</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        05:18:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Your order has been successfully placed. Order ID:
+                                                        #1011. Thank you for
+                                                        choosing us.</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        05:18:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Your order has been successfully placed. Order ID:
+                                                        #1010. Thank you for
+                                                        choosing us.</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        04:29:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Your order has been successfully placed. Order ID:
+                                                        #1009. Thank you for
+                                                        choosing us.</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:57:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Order Update: Your order #1008 has been updated and
+                                                        current order
+                                                        status is in delivered. Thank you for your patience!</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:49:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Order Update: Your order #1008 has been updated and
+                                                        current order
+                                                        status is in pending. Thank you for your patience!</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:49:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Order Update: Your order #1007 has been updated and
+                                                        current order
+                                                        status is in delivered. Thank you for your patience!</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:49:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Your order has been successfully placed. Order ID:
+                                                        #1006. Thank you for
+                                                        choosing us.</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:48:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Your order has been successfully placed. Order ID:
+                                                        #1005. Thank you for
+                                                        choosing us.</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:45:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Order Update: Your order #1000 has been updated and
+                                                        current order
+                                                        status is in delivered. Thank you for your patience!</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:34:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Order Update: Your order #1003 has been updated and
+                                                        current order
+                                                        status is in cancelled. Thank you for your patience!</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:34:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Order Update: Your order #1004 has been updated and
+                                                        current order
+                                                        status is in delivered. Thank you for your patience!</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:34:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Order Update: Your order #1004 has been updated and
+                                                        current order
+                                                        status is in out_for_delivery. Thank you for your patience!</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:34:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Order Update: Your order #1004 has been updated and
+                                                        current order
+                                                        status is in shipped. Thank you for your patience!</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:34:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Order Update: Your order #1004 has been updated and
+                                                        current order
+                                                        status is in processing. Thank you for your patience!</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:34:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Your order has been successfully placed. Order ID:
+                                                        #1004. Thank you for
+                                                        choosing us.</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:14:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Your order has been successfully placed. Order ID:
+                                                        #1003. Thank you for
+                                                        choosing us.</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:10:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Your order has been successfully placed. Order ID:
+                                                        #1002. Thank you for
+                                                        choosing us.</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:07:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Your order has been successfully placed. Order ID:
+                                                        #1001. Thank you for
+                                                        choosing us.</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:02:PM</h5>
+                                                </li>
+                                                <li>
+                                                    <h4>Your order has been successfully placed. Order ID:
+                                                        #1000. Thank you for
+                                                        choosing us.</h4>
+                                                    <h5><i class="ri-time-line"></i> 21 Jun 2024
+                                                        03:00:PM</h5>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="bank-details-tab-pane" role="tabpanel">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card mb-0 mt-0">
+                                        <div class="card-body">
+                                            <div class="top-sec">
+                                                <h3>Bank Details</h3>
+                                            </div>
+                                            <form class="themeform-auth">
+                                                <div class="row mb-3 align-items-center">
+                                                    <label for="bank_account_no"
+                                                        class="form-label col-xxl-2 col-lg-12 col-md-3">Bank Account
+                                                        Number</label>
+                                                    <div class="col-xxl-10 col-lg-12 col-md-9">
+                                                        <input type="text" id="bank_account_no" class="form-control"
+                                                            placeholder="Enter Bank Account Number">
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3 align-items-center">
+                                                    <label for="bank_name"
+                                                        class="form-label col-xxl-2 col-lg-12 col-md-3">Bank
+                                                        Name</label>
+                                                    <div class="col-xxl-10 col-lg-12 col-md-9"><input type="text"
+                                                            id="bank_name" class="form-control"
+                                                            placeholder="Enter Bank Name">
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3 align-items-center">
+                                                    <label for="bank_holder_name"
+                                                        class="form-label col-xxl-2 col-lg-12 col-md-3">Holder
+                                                        Name</label>
+                                                    <div class="col-xxl-10 col-lg-12 col-md-9"><input type="text"
+                                                            id="bank_holder_name" class="form-control"
+                                                            placeholder="Enter Bank Holder Name">
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3 align-items-center">
+                                                    <label for="swift"
+                                                        class="form-label col-xxl-2 col-lg-12 col-md-3">Swift</label>
+                                                    <div class="col-xxl-10 col-lg-12 col-md-9">
+                                                        <input type="text" id="swift" class="form-control"
+                                                            placeholder="Enter Swift Code">
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-3 align-items-center">
+                                                    <label for="ifsc"
+                                                        class="form-label col-xxl-2 col-lg-12 col-md-3">IFSC</label>
+                                                    <div class="col-xxl-10 col-lg-12 col-md-9">
+                                                        <input type="text" id="ifsc" class="form-control"
+                                                            placeholder="Enter IFSC Code">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <div class="mb-3 top-sec top-sec-2">
+                                                <h3>Payment Details</h3>
+                                            </div>
+                                            <form class="themeform-auth">
+                                                <div class="row mb-3 align-items-center">
+                                                    <label for="paypal_email"
+                                                        class="form-label col-xxl-2 col-lg-12 col-md-3">Paypal
+                                                        Email</label>
+                                                    <div class="col-xxl-10 col-lg-12 col-md-9">
+                                                        <input type="email" id="paypal_email" class="form-control "
+                                                            placeholder="Enter Paypal Email">
+                                                    </div>
+                                                </div>
+                                                <div class="text-end">
+                                                    <button class="btn btn-solid" id="payout_btn" type="submit"> Save
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="wallet-tab-pane" role="tabpanel">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <div class="total-contain wallet-bg">
+                                        <div class="wallet-point-box">
+                                            <div class="total-image">
+                                                <img src="../assets copy/images/dashboard/balance.png" alt=""
+                                                    class="img-fluid">
+                                            </div>
+                                            <div class="total-detail">
+                                                <div class="total-box">
+                                                    <h5>Wallet Balance</h5>
+                                                    <h3>$8.46</h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="card mb-0 dashboard-table mt-0">
+                                        <div class="card-body">
+                                            <div class="total-box mt-0">
+                                                <div class="wallet-table">
+                                                    <div class="table-responsive">
+                                                        <table class="table cart-table order-table">
+                                                            <thead>
+                                                                <tr class="table-head">
+                                                                    <th>Date</th>
+                                                                    <th>Amount</th>
+                                                                    <th>Remark</th>
+                                                                    <th>Status</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>06 Jul 2024
+                                                                        03:15:PM</td>
+                                                                    <td>$39.40</td>
+                                                                    <td>Wallet amount
+                                                                        successfully debited for Order #1017</td>
+                                                                    <td>
+                                                                        <div
+                                                                            class="badge bg-debit custom-badge rounded-0">
+                                                                            <span>Debit</span>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>25 Jun 2024
+                                                                        06:34:PM</td>
+                                                                    <td>$375.00</td>
+                                                                    <td>Wallet amount
+                                                                        successfully debited for Order #1015</td>
+                                                                    <td>
+                                                                        <div
+                                                                            class="badge bg-debit custom-badge rounded-0">
+                                                                            <span>Debit</span>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>24 Jun 2024
+                                                                        02:29:PM</td>
+                                                                    <td>$34.44</td>
+                                                                    <td>Wallet amount
+                                                                        successfully debited for Order #1013</td>
+                                                                    <td>
+                                                                        <div
+                                                                            class="badge bg-debit custom-badge rounded-0">
+                                                                            <span>Debit</span>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>21 Jun 2024
+                                                                        04:29:PM</td>
+                                                                    <td>$75.21</td>
+                                                                    <td>Wallet amount
+                                                                        successfully debited for Order #1010</td>
+                                                                    <td>
+                                                                        <div
+                                                                            class="badge bg-debit custom-badge rounded-0">
+                                                                            <span>Debit</span>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>21 Jun 2024
+                                                                        03:57:PM</td>
+                                                                    <td>$30.52</td>
+                                                                    <td>Wallet amount
+                                                                        successfully debited for Order #1009</td>
+                                                                    <td>
+                                                                        <div
+                                                                            class="badge bg-debit custom-badge rounded-0">
+                                                                            <span>Debit</span>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>21 Jun 2024
+                                                                        03:48:PM</td>
+                                                                    <td>$109.97</td>
+                                                                    <td>Wallet amount
+                                                                        successfully debited for Order #1006</td>
+                                                                    <td>
+                                                                        <div
+                                                                            class="badge bg-debit custom-badge rounded-0">
+                                                                            <span>Debit</span>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>21 Jun 2024
+                                                                        03:42:PM</td>
+                                                                    <td>$323.00</td>
+                                                                    <td>Admin has credited
+                                                                        the balance.</td>
+                                                                    <td>
+                                                                        <div
+                                                                            class="badge bg-credit custom-badge rounded-0">
+                                                                            <span>Credit</span>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>21 Jun 2024
+                                                                        03:41:PM</td>
+                                                                    <td>$250.00</td>
+                                                                    <td>Admin has debited
+                                                                        the balance.</td>
+                                                                    <td>
+                                                                        <div
+                                                                            class="badge bg-debit custom-badge rounded-0">
+                                                                            <span>Debit</span>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>21 Jun 2024
+                                                                        03:41:PM</td>
+                                                                    <td>$500.00</td>
+                                                                    <td>Admin has credited
+                                                                        the balance.</td>
+                                                                    <td>
+                                                                        <div
+                                                                            class="badge bg-credit custom-badge rounded-0">
+                                                                            <span>Credit</span>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>21 Jun 2024
+                                                                        03:41:PM</td>
+                                                                    <td>$100.00</td>
+                                                                    <td>Admin has credited
+                                                                        the balance.</td>
+                                                                    <td>
+                                                                        <div
+                                                                            class="badge bg-credit custom-badge rounded-0">
+                                                                            <span>Credit</span>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="product-pagination">
+                                                    <div class="theme-paggination-block">
+                                                        <nav>
+                                                            <ul class="pagination">
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="#!"
+                                                                        aria-label="Previous">
+                                                                        <span>
+                                                                            <i class="ri-arrow-left-s-line"></i>
+                                                                        </span>
+                                                                        <span class="sr-only">Previous</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="page-item active">
+                                                                    <a class="page-link" href="#!">1</a>
+                                                                </li>
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="#!">2</a>
+                                                                </li>
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="#!">3</a>
+                                                                </li>
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="#!" aria-label="Next">
+                                                                        <span>
+                                                                            <i class="ri-arrow-right-s-line"></i>
+                                                                        </span>
+                                                                        <span class="sr-only">Next</span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </nav>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="earning-tab-pane" role="tabpanel">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <div class="total-contain wallet-bg">
+                                        <div class="wallet-point-box">
+                                            <div class="total-image">
+                                                <img src="../assets copy/images/dashboard/points.png" alt=""
+                                                    class="img-fluid">
+                                            </div>
+                                            <div class="total-detail">
+                                                <div class="total-box">
+                                                    <h5>Total Points</h5>
+                                                    <h3>1970</h3>
+                                                </div>
+                                                <div class="point-ratio">
+                                                    <h3 class="counter"><i class="ri-information-line"></i>
+                                                        1 Points =
+                                                        $0.03 Balance </h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="dashboard-table">
+                                        <div class="wallet-table">
+                                            <div class="table-responsive">
+                                                <table class="table cart-table order-table">
+                                                    <thead>
+                                                        <tr class="table-head">
+                                                            <th>Date</th>
+                                                            <th>Points</th>
+                                                            <th>Remark</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="">
+                                                            <td>06 Jul 2024 03:15:PM</td>
+                                                            <td>$39.40</td>
+                                                            <td>Wallet amount successfully debited for Order #1017</td>
+                                                            <td>
+                                                                <div class="badge bg-debit custom-badge rounded-0">
+                                                                    <span>Debit</span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>25 Jun 2024 06:34:PM</td>
+                                                            <td>$375.00</td>
+                                                            <td>Wallet amount successfully debited for Order #1015</td>
+                                                            <td>
+                                                                <div class="badge bg-debit custom-badge rounded-0">
+                                                                    <span>Debit</span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>24 Jun 2024 02:29:PM</td>
+                                                            <td>$34.44</td>
+                                                            <td>Wallet amount successfully debited for Order #1013</td>
+                                                            <td>
+                                                                <div class="badge bg-debit custom-badge rounded-0">
+                                                                    <span>Debit</span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>21 Jun 2024 04:29:PM</td>
+                                                            <td>$75.21</td>
+                                                            <td>Wallet amount successfully debited for Order #1010</td>
+                                                            <td>
+                                                                <div class="badge bg-debit custom-badge rounded-0">
+                                                                    <span>Debit</span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>21 Jun 2024 03:57:PM</td>
+                                                            <td>$30.52</td>
+                                                            <td>Wallet amount successfully debited for Order #1009</td>
+                                                            <td>
+                                                                <div class="badge bg-debit custom-badge rounded-0">
+                                                                    <span>Debit</span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>21 Jun 2024 03:41:PM</td>
+                                                            <td>$500.00</td>
+                                                            <td>Admin has credited the balance.</td>
+                                                            <td>
+                                                                <div class="badge bg-credit custom-badge rounded-0">
+                                                                    <span>Credit</span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-pagination">
+                                        <div class="theme-paggination-block">
+                                            <nav>
+                                                <ul class="pagination">
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="#!" aria-label="Previous">
+                                                            <span>
+                                                                <i class="ri-arrow-left-s-line"></i>
+                                                            </span>
+                                                            <span class="sr-only">Previous</span>
+                                                        </a>
+                                                    </li>
+                                                    <li class="page-item active">
+                                                        <a class="page-link" href="#!">1</a>
+                                                    </li>
+
+                                                    <li class="page-item">
+                                                        <a class="page-link" href="#!" aria-label="Next">
+                                                            <span>
+                                                                <i class="ri-arrow-right-s-line"></i>
+                                                            </span>
+                                                            <span class="sr-only">Next</span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="order-tab-pane" role="tabpanel">
+                            <div class="row">
+                                <div class="card mb-0 dashboard-table mt-0">
+                                    <div class="card-body">
+                                        <div class="top-sec">
+                                            <h3>My Orders</h3>
+                                        </div>
+                                        <div class="total-box mt-0">
+                                            <div class="wallet-table mt-0">
+                                                <div class="table-responsive">
+                                                    <table class="table cart-table order-table">
+                                                        <thead>
+                                                            <tr class="table-head">
+                                                                <th>Order Number</th>
+                                                                <th>Date</th>
+                                                                <th>Amount</th>
+                                                                <th>Payment Status</th>
+                                                                <th>Payment Method</th>
+                                                                <th>Option</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><span class="fw-bolder">#1020</span></td>
+                                                                <td>06 Jul 2024 03:51:PM
+                                                                </td>
+                                                                <td>$61.73</td>
+                                                                <td>
+                                                                    <div
+                                                                        class="badge bg-pending custom-badge rounded-0">
+                                                                        <span>Pending</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td>COD</td>
+                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><span class="fw-bolder">#1017</span></td>
+                                                                <td>06 Jul 2024 03:15:PM
+                                                                </td>
+                                                                <td>$1.97</td>
+                                                                <td>
+                                                                    <div
+                                                                        class="badge bg-pending custom-badge rounded-0">
+                                                                        <span>Pending</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td>COD</td>
+                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><span class="fw-bolder">#1016</span></td>
+                                                                <td>26 Jun 2024 10:23:AM
+                                                                </td>
+                                                                <td>$46.14</td>
+                                                                <td>
+                                                                    <div
+                                                                        class="badge bg-pending custom-badge rounded-0">
+                                                                        <span>Pending</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td>COD</td>
+                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><span class="fw-bolder">#1015</span></td>
+                                                                <td>25 Jun 2024 06:34:PM
+                                                                </td>
+                                                                <td>$18.75</td>
+                                                                <td>
+                                                                    <div
+                                                                        class="badge bg-pending custom-badge rounded-0">
+                                                                        <span>Pending</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td>COD</td>
+                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><span class="fw-bolder">#1013</span></td>
+                                                                <td>24 Jun 2024 02:29:PM
+                                                                </td>
+                                                                <td>$1.72</td>
+                                                                <td>
+                                                                    <div
+                                                                        class="badge bg-pending custom-badge rounded-0">
+                                                                        <span>Pending</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td>COD</td>
+                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><span class="fw-bolder">#1012</span></td>
+                                                                <td>21 Jun 2024 05:18:PM
+                                                                </td>
+                                                                <td>$6.23</td>
+                                                                <td>
+                                                                    <div
+                                                                        class="badge bg-pending custom-badge rounded-0">
+                                                                        <span>Pending</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td>COD</td>
+                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><span class="fw-bolder">#1011</span></td>
+                                                                <td>21 Jun 2024 05:18:PM
+                                                                </td>
+                                                                <td>$39.72</td>
+                                                                <td>
+                                                                    <div
+                                                                        class="badge bg-pending custom-badge rounded-0">
+                                                                        <span>Pending</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td>COD</td>
+                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><span class="fw-bolder">#1010</span></td>
+                                                                <td>21 Jun 2024 04:29:PM
+                                                                </td>
+                                                                <td>$3.76</td>
+                                                                <td>
+                                                                    <div
+                                                                        class="badge bg-pending custom-badge rounded-0">
+                                                                        <span>Pending</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td>COD</td>
+                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><span class="fw-bolder">#1009</span></td>
+                                                                <td>21 Jun 2024 03:57:PM
+                                                                </td>
+                                                                <td>$1.52</td>
+                                                                <td>
+                                                                    <div
+                                                                        class="badge bg-pending custom-badge rounded-0">
+                                                                        <span>Pending</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td>COD</td>
+                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><span class="fw-bolder">#1006</span></td>
+                                                                <td>21 Jun 2024 03:48:PM
+                                                                </td>
+                                                                <td>$5.49</td>
+                                                                <td>
+                                                                    <div
+                                                                        class="badge bg-pending custom-badge rounded-0">
+                                                                        <span>Pending</span>
+                                                                    </div>
+                                                                </td>
+                                                                <td>COD</td>
+                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div class="product-pagination">
+                                                <div class="theme-paggination-block">
+                                                    <nav>
+                                                        <ul class="pagination">
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="#!" aria-label="Previous">
+                                                                    <span>
+                                                                        <i class="ri-arrow-left-s-line"></i>
+                                                                    </span>
+                                                                    <span class="sr-only">Previous</span>
+                                                                </a>
+                                                            </li>
+                                                            <li class="page-item active">
+                                                                <a class="page-link" href="#!">1</a>
+                                                            </li>
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="#!">2</a>
+                                                            </li>
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="#!">3</a>
+                                                            </li>
+                                                            <li class="page-item">
+                                                                <a class="page-link" href="#!" aria-label="Next">
+                                                                    <span>
+                                                                        <i class="ri-arrow-right-s-line"></i>
+                                                                    </span>
+                                                                    <span class="sr-only">Next</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="tab-pane fade" id="refund-tab-pane" role="tabpanel">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card mb-0 dashboard-table mt-0">
+                                        <div class="card-body">
+                                            <div class="top-sec">
+                                                <h3>Refund</h3>
+                                            </div>
+                                            <div class="total-box mt-0">
+                                                <div class="wallet-table mt-0">
+                                                    <div class="table-responsive">
+                                                        <table class="table cart-table order-table">
+                                                            <thead>
+                                                                <tr class="table-head">
+                                                                    <th>Order</th>
+                                                                    <th>Status</th>
+                                                                    <th class="reason-table">Reason</th>
+                                                                    <th>Created At</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td><span class="fw-bolder">#1000</span></td>
+                                                                    <td>
+                                                                        <div class="status-rejected">
+                                                                            <span>Rejected</span>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td class="reason-table">Item was damaged . also
+                                                                        fabric was not
+                                                                        good as expected</td>
+                                                                    <td>21 Jun 2024</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div class="product-pagination">
+                                                    <div class="theme-paggination-block">
+                                                        <nav>
+                                                            <ul class="pagination">
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="#!"
+                                                                        aria-label="Previous">
+                                                                        <span>
+                                                                            <i class="ri-arrow-left-s-line"></i>
+                                                                        </span>
+                                                                        <span class="sr-only">Previous</span>
+                                                                    </a>
+                                                                </li>
+                                                                <li class="page-item active">
+                                                                    <a class="page-link" href="#!">1</a>
+                                                                </li>
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="#!">2</a>
+                                                                </li>
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="#!">3</a>
+                                                                </li>
+                                                                <li class="page-item">
+                                                                    <a class="page-link" href="#!" aria-label="Next">
+                                                                        <span>
+                                                                            <i class="ri-arrow-right-s-line"></i>
+                                                                        </span>
+                                                                        <span class="sr-only">Next</span>
+                                                                    </a>
+                                                                </li>
+                                                            </ul>
+                                                        </nav>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="address-tab-pane" role="tabpanel">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card mb-0 mt-0">
+                                        <div class="card-body">
+                                            <div class="top-sec">
+                                                <h3>Address Book</h3><a href="#add-address" data-bs-toggle="modal"
+                                                    class="btn btn-sm btn-solid">+ Add New</a>
+                                            </div>
+                                            <div class="address-book-section">
+                                                <div class="row g-4">
+                                                    <div class="select-box active col-xl-4 col-md-6">
+                                                        <div class="address-box">
+                                                            <div class="top">
+                                                                <h6>John Due <span>New Home</span>
+                                                                </h6>
+                                                            </div>
+                                                            <div class="middle">
+                                                                <div class="address">
+                                                                    <p>26, Starts Hollow
+                                                                        Colony, Denver</p>
+                                                                    <p>Colorado, United
+                                                                        States</p>
+                                                                    <p>80014</p>
+                                                                </div>
+                                                                <div class="number">
+                                                                    <p>Phone: <span>+1
+                                                                            5551855359</span></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="bottom"><a href="#edit-address"
+                                                                    data-bs-toggle="modal" class="bottom_btn">Edit</a><a
+                                                                    href="#delate-address" data-bs-toggle="modal"
+                                                                    class="bottom_btn">Remove</a></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="select-box active col-xl-4 col-md-6">
+                                                        <div class="address-box">
+                                                            <div class="top">
+                                                                <h6>John Due <span>Old Home</span>
+                                                                </h6>
+                                                            </div>
+                                                            <div class="middle">
+                                                                <div class="address">
+                                                                    <p>53B, Claire New
+                                                                        Street, San Jose</p>
+                                                                    <p>Colorado, United States</p>
+                                                                    <p>94088</p>
+                                                                </div>
+                                                                <div class="number">
+                                                                    <p>Phone: <span>+1
+                                                                            5551855359</span></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="bottom"><a href="#edit-address"
+                                                                    data-bs-toggle="modal" class="bottom_btn">Edit</a><a
+                                                                    href="#delate-address" data-bs-toggle="modal"
+                                                                    class="bottom_btn">Remove</a></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="select-box active col-xl-4 col-md-6">
+                                                        <div class="address-box">
+                                                            <div class="top">
+                                                                <h6>John Due <span>Office</span></h6>
+                                                            </div>
+                                                            <div class="middle">
+                                                                <div class="address">
+                                                                    <p>21B, Row New Street,
+                                                                        San Jose</p>
+                                                                    <p>California, United
+                                                                        States</p>
+                                                                    <p>94088</p>
+                                                                </div>
+                                                                <div class="number">
+                                                                    <p>Phone: <span>+1
+                                                                            551865359</span></p>
+                                                                </div>
+                                                            </div>
+                                                            <div class="bottom"><a href="#edit-address"
+                                                                    data-bs-toggle="modal" class="bottom_btn">Edit</a><a
+                                                                    href="#delate-address" data-bs-toggle="modal"
+                                                                    class="bottom_btn">Remove</a></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!--  dashboard section end -->
+
+    <%- include('../partial/user/footer') %>
+    <!-- Footer Section End -->
+
+
+    <!-- Search Modal Start -->
+    <div class="modal fade search-modal theme-modal-2" id="searchModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title fs-5">Search in store</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="search-input-box">
+                        <input type="text" class="form-control" placeholder="Search with brands and categories...">
+                        <i class="ri-search-2-line"></i>
+                    </div>
+
+                    <ul class="search-category">
+                        <li class="category-title">Top search:</li>
+                        <li>
+                            <a href="category-page.html">Baby Essentials</a>
+                        </li>
+                        <li>
+                            <a href="category-page.html">Bag Emporium</a>
+                        </li>
+                        <li>
+                            <a href="category-page.html">Bags</a>
+                        </li>
+                        <li>
+                            <a href="category-page.html">Books</a>
+                        </li>
+                    </ul>
+
+                    <div class="search-product-box mt-sm-4 mt-3">
+                        <h3 class="search-title">Most Searched</h3>
+
+                        <div class="row row-cols-xl-4 row-cols-md-3 row-cols-2 g-sm-4 g-3">
+                            <div class="col">
+                                <div class="basic-product theme-product-1">
+                                    <div class="overflow-hidden">
+                                        <div class="img-wrapper">
+                                            <div class="ribbon"><span>Exclusive</span></div>
+                                            <a href="product-page(accordian).html">
+                                                <img src="../assets copy/images/fashion-1/product/1.jpg"
+                                                    class="img-fluid blur-up lazyloaded" alt="">
+                                            </a>
+                                            <div class="rating-label"><i class="ri-star-fill"></i><span>2.5</span>
+                                            </div>
+                                            <div class="cart-info">
+                                                <a href="#!" title="Add to Wishlist" class="wishlist-icon">
+                                                    <i class="ri-heart-line"></i>
+                                                </a>
+                                                <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                    title="Add to cart">
+                                                    <i class="ri-shopping-cart-line"></i>
+                                                </button>
+                                                <a href="#quickView" data-bs-toggle="modal" title="Quick View">
+                                                    <i class="ri-eye-line"></i>
+                                                </a>
+                                                <a href="compare.html" title="Compare">
+                                                    <i class="ri-loop-left-line"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="product-detail">
+                                            <div>
+                                                <div class="brand-w-color">
+                                                    <a class="product-title" href="product-page(accordian).html">
+                                                        Glamour Gaze
+                                                    </a>
+                                                    <div class="color-panel">
+                                                        <ul>
+                                                            <li style="background-color: papayawhip;"></li>
+                                                            <li style="background-color: burlywood;"></li>
+                                                            <li style="background-color: gainsboro;"></li>
+                                                        </ul>
+                                                        <span>+2</span>
+                                                    </div>
+                                                </div>
+                                                <h6>Boyfriend Shirts</h6>
+                                                <h4 class="price">$ 2.79<del> $3.00 </del><span
+                                                        class="discounted-price"> 7%
+                                                        Off
+                                                    </span>
+                                                </h4>
+                                            </div>
+                                            <ul class="offer-panel">
+                                                <li>
+                                                    <span class="offer-icon">
+                                                        <i class="ri-discount-percent-fill"></i>
+                                                    </span>
+                                                    Limited Time Offer: 4% off
+                                                </li>
+                                                <li><span class="offer-icon"><i
+                                                            class="ri-discount-percent-fill"></i></span>
+                                                    Limited Time Offer: 4% off</li>
+                                                <li><span class="offer-icon"><i
+                                                            class="ri-discount-percent-fill"></i></span>
+                                                    Limited Time Offer: 4% off</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="basic-product theme-product-1">
+                                    <div class="overflow-hidden">
+                                        <div class="img-wrapper">
+                                            <a href="product-page(accordian).html"><img
+                                                    src="../assets copy/images/fashion-1/product/11.jpg"
+                                                    class="img-fluid blur-up lazyloaded" alt=""></a>
+                                            <div class="rating-label"><i class="fa fa-star"></i>
+                                                <span>6.5</span>
+                                            </div>
+                                            <div class="cart-info">
+                                                <a href="#!" title="Add to Wishlist" class="wishlist-icon">
+                                                    <i class="ri-heart-line"></i>
+                                                </a>
+                                                <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                    title="Add to cart">
+                                                    <i class="ri-shopping-cart-line"></i>
+                                                </button>
+                                                <a href="#quickView" data-bs-toggle="modal" title="Quick View">
+                                                    <i class="ri-eye-line"></i>
+                                                </a>
+                                                <a href="compare.html" title="Compare">
+                                                    <i class="ri-loop-left-line"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="product-detail">
+                                            <div>
+                                                <div class="brand-w-color">
+                                                    <a class="product-title" href="product-page(accordian).html">
+                                                        VogueVista
+                                                    </a>
+                                                </div>
+                                                <h6>Chic Crop Top</h6>
+                                                <h4 class="price">$ 5.60<del> $6.80 </del><span
+                                                        class="discounted-price"> 5%
+                                                        Off
+                                                    </span>
+                                                </h4>
+                                            </div>
+                                            <ul class="offer-panel">
+                                                <li><span class="offer-icon"><i
+                                                            class="ri-discount-percent-fill"></i></span>
+                                                    Limited Time Offer: 25% off</li>
+                                                <li><span class="offer-icon"><i
+                                                            class="ri-discount-percent-fill"></i></span>
+                                                    Limited Time Offer: 25% off</li>
+                                                <li><span class="offer-icon"><i
+                                                            class="ri-discount-percent-fill"></i></span>
+                                                    Limited Time Offer: 25% off</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="basic-product theme-product-1">
+                                    <div class="overflow-hidden">
+                                        <div class="img-wrapper">
+                                            <a href="product-page(accordian).html"><img
+                                                    src="../assets copy/images/fashion-1/product/15.jpg"
+                                                    class="img-fluid blur-up lazyloaded" alt=""></a>
+                                            <div class="rating-label"><i class="fa fa-star"></i>
+                                                <span>3.7</span>
+                                            </div>
+                                            <div class="cart-info">
+                                                <a href="#!" title="Add to Wishlist" class="wishlist-icon">
+                                                    <i class="ri-heart-line"></i>
+                                                </a>
+                                                <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                    title="Add to cart">
+                                                    <i class="ri-shopping-cart-line"></i>
+                                                </button>
+                                                <a href="#quickView" data-bs-toggle="modal" title="Quick View">
+                                                    <i class="ri-eye-line"></i>
+                                                </a>
+                                                <a href="compare.html" title="Compare">
+                                                    <i class="ri-loop-left-line"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="product-detail">
+                                            <div>
+                                                <div class="brand-w-color">
+                                                    <a class="product-title" href="product-page(accordian).html">
+                                                        Urban Chic
+                                                    </a>
+                                                </div>
+                                                <h6>Classic Jacket</h6>
+                                                <h4 class="price">$ 3.80 </h4>
+                                            </div>
+                                            <ul class="offer-panel">
+                                                <li><span class="offer-icon"><i
+                                                            class="ri-discount-percent-fill"></i></span>
+                                                    Limited Time Offer: 10% off</li>
+                                                <li><span class="offer-icon"><i
+                                                            class="ri-discount-percent-fill"></i></span>
+                                                    Limited Time Offer: 10% off</li>
+                                                <li><span class="offer-icon"><i
+                                                            class="ri-discount-percent-fill"></i></span>
+                                                    Limited Time Offer: 10% off</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <div class="basic-product theme-product-1">
+                                    <div class="overflow-hidden">
+                                        <div class="img-wrapper">
+                                            <a href="product-page(accordian).html">
+                                                <img src="../assets copy/images/fashion-1/product/16.jpg"
+                                                    class="img-fluid blur-up lazyloaded" alt="">
+                                            </a>
+                                            <div class="rating-label"><i class="fa fa-star"></i>
+                                                <span>8.7</span>
+                                            </div>
+                                            <div class="cart-info">
+                                                <a href="#!" title="Add to Wishlist" class="wishlist-icon">
+                                                    <i class="ri-heart-line"></i>
+                                                </a>
+                                                <button data-bs-toggle="modal" data-bs-target="#addtocart"
+                                                    title="Add to cart">
+                                                    <i class="ri-shopping-cart-line"></i>
+                                                </button>
+                                                <a href="#quickView" data-bs-toggle="modal" title="Quick View">
+                                                    <i class="ri-eye-line"></i>
+                                                </a>
+                                                <a href="compare.html" title="Compare">
+                                                    <i class="ri-loop-left-line"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="product-detail">
+                                            <div>
+                                                <div class="brand-w-color">
+                                                    <a class="product-title" href="product-page(accordian).html">
+                                                        Couture Edge
+                                                    </a>
+                                                </div>
+                                                <h6>Versatile Shacket</h6>
+                                                <h4 class="price"> $3.00
+                                                </h4>
+                                            </div>
+                                            <ul class="offer-panel">
+                                                <li><span class="offer-icon"><i
+                                                            class="ri-discount-percent-fill"></i></span>
+                                                    Limited Time Offer: 12% off</li>
+                                                <li><span class="offer-icon"><i
+                                                            class="ri-discount-percent-fill"></i></span>
+                                                    Limited Time Offer: 12% off</li>
+                                                <li><span class="offer-icon"><i
+                                                            class="ri-discount-percent-fill"></i></span>
+                                                    Limited Time Offer: 12% off</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Search Modal End -->
+
+
+    <!-- Cart Offcanvas Start -->
+    <div class="offcanvas offcanvas-end cart-offcanvas" tabindex="-1" id="cartOffcanvas">
+        <div class="offcanvas-header">
+            <h3 class="offcanvas-title">My Cart (3)</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas">
+                <i class="ri-close-line"></i>
+            </button>
+        </div>
+        <div class="offcanvas-body">
+            <div class="pre-text-box">
+                <p>spend $20.96 More And Enjoy Free Shipping!</p>
+                <div class="progress" role="progressbar">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 58.08%;">
+                        <i class="ri-truck-line"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-title">
+                <a href="#!">Clear Cart</a>
+            </div>
+
+            <div class="cart-media">
+                <ul class="cart-product">
+                    <li>
+                        <div class="media">
+                            <a href="#!">
+                                <img src="../assets copy/images/fashion-1/product/5.jpg" class="img-fluid"
+                                    alt="Classic Jacket">
+                            </a>
+                            <div class="media-body">
+                                <a href="#!">
+                                    <h4>Couture Edge</h4>
+                                </a>
+                                <h4 class="quantity">
+                                    <span>1 x $6.74</span>
+                                </h4>
+
+                                <div class="qty-box">
+                                    <div class="input-group qty-container">
+                                        <button class="btn qty-btn-minus">
+                                            <i class="ri-subtract-line"></i>
+                                        </button>
+                                        <input type="number" readonly name="qty" class="form-control input-qty"
+                                            value="1">
+                                        <button class="btn qty-btn-plus">
+                                            <i class="ri-add-line"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="close-circle">
+                                    <button class="close_button edit-button" data-bs-toggle="modal"
+                                        data-bs-target="#variationModal">
+                                        <i class="ri-pencil-line"></i>
+                                    </button>
+                                    <button class="close_button delete-button" type="submit">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="media">
+                            <a href="#!">
+                                <img src="../assets copy/images/fashion-1/product/13.jpg" class="img-fluid"
+                                    alt="Classic Jacket">
+                            </a>
+                            <div class="media-body">
+                                <a href="#!">
+                                    <h4>Classic Jacket</h4>
+                                </a>
+                                <h4 class="quantity">
+                                    <span>1 x $7.84</span>
+                                </h4>
+                                <div class="qty-box">
+                                    <div class="input-group qty-container">
+                                        <button class="btn qty-btn-minus">
+                                            <i class="ri-subtract-line"></i>
+                                        </button>
+                                        <input type="number" readonly name="qty" class="form-control input-qty"
+                                            value="1">
+                                        <button class="btn qty-btn-plus">
+                                            <i class="ri-add-line"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="close-circle">
+                                    <button class="close_button delete-button" type="submit">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="media">
+                            <a href="#!">
+                                <img src="../assets copy/images/fashion-1/product/12.jpg" class="img-fluid"
+                                    alt="Classic Jacket">
+                            </a>
+                            <div class="media-body">
+                                <a href="#!">
+                                    <h4>Urban Chic</h4>
+                                </a>
+                                <h4 class="quantity">
+                                    <span>2 x $3.84</span>
+                                </h4>
+                                <div class="qty-box">
+                                    <div class="input-group qty-container">
+                                        <button class="btn qty-btn-minus">
+                                            <i class="ri-subtract-line"></i>
+                                        </button>
+                                        <input type="number" readonly name="qty" class="form-control input-qty"
+                                            value="1">
+                                        <button class="btn qty-btn-plus">
+                                            <i class="ri-add-line"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="close-circle">
+                                    <button class="close_button delete-button" type="submit">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <ul class="cart_total">
+                    <li>
+                        <div class="total">
+                            <h5>Sub Total : <span>$36.74</span>
+                            </h5>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="buttons">
+                            <a href="cart.html" class="btn view-cart">View Cart</a>
+                            <a href="checkout.html" class="btn checkout">Check Out</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade theme-modal-2 variation-modal" id="variationModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <button type="button" class="btn-close" data-bs-dismiss="modal">
+                    <i class="ri-close-line"></i>
+                </button>
+                <div class="modal-body">
+                    <div class="product-right product-page-details variation-title">
+                        <h2 class="main-title">
+                            <a href="product-page(accordian).html">Cami Tank Top (Blue)</a>
+                        </h2>
+                        <h3 class="price-detail">$14.25 <span>5% off</span></h3>
+                    </div>
+                    <div class="variation-box">
+                        <h4 class="sub-title">Color:</h4>
+                        <ul class="quantity-variant color">
+                            <li class="bg-light">
+                                <span style="background-color: rgb(240, 0, 0);"></span>
+                            </li>
+                            <li class="bg-light">
+                                <span style="background-color: rgb(47, 147, 72);"></span>
+                            </li>
+                            <li class="bg-light active">
+                                <span style="background-color: rgb(0, 132, 255);"></span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="variation-qty-button">
+                        <div class="qty-section">
+                            <div class="qty-box">
+                                <div class="input-group qty-container">
+                                    <button class="btn qty-btn-minus">
+                                        <i class="ri-subtract-line"></i>
+                                    </button>
+                                    <input type="number" readonly name="qty" class="form-control input-qty" value="1">
+                                    <button class="btn qty-btn-plus">
+                                        <i class="ri-add-line"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-buttons">
+                            <button class="btn btn-animation btn-solid hover-solid scroll-button"
+                                id="replacecartbtnVariation14" type="submit" data-bs-dismiss="modal">
+                                <i class="ri-shopping-cart-line me-1"></i>
+                                Update Item
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Cart Offcanvas End -->
+
+
+    <!-- tap to top -->
+    <div class="tap-top">
+        <div>
+            <i class="ri-arrow-up-double-line"></i>
+        </div>
+    </div>
+    <!-- tap to top End -->
+
+    <!-- theme setting start -->
+    <div class="theme-settings">
+        <button onclick="openSetting()" class="setting-sidebar btn" id="setting-icon">
+            <i class="ri-sound-module-line"></i>
+            Customize
+        </button>
+    </div>
+
+    <div class="scroll-setting-box">
+        <div id="setting_box" class="setting-box">
+            <a href="#!" class="overlay" onclick="closeSetting()"></a>
+            <div class="setting-title">
+                <h4>Theme Setting</h4>
+                <a href="#!" class="close-icon" onclick="closeSetting()">
+                    <i class="ri-close-large-line"></i>
+                </a>
+            </div>
+
+            <div class="setting_box_body">
+                
+                <div class="setting-section">
+                    <div class="setting-inner-title">
+                        <h5>RTL Mode</h5>
+                        <p>Change Language Direction</p>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input type="checkbox" role="switch" id="rtlmode" class="form-check-input">
+                    </div>
+                </div>
+                <div class="setting-section">
+                    <div class="setting-inner-title">
+                        <h5>Dark Mode</h5>
+                        <p>Switch Between Light And Dark Mode</p>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input type="checkbox" role="switch" id="darkmode" class="form-check-input">
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+    <!-- theme setting end -->
+
+    <!-- edit profile starts -->
+    <div class="modal fade theme-modal-2" id="edit-profile" tabindex="-1">
+        <div class=" modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="fw-semibold">Edit Profile</h3>
+                    <button class="btn btn-close" type="submit" data-bs-dismiss="modal">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-xxl-12">
+                            <div class="form-box">
+                                <label for="name" class="form-label">Name</label>
+                                <input id="Dname" type="text" value="<%=details.name%>" class="form-control"
+                                    placeholder="">
+                            </div>
+                            <span  id="error-Dname" bg-color="red"></span>
+                        </div>
+                        <div class="col-xxl-12">
+                            <div class="form-box">
+                                <label for="name1" class="form-label">Email</label>
+                                <input id="Demail" type="email" value="<%=details.email%>" class="form-control"
+                                    placeholder="Enter Email" readonly>
+                            </div>
+                        </div>
+                        <div class="col-xxl-12">
+                            <div class="form-box">
+                                <label for="name2" class="form-label">Phone Number</label>
+                                <% if(details.phone){ %>
+                                <input id="Dphone" type="tel" value="<%=details.phone%>" class="form-control"
+                                    placeholder="Enter Phone Number">
+
+                                    <%} else{%>
+                                        <input id="Dphone" type="tel" value="" class="form-control"
+                                        placeholder="Enter Phone Number">
+                                   <% }%>
+                                   <span  id="error-Dphone" bg-color="red"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 d-flex align-items-center justify-content-end gap-2">
+                        <button class="btn btn-md btn-outline fw-bold" type="button" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button class="btn btn-solid" type="button" onclick="editDetails(event)" data-bs-dismiss="">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- edit profile end -->
+
+    <!-- edit password starts -->
+    <div class="modal fade theme-modal-2" id="edit-password" tabindex="-1">
+        <div class=" modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="fw-semibold">Edit Password</h3>
+                    <button class="btn btn-close" type="submit" data-bs-dismiss="modal">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-xxl-12">
+                            <div class="form-box">
+                                <label for="current" class="form-label">Current Password</label>
+                                <input id="current" type="password" class="form-control"
+                                    placeholder="Enter Current Password">
+                            </div>
+                    
+                        </div>
+                        <div class="col-xxl-12">
+                            <div class="form-box">
+                                <label for="New" class="form-label">New Password</label>
+                                <input id="New" type="password"  class="form-control" placeholder="Enter New Password">
+                            </div>
+
+                        </div>
+                        <div class="col-xxl-12">
+                            <div class="form-box">
+                                <label for="Confirm" class="form-label">Confirm Password</label>
+                                <input id="Confirm" type="password"  class="form-control"
+                                    placeholder="Enter Confirm Password">
+                            </div>
+                        </div>
+                        <span id="error-password"></span>
+                    </div>
+
+                    <div class="mt-3 d-flex align-items-center justify-content-end gap-2">
+                        <button class="btn btn-md btn-outline fw-bold" type="button" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                        <button class="btn btn-solid" type="button" onclick="ChangePassword(event)">
+                            Submit
+                        </button>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- edit password end -->
+
+    <!-- add address starts -->
+    <div class="modal fade theme-modal-2" id="add-address" tabindex="-1">
+        <div class=" modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="fw-semibold">Edit Profile</h3>
+                    <button class="btn btn-close" type="submit" data-bs-dismiss="modal">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-xxl-12">
+                            <div class="form-box">
+                                <label for="title" class="form-label"> title</label>
+                                <input id="title" type="text" class="form-control" placeholder="Enter title">
+                            </div>
+                        </div>
+                        <div class="col-xxl-12">
+                            <div class="form-box">
+                                <label for="name32" class="form-label">Address</label>
+                                <input id="name32" type="text" class="form-control" placeholder="Enter Address">
+                            </div>
+                        </div>
+                        <div class="col-xxl-12">
+                            <div class="form-box">
+                                <label for="name4" class="form-label">Phone Number</label>
+                                <input id="name4" type="tel" value="(+1) 65558845" class="form-control"
+                                    placeholder="Enter Phone Number">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-box">
+                                <label for="name" class="form-label">Country</label>
+                                <select class="form-control form-select quantity-variant select-dropdown"
+                                    id="input-state-02">
+                                    <option selected="" disabled>Select Country </option>
+                                    <option value="0" class=""> United States </option>
+                                    <option value="1" class=""> United Kingdom </option>
+                                    <option value="2" class=""> India </option>
+                                    <option value="3" class=""> Canada </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-box">
+                                <label class="form-label">State</label>
+                                <select class="form-control form-select quantity-variant select-dropdown"
+                                    id="input-state-04">
+                                    <option selected="" disabled>Select Country </option>
+                                    <option value="0" class=""> New York </option>
+                                    <option value="1" class=""> London </option>
+                                    <option value="2" class=""> Delhi </option>
+                                    <option value="3" class=""> Ottawa </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-box">
+                                <label for="City" class="form-label">City</label>
+                                <input id="City" type="text" class="form-control" placeholder="Enter City">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-box">
+                                <label for="pincode" class="form-label">Pin Code</label>
+                                <input id="pincode" type="number" class="form-control" placeholder="Enter Pin Code">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-3 d-flex align-items-center justify-content-end gap-2">
+                        <button class="btn btn-md btn-outline fw-bold" type="button"
+                            data-bs-dismiss="modal">Cancel</button>
+                        <button class="btn btn-solid" type="submit" data-bs-dismiss="modal">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- add address end -->
+
+    <!-- edit address starts -->
+    <div class="modal fade theme-modal-2" id="edit-address" tabindex="-1">
+        <div class=" modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="fw-semibold">Edit Profile</h3>
+                    <button class="btn btn-close" data-bs-dismiss="modal">
+                        <i class="ri-close-line"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-xxl-12">
+                            <div class="form-box">
+                                <label for="title" class="form-label"> title</label>
+                                <input id="title2" type="text" value="Home" class="form-control"
+                                    placeholder="Enter title">
+                            </div>
+                        </div>
+                        <div class="col-xxl-12">
+                            <div class="form-box">
+                                <label for="name6" class="form-label">Address</label>
+                                <input id="name6" type="text" value="26, Starts Hollow Colony" class="form-control"
+                                    placeholder="Enter Address">
+                            </div>
+                        </div>
+                        <div class="col-xxl-12">
+                            <div class="form-box">
+                                <label for="name5" class="form-label">Phone Number</label>
+                                <input id="name5" type="tel" value="(+1) 65558845" class="form-control"
+                                    placeholder="Enter Phone Number">
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-box">
+                                <label class="form-label">Country</label>
+                                <select class="form-control form-select quantity-variant select-dropdown"
+                                    id="input-state-06">
+                                    <option disabled>Select Country </option>
+                                    <option selected="" value="0" class=""> United States </option>
+                                    <option value="1" class=""> United Kingdom </option>
+                                    <option value="2" class=""> India </option>
+                                    <option value="3" class=""> Canada </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-box">
+                                <label class="form-label">State</label>
+                                <select class="form-control form-select quantity-variant select-dropdown"
+                                    id="input-state-0">
+                                    <option disabled>Select Country </option>
+                                    <option selected="" value="0" class=""> New York </option>
+                                    <option value="1" class=""> London </option>
+                                    <option value="2" class=""> Delhi </option>
+                                    <option value="3" class=""> Ottawa </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-box">
+                                <label for="city2" class="form-label">City</label>
+                                <input id="city2" type="text" class="form-control" value="Albany"
+                                    placeholder="Enter City">
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-box">
+                                <label for="pincode2" class="form-label">Pin Code</label>
+                                <input id="pincode2" type="number" class="form-control" value="12204"
+                                    placeholder="Enter Pin Code">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 d-flex align-items-center justify-content-end gap-2">
+                        <button class="btn btn-md btn-outline fw-bold" data-bs-dismiss="modal">Cancel</button>
+                        <button class="btn btn-solid" data-bs-dismiss="modal">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- add address end -->
+
+    <!-- delate address starts -->
+    <div class="modal fade theme-modal-2" id="delate-address" data-bs-backdrop="static" tabindex="-1">
+        <div class=" modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body p-3">
+                    <div class="trash-box text-center">
+                        <i class="ri-delete-bin-line icon-box"></i>
+                        <h5 class="modal-title">Delete Item?</h5>
+                        <p>This Item Will Be Deleted Permanently. You Can't Undo This Action.
+                        </p>
+                        <div class="mt-3 d-flex align-items-center justify-content-center gap-2">
+                            <button class="btn btn-md btn-outline fw-bold" data-bs-dismiss="modal">No</button>
+                            <button class="btn btn-solid" data-bs-dismiss="modal">Yes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- delate address end -->
+
+    <!-- logout starts -->
+    <div class="modal fade theme-modal-2 exit-modal" id="logout" data-bs-backdrop="static" tabindex="-1">
+        <div class=" modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-body p-3">
+                    <i class="ri-question-line icon-box"></i>
+                    <h5 class="modal-title">Confirmation</h5>
+                    <p>Are You Sure You Want To Processed?</p>
+                    <div class="mt-3 d-flex align-items-center justify-content-center gap-2">
+                        <button class="btn btn-md btn-outline fw-bold" data-bs-dismiss="modal">No</button>
+                        <a href="/logout" class="btn btn-solid">Yes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- logout end -->
+
+    <!-- latest jquery-->
+
+    
+    <script src="../assets copy/js/jquery-3.3.1.min.js"></script>
+
+    <!-- menu js-->
+    <script src="../assets copy/js/menu.js"></script>
+
+    <!-- lazyload js-->
+    <script src="../assets copy/js/lazysizes.min.js"></script>
+
+    <!-- slick js-->
+    <script src="../assets copy/js/slick.js"></script>
+
+    <!-- Bootstrap js-->
+    <script src="../assets copy/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap Notification js-->
+    <script src="../assets copy/js/bootstrap-notify.min.js"></script>
+
+    <!-- Theme js-->
+    <script src="../assets copy/js/theme-setting.js"></script>
+    <script src="../assets copy/js/script.js"></script>
+
+    <script>
+        function openSearch() {
+            document.getElementById("search-overlay").style.display = "block";
+        }
+
+        function closeSearch() {
+            document.getElementById("search-overlay").style.display = "none";
+        }
+    </script>
+
+
+<script>
+function editDetails(event) {
+    event.preventDefault(); 
+
+    let isValid = true; // Fixed typo (was "isvaild")
+
+    let name = document.getElementById("Dname").value.trim();
+    let phone = document.getElementById("Dphone").value.trim();
+
+
+    // Name validation
+    if (name === "") {
+        showError("error-Dname", "Name is required");
+        isValid = false;
+    } else {
+        clearError("error-Dname");
+    }
+
+    // Phone validation (only if the user enters a phone number)
+    if (phone !== "" && !/^\d{10}$/.test(phone)) {
+        showError("error-Dphone", "Enter a valid 10-digit phone number");
+        isValid = false;
+    } else {
+        clearError("error-Dphone");
+    }
+
+
+    if (!isValid) {
+        return;
+    }
+
+    let userData = {
+        name: name,
+        phone: phone
+    };
+
+    fetch(`/profile?id=<%=details._id%>`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(userData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showSuccessNotification("Details updated successfully!");
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
+           
+        } 
+        else{
+            showErrorNotification(data.message)
+        }
+    })
+    .catch(error => {
+        console.error("Error:", error);
+        showErrorNotification("Something went wrong. Please try again later.");
+    });
+}
+
+function showError(id, message) {
+        const errorElement = document.getElementById(id);
+        errorElement.textContent = message;
+        errorElement.style.color = 'red';
+    }
+
+    function clearError(id) {
+        const errorElement = document.getElementById(id);
+        errorElement.textContent = '';
+    }
+
+
+
+
+    function showSuccessNotification() {
+            Swal.fire({
+                title: 'Success',
+                text: 'Your email has been verified!',
+                icon: 'success',
+                position: 'top',
+                toast: true,
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                },
+                background: '#fff',
+                color: '#1a1a1a',
+                iconColor: '#4CAF50',
+                customClass: {
+                    popup: 'premium-toast',
+                    title: 'premium-title',
+                    timerProgressBar: 'premium-progress'
+                }
+    })
+}
+
+// Error notification function
+function showErrorNotification(message) {
+
+    Swal.fire({
+        title: 'Error',
+        text: message || 'Verification failed',
+        icon: 'error',
+        position: 'top',
+        toast: true,
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        showClass: {
+            popup: 'animate__animated animate__shakeX'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        },
+        background: '#fff',
+        color: '#1a1a1a',
+        iconColor: '#FF3B30',
+        customClass: {
+            popup: 'premium-error-toast',
+            title: 'premium-error-title',
+            timerProgressBar: 'premium-error-progress'
+        }
+    });
+}
+
+
+
+
+function ChangePassword(event) {
+    event.preventDefault();
+    
+    let oldPassword = document.getElementById("current").value.trim();
+    let newPassword = document.getElementById("New").value.trim();
+    let confirmPassword = document.getElementById("Confirm").value.trim();
+    let errorElement = document.getElementById("error-password");
+  
+    let isValid = true;
+    clearError("error-password")
+    const passwordRegex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
+
+    if (!oldPassword || !newPassword || !confirmPassword) {
+        showError("error-password", "All fields are required.");
+        isValid = false;
+    }
+
+    if (newPassword && !passwordRegex.test(newPassword)) {
+        showError("error-password", "New password must be at least 8 characters long, contain at least one uppercase letter, one number, and one special character (!@#$%^&*).");
+        isValid = false;
+    }
+
+    if (newPassword !== confirmPassword) {
+        showError("error-password", "New password and confirm password do not match.");
+        isValid = false;
+    }
+
+    if (!isValid) {
+        return;
+    }
+
+    const formData = {
+        oldPassword,
+        newPassword
+    };
+
+    fetch("/changePassword?id=<%=details._id%>", {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            showSuccessNotification("Password changed successfully!");
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
+        } else {
+            showErrorNotification( data.message || "Failed to change password.");
+        }
+    })
+    .catch(error => {
+        showErrorNotification("error-password", "An error occurred. Please try again.");
+    });
+}
+
+
+</script>
+
+
+
+</body>
+
+
+<!-- Mirrored from themes.pixelstrap.com/multikart/front-end/dashboard.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 Jan 2025 02:41:25 GMT -->
+</html>
