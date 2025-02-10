@@ -23,7 +23,7 @@ const verientSchema = new Schema(
                         required: true,
                         default: 0, 
                   },
-                  l: {
+                  L: {
                         type: Number,
                         required: true,
                         default: 0,

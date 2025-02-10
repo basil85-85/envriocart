@@ -32,6 +32,9 @@ router.get("/details",shopController.details)
 router.get("/profile",auth.userAuth,userDetails.profile)
 router.put("/profile",auth.userAuth,userDetails.editDetails)
 router.put("/changePassword",auth.userAuth,userDetails.changePassword)
+router.post("/address",auth.userAuth,userDetails.Addaddress)
+router.delete("/deleteAddress",auth.userAuth,userDetails.deleteAddress)
+router.put("/editAddress",auth.userAuth,userDetails.editAddress)
 
        
 export default router

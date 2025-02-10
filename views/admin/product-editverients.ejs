@@ -578,67 +578,79 @@
            <!-- App Javascript (Require in all Page) -->
            <script src="/assets/js/app.js"></script>
            <script>
-            function formSubmit(event) {
-    event.preventDefault();
-    
-    const form = document.getElementById('variantForm');
-    if (!form) {
-        console.error("Form not found!");
-        return;
-    }
+        async function formSubmit(event) {
+        event.preventDefault(); 
 
-    const sizeItems = document.querySelectorAll('.size-item');
-    let isValid = true;
-    let hasSelectedSize = false;
-
-    clearError("error-message-size");
-
-    sizeItems.forEach(sizeItem => {
-        const checkbox = sizeItem.querySelector('input[type="checkbox"]');
-        const quantityInput = sizeItem.querySelector('.quantity-input');
-        if (checkbox.checked) {
-            hasSelectedSize = true;
-            if (!quantityInput.value.trim() || Number(quantityInput.value) <= 0) {
-                showError("error-message-size", "Please enter a valid quantity");
-                isValid = false;
-            }
-        }
-    });
-
-    if (!hasSelectedSize) {
-        showError("error-message-size", "Please select at least one size");
-        return; 
-    }
-
-    if (isValid) {
-
-
-        const formData = new FormData(form);
-
-        // Debug FormData
-        for (const pair of formData.entries()) {
-            console.log(pair[0], pair[1]);
+        let isValid = true;
+        const colorPicker = document.getElementById("colorPicker");
+        const colorError = document.getElementById("error-message-color");
+        if (!colorPicker.value.trim()) {
+            colorError.textContent = "Please select a color.";
+            isValid = false;
+        } else {
+            colorError.textContent = "";
         }
 
-        const variantId = encodeURIComponent("<%= verient._id %>");
-        fetch(`/admin/product/verient?id=${variantId}`, {
-            method: 'PUT',
-            body: formData, 
-        })
-        .then(response => response.json().catch(() => ({ success: false, message: "Invalid server response" })))
-        .then(data => {
-            if (data.success) {
-                showSuccessNotification(data.success);
-            } else {
-                showSuccessNotification(data.message);
+        // Size validation
+        const sizeCheckboxes = document.querySelectorAll("input[name='sizes[]']");
+        const sizeError = document.getElementById("error-message-size");
+        let sizeSelected = false;
+        let selectedSizes = {};
+
+        sizeCheckboxes.forEach((checkbox) => {
+            if (checkbox.checked) {
+                sizeSelected = true;
+                const quantityInput = document.querySelector(`input[name='sizeQty[${checkbox.value}]']`);
+                if (!quantityInput.value || quantityInput.value <= 0) {
+                    sizeError.textContent = "Enter a valid quantity for selected sizes.";
+                    isValid = false;
+                } else {
+                    selectedSizes[checkbox.value] = quantityInput.value;
+                }
             }
-        })
-        .catch(error => {
-            console.error(error);
-            showErrorNotification('An error occurred.');
         });
+
+        if (!sizeSelected) {
+            sizeError.textContent = "Select at least one size.";
+            isValid = false;
+        } else if (isValid) {
+            sizeError.textContent = "";
+        }
+
+        // If validation fails, stop execution
+        if (!isValid) return;
+
+        // Prepare form data
+        const formData = {
+            color: colorPicker.value,
+            sizes: selectedSizes,
+        };
+
+        try {
+            const response = await fetch("/admin/product/verient?id=<%=verient._id%>", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                showSuccessNotification("Variant saved successfully!");
+                setTimeout(()=>{
+                    window.location.href = "/admin/product/view?id=<%= verient.productId._id %>";
+                },1500)
+               
+            } else {
+                showErrorNotification("Error: " + result.message);
+            }
+        } catch (error) {
+            alert("Something went wrong. Please try again.");
+            console.error(error);
+        }
     }
-}
+        
 
     
     

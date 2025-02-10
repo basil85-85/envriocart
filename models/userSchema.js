@@ -39,7 +39,6 @@ createdAt: {
     type: Boolean,
     default: false
   },
- 
 
   referCode: {
     type: String,

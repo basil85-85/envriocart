@@ -6,59 +6,64 @@ const cartSchema = new Schema(
     {
         userId: {
             type: Schema.Types.ObjectId,
-            ref: "User", // Reference to the User model
+            ref: "User", 
             required: true,
         },
-        Items: [
+        items: [
             {
                 productId: {
                     type: Schema.Types.ObjectId,
-                    ref: "Product", // Reference to the Product model
+                    ref: "Product", 
                     required: true,
+                },
+                color: {
+                    type: String,
+                    required: false, 
+                },
+                image: {
+                    type: String,
+                    required: false,
+                },
+                size: {
+                    type: String,
+                    required: false, 
                 },
                 quantity: {
                     type: Number,
                     required: true,
-                    min: 1, // Minimum quantity should be 1
+                    min: 1, 
                     default: 1,
                 },
                 price: {
                     type: Number,
-                    required: true, // Captures the price of the product at the time of adding
+                    required: true,
                 },
                 total: {
-                    type: Number,
-                    required: true, // Calculated as quantity * price
+                    type: Number, 
+                    default: 0,
                 },
-                status:{
-                    type:String,
-                    default:"placed"
-                },
-                
-
             },
         ],
         totalPrice: {
             type: Number,
-            required: true, // Sum of all product totals
+            required: true, 
             default: 0,
         },
     },
     {
-        timestamps: true, // Automatically adds `createdAt` and `updatedAt` fields
+        timestamps: true,
     }
 );
 
-// Middleware to calculate `total` and `totalPrice`
 cartSchema.pre("save", function (next) {
-    this.products.forEach((product) => {
-        product.total = product.quantity * product.price; // Calculate total for each product
+    this.items.forEach((item) => {
+        item.total = item.quantity * item.price;
     });
-    this.totalPrice = this.products.reduce((acc, item) => acc + item.total, 0); // Calculate total price
+    this.totalPrice = this.items.reduce((acc, item) => acc + item.total, 0); 
     next();
 });
 
-// Creating the model
 const Cart = mongoose.model("Cart", cartSchema);
 
 export default Cart;
+

@@ -7,44 +7,36 @@ const addressSchema = new Schema({
         ref: "user",
         required: true, 
     },
+    title:{
+           type: String,
+           required: true,
+        },
     address: {
-        addressType: {
-            type: String,
+             type: String,
             required: true,
         },
-        firstname: {
-            type: String,
-            required: true, 
-        },
-        lastname: {
-            type: String,
-            required: true, 
-        },
-        city: {
-            type: String,
-            required: true, 
-        },
-        landMark: {
-            type: String,
-            required: true, 
-        },
-        State: {
-            type: String,
-            required: true, 
-        },
-        pincode: {
-            type: Number,
-            required: true,
-        },
-        Phone: {
+     phone: {
             type: Number,
             required: true, 
         },
-        altPhone: {
+     country:{
+            type:String,
+            required:true,
+        },
+     state: {
             type: String,
+            required: true, 
+        },
+     city: {
+            type: String,
+            required: true, 
+        },
+      pincode: {
+            type: Number,
             required: true,
         },
-    },
+} ,{
+    timestamps: true,
 });
 
 const Address = mongoose.model("Address", addressSchema);

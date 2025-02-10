@@ -527,12 +527,16 @@
                                               
                                                                  <h5 class="text-dark fw-medium">Size :</h5>
                                                                  <div class="d-flex flex-wrap gap-2" role="group" aria-label="Basic checkbox toggle button group">
-                                                                      <% Object.entries(val.size).forEach(([size,quality])=>{ %>
+                                                                      
 
-                   
-                                                                      <h4 class="fw-bold text-primary"><%= size %></h4>
-                                                                      <h4 class="text-success fw-medium">: <%= quality %></h4>
-                                                                      <% }) %>
+                                                                      <% for (let [size, quality] of Object.entries(val.size)) { %>
+                                                                           <% if (quality > 0) { %>
+                                                                               <h4 class="fw-bold text-primary"><%= size %></h4>
+                                                                               <h4 class="text-success fw-medium">: <%= quality %></h4>
+                                                                           <% } %>
+                                                                       <% } %>
+                                                                       
+
                                                                  </div>
                                                            
                                                              

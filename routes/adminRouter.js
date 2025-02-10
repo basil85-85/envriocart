@@ -70,4 +70,4 @@ router.get("/product/edit",auth.adminAuth,productController.editproduct)
 router.put("/product/editproduct",auth.adminAuth,productController.editingProduct)
 router.patch("/product/isblock",auth.adminAuth,productController.isblocked)
 router.put("/product/image-upload",auth.adminAuth,upload.array('image', 3),productController.ImageUpdate)
-export default router
+export default router 
