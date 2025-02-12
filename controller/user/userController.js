@@ -58,6 +58,7 @@ const loadLogHomepage = async (req, res) => {
           products = products.filter(product => product.variants.length > 0);
   
           const category = await Category.find({ isListed: true });
+          const countCart =res.locals.cartCount
   
           let isLoggedIn = false;
           if (userId) {
@@ -67,8 +68,7 @@ const loadLogHomepage = async (req, res) => {
                   isLoggedIn = true;
               }
           }
-  
-          return res.render('homei', { isLoggedIn, products, category });
+          return res.render('homei', { isLoggedIn, products, category ,countCart});
   
       } catch (error) {
           console.error('Error rendering home page:', error);

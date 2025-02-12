@@ -1,0 +1,450 @@
+<%- include('../partial/user/header') %>
+<style>
+    .qty-btn-plus:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+</style>
+    <!-- breadcrumb start -->
+    <div class="breadcrumb-section">
+        <div class="container">
+            <h2>Cart</h2>
+            <nav class="theme-breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="">
+                        <a href="/">Home / </a>
+                    </li>
+                    <li class="item active">Cart</li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+    <!-- breadcrumb End -->
+
+
+    <!--section start-->
+    <section class="cart-section section-b-space">
+        <%  if(cartItems && cartItems.items.length >0){%>
+        <div class="container">
+           
+            <div class="table-responsive">
+                <table class="table cart-table">
+                    <thead>
+                        <tr class="table-head">
+                            <th>image</th>
+                            <th>product name</th>
+                            <th>Size</th>
+                            <th>price</th>
+                            <th>quantity</th>
+                            <th>total</th>
+                            <th>action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    
+                          <% cartItems.items.forEach((Items)=>{ %>
+                        <tr>            
+                            <td>
+                                <a href="">
+                                    <img src="<%=Items.image %>" class="img-fluid" alt="">
+                                </a>
+                            </td>
+                            <td>
+                                <a href=""><%=Items.productName%></a>
+                                <div class="mobile-cart-content row">
+                                    <div class="col">
+                                        <div class="qty-box">
+                                            <div class="input-group qty-container">
+                                                <div class="d-flex align-items-center justify-content-center gap-2">
+                                                    `<div class="quantity-control">
+                                                        <button id="decrease-<%= Items.verientId%>" 
+                                                                class="btn btn-sm btn-light border px-1" 
+                                                                onclick="handleQuantityUpdate('<%=Items.verientId%>', 1 ,'<%=Items.size%>')"
+                                                                <%= Items.quantity <= 1 ? 'disabled' : '' %>>
+                                                            <i class="fas fa-minus"></i>
+                                                        </button>
+                                                        
+                                                        <input type="text" 
+                                                               id="quantity-<%= Items.verientId%>" 
+                                                               name="quantity" 
+                                                               class="form-control text-center mx-1"
+                                                               value="<%= Items.quantity %>" 
+                                                               readonly 
+                                                               style="width: 50px; min-width: 50px;">
+                                                        
+                                                        <button id="increase-<%= Items.verientId%>" 
+                                                                class="btn btn-sm btn-light border px-1" 
+                                                                onclick="handleQuantityUpdate('<%=Items.verientId%>', 1 ,'<%=Items.size%>')"
+                                                                <%= Items.quantity >= Items.availableStock ? 'disabled' : '' %>>
+                                                            <i class="fas fa-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col table-price">
+                                        <h2 class="td-color">Rs: <%=Items.price%></h2>
+                                    </div>
+                                    <div class="col">
+                                        <h2 class="td-color">
+                                            <a href="" class="icon remove-btn">
+                                                <i class="ri-close-line"></i>
+                                            </a>
+                                        </h2>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-price">
+                                <h2 id="sizeqty"><%=Items.size%></h2>
+                            </td>
+                            <td class="table-price">
+                                <h2>Rs: <%=Items.price%></h2>
+                            </td>
+                            <td>
+                                <div class="qty-box">
+                                    <div class="input-group qty-container">
+                                        <div class="d-flex align-items-center justify-content-center gap-2">
+                                            `<div class="quantity-control">
+                                                <button id="decrease-<%= Items.verientId%>" 
+                                                        class="btn btn-sm btn-light border px-1" 
+                                                        onclick="handleQuantityUpdate('<%=Items.verientId%>', -1 ,'<%=Items.size%>')"
+                                                        <%= Items.quantity <= 1 ? 'disabled' : '' %>>
+                                                    <i class="fas fa-minus"></i>
+                                                </button>
+                                                
+                                                <input type="text" 
+                                                       id="quantity-<%= Items.verientId%>" 
+                                                       name="quantity" 
+                                                       class="form-control text-center mx-1"
+                                                       value="<%= Items.quantity %>" 
+                                                       readonly 
+                                                       style="width: 50px; min-width: 50px;">
+                                                
+                                                <button id="increase-<%= Items.verientId %>" 
+                                                        class="btn btn-sm btn-light border px-1" 
+                                                        onclick="handleQuantityUpdate('<%=Items.verientId%>', 1 ,'<%=Items.size%>')"
+                                                        <%= Items.quantity >= Items.availableStock ? 'disabled' : '' %>>
+                                                    <i class="fas fa-plus"></i>
+                                                </button>
+                                            </div>
+                                    </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <h2 class="td-color" id="priceItems-<%=Items._id%>"> Rs: <%=Items.total %></h2>
+                            </td>
+                            <td>
+                                <button type="button" class="icon remove-btn " onclick="DeleteCart('<%=Items._id%>')">
+                                    <i class="ri-close-line"></i>
+                                </button>
+                            </td>
+                        </tr>
+                  <%  }) %>
+                   
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="d-md-table-cell d-none">total price :</td>
+                            <td class="d-md-none">total price :</td>
+                            <td>
+                                <h2> RS : <%=cartItems.totalPrice%></h2>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+         
+
+            <div class="row cart-buttons">
+                <div class="col-6">
+                    <a href="/shop" class="btn btn-solid text-capitalize">continue
+                        shopping</a>
+                </div>
+                <div class="col-6">
+                    <a href="/checkout" class="btn btn-solid text-capitalize">check out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% } else { %>
+        <div class="text-center py-5">
+            <div class="mb-4">
+                <i class="ri-shopping-cart-line" style="font-size: 4rem; color: #ddd;"></i>
+            </div>
+            <h3 class="mb-3">Your Cart is Empty</h3>
+            <p class="text-muted mb-4">Looks like you haven't added anything to your cart yet.</p>
+            <a href="/shop" class="btn btn-primary">
+                Start Shopping
+            </a>
+        </div>
+    <% } %>
+    </section>
+    <!--section end-->
+
+
+    <!-- Footer Section Start -->
+    <%- include('../partial/user/footer') %>
+    <!-- Footer Section End -->
+    <!-- Cart Offcanvas Start -->
+
+   
+    <!-- Cart Offcanvas End -->
+
+
+    <!-- theme setting start -->
+    <div class="theme-settings">
+        <button onclick="openSetting()" class="setting-sidebar btn" id="setting-icon">
+            <i class="ri-sound-module-line"></i>
+            Customize
+        </button>
+    </div>
+
+    <div class="scroll-setting-box">
+        <div id="setting_box" class="setting-box">
+            <a href="#!" class="overlay" onclick="closeSetting()"></a>
+            <div class="setting-title">
+                <h4>Theme Setting</h4>
+                <a href="#!" class="close-icon" onclick="closeSetting()">
+                    <i class="ri-close-large-line"></i>
+                </a>
+            </div>
+
+           
+                <div class="setting-section">
+                    <div class="setting-inner-title">
+                        <h5>RTL Mode</h5>
+                        <p>Change Language Direction</p>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input type="checkbox" role="switch" id="rtlmode" class="form-check-input">
+                    </div>
+                </div>
+                <div class="setting-section">
+                    <div class="setting-inner-title">
+                        <h5>Dark Mode</h5>
+                        <p>Switch Between Light And Dark Mode</p>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input type="checkbox" role="switch" id="darkmode" class="form-check-input">
+                    </div>
+                </div>
+                <div class="setting-section">
+                    <div class="setting-inner-title">
+                        <a target="_blank" href="#!">Admin</a>
+                        <p>Backend Admin Panel</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- theme setting end -->
+
+
+    <!-- tap to top start -->
+    <div class="tap-top">
+        <div>
+            <i class="ri-arrow-up-double-line"></i>
+        </div>
+    </div>
+
+    <!-- latest jquery-->
+    <script src="../assets copy/js/jquery-3.3.1.min.js"></script>
+
+    <!-- menu js-->
+    <script src="../assets copy/js/menu.js"></script>
+
+    <!-- lazyload js-->
+    <script src="../assets copy/js/lazysizes.min.js"></script>
+
+    <!-- timer js-->
+    <!-- <script src="../assets copy/js/timer1.js"></script> -->
+
+    <!-- slick js-->
+    <script src="../assets copy/js/slick.js"></script>
+
+    <!-- Bootstrap js-->
+    <script src="../assets copy/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Bootstrap Notification js-->
+    <script src="../assets copy/js/bootstrap-notify.min.js"></script>
+
+    <!-- Theme js-->
+    <script src="../assets copy/js/theme-setting.js"></script>
+    <script src="../assets copy/js/script.js"></script>
+
+    <script>
+        function openSearch() {
+            document.getElementById("search-overlay").style.display = "block";
+        }
+
+        function closeSearch() {
+            document.getElementById("search-overlay").style.display = "none";
+        }
+        function DeleteCart(itemId) {
+                fetch(`/deleteCart?id=${itemId}`, {
+                    method: "DELETE",
+                })
+                .then(response => response.json())  // Parse the JSON response
+                .then(data => {
+                    if (data.success) {
+                        showSuccessNotification(data.message);
+                        location.reload();  // Reload the page to update the cart
+                    } else {
+                        showErrorNotification(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error("Error deleting cart item:", error);
+                    showErrorNotification("An error occurred while deleting the item");
+                });
+            }
+
+
+
+
+function showSuccessNotification(message) {
+            Swal.fire({
+                title: 'Success',
+                text: message,
+                icon: 'success',
+                position: 'top',
+                toast: true,
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                },
+                background: '#fff',
+                color: '#1a1a1a',
+                iconColor: '#4CAF50',
+                customClass: {
+                    popup: 'premium-toast',
+                    title: 'premium-title',
+                    timerProgressBar: 'premium-progress'
+                }
+    })
+}
+
+
+function showErrorNotification(message) {
+
+    Swal.fire({
+        title: 'Error',
+        text: message || 'Verification failed',
+        icon: 'error',
+        position: 'top',
+        toast: true,
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        showClass: {
+            popup: 'animate__animated animate__shakeX'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        },
+        background: '#fff',
+        color: '#1a1a1a',
+        iconColor: '#FF3B30',
+        customClass: {
+            popup: 'premium-error-toast',
+            title: 'premium-error-title',
+            timerProgressBar: 'premium-error-progress'
+        }
+    });
+}
+
+
+
+
+const QUANTITY_LIMITS = {
+    MIN: 1,
+    MAX: 5
+};
+
+// Frontend: Cart Update Handler
+async function handleQuantityUpdate(productId, change, size) {
+    const elements = {
+        quantity: document.getElementById(`quantity-${productId}`),
+        increase: document.getElementById(`increase-${productId}`),
+        decrease: document.getElementById(`decrease-${productId}`),
+        price: document.getElementById(`priceItems-${productId}`),
+        totalPrice: document.getElementById(`totalPrice-${productId}`),
+        subTotal: document.getElementById(`subTotal-${productId}`),
+        grandTotal: document.getElementById('grandTotal')
+    };
+
+    // Validate elements exist
+    if (!Object.values(elements).every(element => element)) {
+        console.error('Required DOM elements not found');
+        return showAlert('error', 'System error. Please refresh the page.');
+    }
+
+    const currentQuantity = parseInt(elements.quantity.value);
+    const newQuantity = currentQuantity + change;
+
+    // Validate quantity limits
+    if (newQuantity < QUANTITY_LIMITS.MIN || newQuantity > QUANTITY_LIMITS.MAX) {
+        return showAlert('info', `Quantity must be between ${QUANTITY_LIMITS.MIN} to ${QUANTITY_LIMITS.MAX}`);
+    }
+
+    try {
+        const response = await fetch('/updateCartQuantity', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ productId, quantity: newQuantity, size })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.status) {
+            updateCartDisplay(elements, newQuantity, data.availableStock, data.newTotal);
+        } else {
+            showAlert('warning', data.message);
+            if (data.availableStock) {
+                updateCartDisplay(elements, data.availableStock, data.availableStock, data.newTotal);
+            }
+        }
+    } catch (error) {
+        console.error('Error updating quantity:', error);
+        showAlert('error', 'Failed to update quantity. Please try again.');
+    }
+}
+
+// Frontend: Helper Functions
+function updateCartDisplay(elements, quantity, availableStock, newTotal) {
+    const price = parseFloat(elements.price.innerText.replace('₹', ''));
+    const total = price * quantity;
+
+    elements.quantity.value = quantity;
+    elements.totalPrice.innerText = `₹${total}`;
+    elements.subTotal.innerText = `₹${total}`;
+    elements.grandTotal.innerText = `₹${newTotal}`;
+
+    updateButtonStates(elements, quantity, availableStock);
+}
+
+function updateButtonStates(elements, quantity, availableStock) {
+    elements.decrease.disabled = quantity <= QUANTITY_LIMITS.MIN;
+    elements.increase.disabled = quantity >= Math.min(availableStock, QUANTITY_LIMITS.MAX);
+}
+
+function showAlert(icon, title) {
+    return Swal.fire({
+        icon,
+        title,
+        showConfirmButton: false,
+        timer: 2000
+    });
+}
+
+    </script>
+</body>
+
+
+</html>

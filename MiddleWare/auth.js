@@ -1,4 +1,5 @@
 import User from '../models/userSchema.js';
+import Cart from '../models/cartSchema.js';
 
 const userAuth = async (req, res, next) => {
     try {
@@ -20,8 +21,8 @@ const userAuth = async (req, res, next) => {
             });
         }
 
-        req.session.userId = userId; // Ensure session is updated
-        req.user = userData; // Attach user data for later use
+        req.session.userId = userId; 
+        req.user = userData; 
 
         next();
     } catch (error) {
@@ -68,9 +69,36 @@ let checkBan = async (req, res, next) => {
   }
   
 
+
+
+const cartCountMiddleware = async (req, res, next) => {
+    try {
+        if (req.session.userId) {
+            const userID = req.session.userId;
+            const cart = await Cart.findOne({ userId: userID });
+
+            // Count total number of items in the cart
+            const cartItemCount = cart ? cart.items.length : 0;
+
+            // Store it in res.locals to access in views
+            res.locals.cartCount = cartItemCount;
+        } else {
+            res.locals.cartCount = 0;
+        }
+    } catch (error) {
+        console.log(`Error fetching cart count: ${error}`);
+        res.locals.cartCount = 0;
+    }
+    next();
+};
+
+
+
+
 export default {
     userAuth,
     adminAuth,
-    checkBan
+    checkBan,
+    cartCountMiddleware,
    
 };

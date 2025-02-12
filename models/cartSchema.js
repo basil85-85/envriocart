@@ -11,9 +11,21 @@ const cartSchema = new Schema(
         },
         items: [
             {
-                productId: {
+                verientId: {
                     type: Schema.Types.ObjectId,
-                    ref: "Product", 
+                    ref: "Verient", 
+                    required: true,
+                },
+                productName:{
+                    type: String,
+                    required: false,
+                },
+                size: {
+                    type: String,
+                    required: false, 
+                },
+                price: {
+                    type: Number,
                     required: true,
                 },
                 color: {
@@ -24,20 +36,14 @@ const cartSchema = new Schema(
                     type: String,
                     required: false,
                 },
-                size: {
-                    type: String,
-                    required: false, 
-                },
+                
                 quantity: {
                     type: Number,
                     required: true,
                     min: 1, 
                     default: 1,
                 },
-                price: {
-                    type: Number,
-                    required: true,
-                },
+                
                 total: {
                     type: Number, 
                     default: 0,

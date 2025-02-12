@@ -10,7 +10,15 @@
         position: relative;
         margin-bottom: 30px;
     }
+    .stock-availability {
+    margin-top: 5px;
+    font-size: 0.8em;
+}
 
+.stock-info {
+    color: green;
+    display: none;
+}
     /* .product-slick {
         border: 1px solid #eee;
         border-radius: 8px;
@@ -268,84 +276,77 @@
                                         <% }) %>
                                     </ul>
                                 </div>
+                                
                             <% } %>
-
-                        <div class="product-size-cont" id="product-size-cont0">
-                            <div class="variation-box size-box mt-3 ">
-                                <h4 class="sub-title">Size:</h4>
-                                <ul class="quantity-variant custom-variations circle d-inline-flex">
-                                    <% 
-                                    // Define size order to ensure consistent display
-                                    const sizeOrder = ['S', 'M', 'L', 'XL', 'XXL'];
-                                    
-                                    // Filter and sort sizes
-                                    const availableSizes = sizeOrder.filter(size => 
-                                        products.variants[0].size && 
-                                        products.variants[0].size[size] && 
-                                        products.variants[0].size[size] > 0
-                                    );
-                    
-                                    availableSizes.forEach((size, index) => { 
-                                    %>
-                                        <li class="<%= index === 0 ? 'active' : '' %>">
-                                            <button 
-                                                type="button" 
-                                                data-variant-index=""
-                                                data-size="<%= size %>"
-                                                data-stock="<%= products.variants[0].size[size] %>"
-                                                class="size-selector"
-                                            >
-                                                <%= size %>
-                                            </button>
-                                        </li>
-                                    <% }); %>
-                                </ul>
-                            </div>
-                        </div>
-
-                            <% if (products.variants && products.variants.length > 1) { %>
-                                <% for(let i = 1; i<products.variants.length; i++) { %>
-                                <div class="product-size-cont display-none" id="product-size-cont<%= i %>">
-                                    <div class="variation-box size-box mt-3">
-                                        <h4 class="sub-title">Size:</h4>
-                                        <ul class="quantity-variant custom-variations circle d-inline-flex">
-                                            <% 
-                                            // Define size order to ensure consistent display
-                                            const sizeOrder = ['S', 'M', 'L', 'XL', 'XXL'];
-                                            
-                                            // Filter and sort sizes
-                                            const availableSizes = sizeOrder.filter(size => 
-                                            products.variants[i].size && 
-                                            products.variants[i].size[size] && 
-                                            products.variants[i].size[size] > 0
-                                            );
+                            <hr>
+                            <div class="product-variants-container">
+                                <% 
+                                const sizeOrder = ['S', 'M', 'L', 'XL', 'XXL'];
                             
-                                            availableSizes.forEach((size, index) => { 
-                                            %>
-                                                <li class="<%= index === 0 ? 'active' : '' %>">
-                                                    <button 
-                                                        type="button" 
-                                                        data-variant-index="<%= i %>"
-                                                        data-size="<%= size %>"
-                                                        data-stock="<%= products.variants[i].size[size] %>"
-                                                        class="size-selector"
+                                products.variants.forEach((variant, variantIndex) => { 
+                                    const availableSizes = sizeOrder.filter(size => 
+                                        variant.size && 
+                                        Object.keys(variant.size).includes(size) && 
+                                        variant.size[size] > 0
+                                    );
+                                %>
+                                    <div 
+                                        class="product-size-cont <%= variantIndex === 0 ? '' : 'display-none' %>" 
+                                        id="product-size-cont<%= variantIndex %>"
+                                    >
+                                        <div class="variation-box size-box mt-2 " style="width: 22%;">
+                                            <h4 class="sub-title">Size:</h4>
+                                            <select 
+                                                class="size-selector form-control form-control-sm"
+                                                data-variant-index="<%= variantIndex %>"
+                                                style="font-size: 16px; padding: 10px;"
+                                            >
+                                                <% availableSizes.forEach((size, index) => { 
+                                                    const stock = variant.size[size];
+                                                %>
+                                                    <option
+                                                        value="<%= size %>"
+                                                        data-stock="<%= stock %>"
+                                                        <%= index === 0 ? 'selected' : '' %>
                                                     >
                                                         <%= size %>
-                                                    </button>
-                                                </li>
-                                            <% }); %>
-                                        </ul>
+                                                    </option>
+                                                <% }); %>
+                                            </select>
+
+                                            <div class="stock-availability">
+                                                <% availableSizes.forEach((size) => { 
+                                                    const stock = variant.size[size];
+                                                %>
+                                                    <span 
+                                                        class="stock-info" 
+                                                        data-size="<%= size %>"
+                                                        style="color: green;"
+                                                    >
+                                                        <%= stock %> available
+                                                    </span>
+                                                <% }); %>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <% } %>
-                            <% } %>
-                            
+                                <% }); %>
+                            </div>
+                            <span id="cart-count" hidden></span>
+                            <% products.variants.forEach((variant, index) => { %>
+                                <input type="hidden" id="variant-id-<%= index %>" value="<%= variant._id %>">
+                            <% }); %>
                     
                             <div class="product-buttons">
                                 
                                 <div class="d-flex align-items-center gap-3">
-                                    <button class="btn btn-animation btn-solid hover-solid scroll-button" type="button" onclick="addToCart()">
-                                        <i class="ri-shopping-cart-line me-1"></i> Add To Cart</button>
+                                    <button class="btn btn-animation btn-solid hover-solid scroll-button" 
+                                        type="button" 
+                                        onclick="addToCart()"
+                                        id="add-to-cart-btn"
+                                        data-variant-id="">
+                                        <i class="ri-shopping-cart-line me-1"></i> Add To Cart
+                                    </button>
+
                                     <a href="#!" class="btn btn-solid buy-button">Buy Now</a>
                                 </div>
                             </div>
@@ -353,16 +354,6 @@
                                 <a href="">
                                     <i class="ri-heart-line"></i>
                                     <span>Add To Wishlist</span>
-                                </a>
-
-                                <a href="#!" class="add-compare">
-                                    <i class="ri-refresh-line"></i>
-                                    <span>Add To Compare</span>
-                                </a>
-
-                                <a href="" data-bs-toggle="modal">
-                                    <i class="ri-share-line"></i>
-                                    <span>Share</span>
                                 </a>
                             </div>
 
@@ -1365,7 +1356,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
-    // Add this to your existing JavaScript file
 function initMagnifier() {
     const productSlicks = document.querySelectorAll('.product-slick');
     
@@ -1426,10 +1416,9 @@ function initMagnifier() {
     });
 }
 
-// Initialize magnifier when DOM is loaded
 document.addEventListener('DOMContentLoaded', initMagnifier);
 
-// Call initMagnifier after changing images
+
 function changeMainImage(index, variantIndex) {
     const mainImage = document.getElementById(`main-image${variantIndex}`);
     const thumbnailImage = document.getElementById(`thumbnail${variantIndex}-image${index}`);
@@ -1440,10 +1429,171 @@ function changeMainImage(index, variantIndex) {
     thumbnails.forEach(thumb => thumb.classList.remove('active'));
     thumbnailImage.parentElement.classList.add('active');
     
-    // Reinitialize magnifier for new image
     initMagnifier();
 }
 
+
+document.addEventListener('DOMContentLoaded', () => {
+    const sizeSelectors = document.querySelectorAll('.size-selector');
+    const stockInfoElements = document.querySelectorAll('.stock-info');
+
+    function updateStockDisplay(select) {
+        stockInfoElements.forEach(el => el.style.display = 'none');
+
+        const selectedSize = select.value;
+        const stockInfo = document.querySelector(`.stock-info[data-size="${selectedSize}"]`);
+        if (stockInfo) {
+            stockInfo.style.display = 'inline';
+        }
+    }
+
+    sizeSelectors.forEach(select => {
+        select.addEventListener('change', () => {
+            updateStockDisplay(select);
+        });
+
+        if (select.selectedIndex !== -1) {
+            updateStockDisplay(select);
+        }
+    });
+});
+
+let cart = [];
+
+function addToCart() {
+    // Get active variant index from the selected color button
+    const activeVariantIndex = document.querySelector('.color-variant .active button')?.getAttribute('onclick')?.match(/'(\d+)'/)[1];
+    
+    if (activeVariantIndex === undefined) {
+        alert('Please select a variant.');
+        return;
+    }
+    const activeColorButton = document.querySelector('.color-variant .active button');
+    const variantId = document.getElementById(`variant-id-${activeVariantIndex}`).value;
+    if (!variantId) {
+        alert('Variant ID not found.');
+        return;
+    }
+
+    const sizeSelector = document.querySelector(`#product-size-cont${activeVariantIndex} .size-selector`);
+    if (!sizeSelector) {
+        alert('Size selection not available.');
+        return;
+    }
+    const selectedSize = sizeSelector.value;
+    const stockElement = document.querySelector(`.stock-info[data-size="${selectedSize}"]`);
+    const stock = stockElement ? parseInt(stockElement.innerText) : 0;
+    
+    if (stock <= 0) {
+        alert('Selected size is out of stock.');
+        return;
+    }
+
+    const cartItem = {
+        variantId,
+        productName: document.querySelector('.main-title').innerText,
+        size: selectedSize,
+        color:activeColorButton.getAttribute('data-color'),
+        price: parseFloat(document.querySelector('.price-text h3').innerText.replace('Rs:', '').trim()),
+        image: document.querySelector(`#main-image${activeVariantIndex}`).src,
+        quantity: 1
+    };
+
+    // Check for existing item with same variant ID and size
+    const existingItem = cart.find(item => 
+        item.variantId === cartItem.variantId && 
+        item.size === cartItem.size
+    );
+
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push(cartItem);
+    }
+    updateCartDisplay()
+    fetch('/addCart', {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(cartItem)
+})
+.then(response => response.json())  
+.then(data => {
+    if (data && data.success) {  
+        showSuccessNotification(data.message);
+    } else {
+        showErrorNotification(data.message || "Something went wrong");
+    }
+})
+.catch(error => {
+    console.error("Fetch Error:", error);
+    showErrorNotification("You are not logged in, please login.");
+});
+}
+
+function updateCartDisplay() {
+    const cartCount = cart.reduce((total, item) => total + item.quantity, 0);
+    document.getElementById('cart-count').innerText = cartCount;
+    
+  
+}
+
+function showSuccessNotification(message) {
+            Swal.fire({
+                title: 'Success',
+                text: message,
+                icon: 'success',
+                position: 'top',
+                toast: true,
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                },
+                background: '#fff',
+                color: '#1a1a1a',
+                iconColor: '#4CAF50',
+                customClass: {
+                    popup: 'premium-toast',
+                    title: 'premium-title',
+                    timerProgressBar: 'premium-progress'
+                }
+    })
+}
+
+// Error notification function
+   function showErrorNotification(message) {
+
+    Swal.fire({
+        title: 'Error',
+        text: message || 'Verification failed',
+        icon: 'error',
+        position: 'top',
+        toast: true,
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        showClass: {
+            popup: 'animate__animated animate__shakeX'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        },
+        background: '#fff',
+        color: '#1a1a1a',
+        iconColor: '#FF3B30',
+        customClass: {
+            popup: 'premium-error-toast',
+            title: 'premium-error-title',
+            timerProgressBar: 'premium-error-progress'
+        }
+    });
+}
+
+</script>
 
 </script>
 </body>

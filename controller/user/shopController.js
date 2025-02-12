@@ -10,7 +10,7 @@ const shoppage = async (req, res) => {
             const userId = req.session.userId
             let page = parseInt(req.query.page) || 1
             let limit = parseInt(req.query.limit) || 10
-
+            const countCart =res.locals.cartCount
             let skip = (page - 1) * limit
             const products = await Product.find({
                   isBlocked: false,
@@ -24,6 +24,7 @@ const shoppage = async (req, res) => {
                   isBlocked: false,
                   variants: { $exists: true, $ne: [] },
             })
+
             const category = await Category.find({  isListed: true })
             let isLoggedIn = false
             if (userId) {
@@ -39,7 +40,8 @@ const shoppage = async (req, res) => {
                   products,
                   category,
                   currentPage: page,
-                  totalPages: Math.ceil(totalProducts / limit), // Calculate total pages
+                  totalPages: Math.ceil(totalProducts / limit),
+                  countCart
             })
       } catch (error) {
             console.error('Error rendering shop page:', error)
@@ -58,7 +60,7 @@ const details = async (req, res) => {
         userId=req.session.userId;
         const id =req.query.id
         let products = await Product.findById(id).populate("variants").populate("categoryName")
-
+        const countCart =res.locals.cartCount
         
         let relatedProducts = await Product.find({
             categoryName: products.categoryName, 
@@ -76,7 +78,7 @@ const details = async (req, res) => {
             }
         }
 
-        return res.render('details', { isLoggedIn, products,relatedProducts});
+        return res.render('details', { isLoggedIn, products,relatedProducts,countCart});
 
     } catch (error) {
         console.error('Error rendering home page:', error);

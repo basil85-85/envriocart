@@ -16,7 +16,8 @@ const profile = async (req, res) => {
         let isLoggedIn=true
         const details = await User.findById(req.session.userId)
         const address=await Address.find({userId:req.session.userId})
-        return res.render('profile', { isLoggedIn ,details,address})
+        const countCart =res.locals.cartCount   
+        return res.render('profile', { isLoggedIn ,details,address, countCart})
     } catch (error) {
         console.error('Error rendering home page:', error)
         res.status(500).render("404");
