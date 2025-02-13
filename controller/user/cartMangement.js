@@ -128,35 +128,51 @@ const getCart = async (req, res) => {
       }
 }
 const deleteCart = async (req, res) => {
-      try {
-            let id = req.query.id
+    try {
+        let id = req.query.id;
+    
+        if (!id) {
+            return res.status(400).json({
+                success: false,
+                message: "Cart ID is missing",
+            });
+        }
+    
+        const cart = await Cart.findOne({ "items._id": id });
+        if (!cart) {
+            return res.status(404).json({
+                success: false,
+                message: "Cart item not found",
+            });
+        }
 
-            if (!id) {
-                  return res.status(400).json({
-                        success: false,
-                        message: 'Cart ID is missing',
-                  })
-            }
+        const cartItem = cart.items.find(item => item._id.toString() === id);
+        if (!cartItem) {
+            return res.status(404).json({
+                success: false,
+                message: "Item not found in cart",
+            });
+        }
+  
+        cart.totalPrice -= cartItem.price * cartItem.quantity;
 
-            const cartItem = await Cart.findOne({ 'items._id': id })
-            if (!cartItem) {
-                  return res.status(404).json({
-                        success: false,
-                        message: 'Cart item not found',
-                  })
-            }
-            await Cart.updateOne(
-                  { 'items._id': id },
-                  { $pull: { items: { _id: id } } }
-            )
-            return res.status(200).json({
-                  success: true,
-                  message: 'Cart item deleted successfully',
-            })
-      } catch (error) {
-            console.error(`Error deleting cart item: ${error}`)
-            return res.render('404')
-      }
+        cart.items = cart.items.filter(item => item._id.toString() !== id);
+
+        await cart.save();
+    
+        return res.status(200).json({
+            success: true,
+            message: "Cart item deleted successfully",
+            newTotal: cart.totalPrice,  
+        });
+    } catch (error) {
+        console.error("Error deleting cart item:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Internal server error",
+        });
+    }
+    
 }
 const quantityCart = async (req, res) => {
       try {
@@ -173,6 +189,17 @@ const quantityCart = async (req, res) => {
                         item.verientId.toString() === productId &&
                         item.size === size
             )
+            let isVaild=true
+            for (let [SIZE, QTY] of Object.entries(variant.size)) {
+                if (SIZE === size) {  
+                    if(QTY < quantity){
+                         isVaild= false
+                    }
+                }
+            }
+            if(!isVaild){
+                return res.status(401).json({success:false,message:"out of stock"})
+            }
             if (itemIndex === -1) {
                   return res.status(404).json({
                         success: false,

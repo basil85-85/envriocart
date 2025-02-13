@@ -114,7 +114,7 @@
 
                                                 <input 
                                                     type="text" 
-                                                    id="quantity-<%= Items.verientId %>" 
+                                                    id="quantity-<%= Items.verientId %>-<%=Items.size %>" 
                                                     class="form-control text-center mx-1" 
                                                     value="<%= Items.quantity %>" 
                                                     readonly 
@@ -134,7 +134,7 @@
                                 </div>
                             </td>
                             <td>
-                                <h2 class="td-color" id="SubTotal-<%= Items.verientId %>" data-price="<%= Items.total %>">
+                                <h2 class="td-color" id="SubTotal-<%= Items.verientId %>-<%=Items.size %>" data-price="<%= Items.total %>">
                                     Rs: <%= Items.total  %>
                                 </h2>
                             </td>
@@ -380,8 +380,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 async function handleQuantityUpdate(productId, change, size) {
-    const quantityElement = document.getElementById(`quantity-${productId}`);
-    const subTotalElement = document.getElementById(`SubTotal-${productId}`)
+    const quantityElement = document.getElementById(`quantity-${productId}-${size}`);
+    const subTotalElement = document.getElementById(`SubTotal-${productId}-${size}`)
     const total = document.getElementById("totalPrice")
     console.log(total)
     let currentQuantity = parseInt(quantityElement.value);
@@ -407,17 +407,12 @@ async function handleQuantityUpdate(productId, change, size) {
         const data = await response.json();
 
         if (response.ok) { 
-            document.getElementById(`quantity-${productId}`).value = data.quantity
+            quantityElement.value = data.quantity
             total.innerText = `Rs: ${data.newTotal}`
              subTotalElement.innerText = `Rs : ${data.subtotal}`
            
         } else {
-            Swal.fire({
-                icon: 'warning',
-                title: data.message,
-                showConfirmButton: false,
-                timer: 2000
-            });
+            showErrorNotification(data.message)
         }
     } catch (error) {
         console.error('Error updating quantity:', error);
