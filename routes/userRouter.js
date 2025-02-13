@@ -9,6 +9,8 @@ import cartMangement from '../controller/user/cartMangement.js'
 
 import auth from '../MiddleWare/auth.js'
 
+import CheckOutmangement from '../controller/user/checkOutmangement.js'
+
 
 
 router.get('/', auth.cartCountMiddleware,userController.loadLogHomepage)
@@ -42,6 +44,10 @@ router.post("/addCart",auth.userAuth,cartMangement.AddCart)
 router.get("/cart",auth.cartCountMiddleware,auth.userAuth,cartMangement.getCart)
 router.delete("/deleteCart",auth.userAuth,cartMangement.deleteCart)
 router.put("/updateCartQuantity",auth.userAuth,cartMangement.quantityCart)
+
+
+// checkout
+router.get("/checkout",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement. getCheckout)
 
 export default router
             

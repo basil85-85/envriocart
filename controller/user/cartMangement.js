@@ -24,16 +24,7 @@ const AddCart = async (req, res) => {
                   quantity,
             } = req.body
             const userId = req.session.userId
-
-            const samevariantId = await Cart.findOne({
-                  'items.verientId': variantId,
-            })
-            if (samevariantId) {
-                  return res.status(404).json({
-                        success: false,
-                        message: 'You are already added to your Cart.',
-                  })
-            }
+       
             if (!userId) {
                   return res.status(401).json({
                         success: false,
@@ -43,25 +34,30 @@ const AddCart = async (req, res) => {
             }
             const variant = await Verient.findById(variantId)
             if (!variant) {
-                  return res.status(404).json({
+                  return res.status(401).json({
                         success: false,
                         message: 'Variant not found. Please try again.',
                   })
             }
             let userCart = await Cart.findOne({ userId })
-
+            
             if (userCart) {
                   const existingItemIndex = userCart.items.findIndex(
                         item =>
                               item.verientId.toString() === variantId &&
                               item.size === size
                   )
-
+                       
                   if (existingItemIndex > -1) {
                         userCart.items[existingItemIndex].quantity += quantity
                         userCart.items[existingItemIndex].total =
                               userCart.items[existingItemIndex].quantity *
                               userCart.items[existingItemIndex].price
+
+                              return res.status(401).json({
+                                success: false,
+                                message: 'Variant is already added.',
+                          })
                   } else {
                         userCart.items.push({
                               verientId: variantId,
@@ -96,17 +92,22 @@ const AddCart = async (req, res) => {
 
                   await userCart.save()
             }
-
-            // Fetch updated cart with populated fields
             const updatedCart = await Cart.findById(userCart._id)
                   .populate('items.verientId')
                   .populate('userId')
-
+            if(updatedCart){
             return res.status(200).json({
                   success: true,
                   message: 'Item added to cart successfully!',
                   cart: updatedCart,
+            })}
+            else{
+                return res.status(401).json({
+                    success: false,
+                    message: "something went wrong",
+                    
             })
+        }
       } catch (error) {
             console.error('Error adding item to cart:', error)
             return res.status(500).render('404')
@@ -158,80 +159,53 @@ const deleteCart = async (req, res) => {
       }
 }
 const quantityCart = async (req, res) => {
-    try {
-        const { productId, quantity, size } = req.body;
-        const userID = req.session.userId;
+      try {
+            const { productId, quantity, size } = req.body
+            const userID = req.session.userId
 
-        // Input validation
-        if (!productId || !quantity || !size) {
-            return res.status(400).json({
-                success: false,
-                message: "Missing required fields"
-            });
-        }
+            // Validation checks...
 
-        // Validate quantity
-        if (quantity < QUANTITY_LIMITS.MIN || quantity > QUANTITY_LIMITS.MAX) {
-            return res.status(400).json({
-                success: false,
-                message: `Quantity must be between ${QUANTITY_LIMITS.MIN} and ${QUANTITY_LIMITS.MAX}`
-            });
-        }
+            const cart = await Cart.findOne({ userId: userID })
+            const variant = await Verient.findById(productId)
 
-        // Find user cart
-        const cart = await Cart.findOne({ userId: userID });
-        if (!cart?.items?.length) {
-            return res.status(404).json({
-                success: false,
-                message: "User cart not found. Please add items to the cart first."
-            });
-        }
+            const itemIndex = cart.items.findIndex(
+                  item =>
+                        item.verientId.toString() === productId &&
+                        item.size === size
+            )
+            if (itemIndex === -1) {
+                  return res.status(404).json({
+                        success: false,
+                        message: 'Item not found in cart',
+                  })
+            }
+            cart.items[itemIndex].quantity = quantity
 
-        // Find the product variant
-        const variant = await Verient.findById(productId);
-        if (!variant) {
-            return res.status(404).json({
-                success: false,
-                message: "Product variant not found."
-            });
-        }
-
-        // Validate size
-        if (!(size in variant.size)) {
-            return res.status(400).json({
-                success: false,
-                message: `Invalid size. Available sizes: ${Object.keys(variant.size).join(", ")}`
-            });
-        }
-
-        // Check stock availability
-        const availableStock = variant.size[size];
-        if (availableStock < quantity) {
-            return res.status(400).json({
-                success: false,
-                message: `Not enough stock available. Requested: ${quantity}, Available: ${availableStock}`,
-                availableStock
-            });
-        }
-
-        await cart.save();
         
-        return res.status(200).json({
-            success: true,
-            status: true, // For frontend compatibility
-            message: "Stock is available",
-            availableStock,
-            newTotal: cart.total // Assuming cart.total exists
-        });
-    } catch (error) {
-        console.error('Quantity update error:', error);
-        return res.status(500).json({
-            success: false,
-            message: 'Internal server error'
-        });
-    }
-};
+            const newTotal = cart.items.reduce((total, item) => {
+                  return total + item.price * item.quantity
+            }, 0)
 
+            cart.totalPrice = newTotal 
+            
+            
+            await cart.save()
+            let  subtotal = cart.items[itemIndex].total 
+            return res.status(200).json({
+                  success: true,
+                  quantity: quantity,
+                  availableStock: variant.size[size],
+                  newTotal: newTotal,
+                  subtotal :subtotal
+            })
+      } catch (error) {
+            console.error('Quantity update error:', error)
+            return res.status(500).json({
+                  success: false,
+                  message: 'Internal server error',
+            })
+      }
+}
 
 export default {
       AddCart,

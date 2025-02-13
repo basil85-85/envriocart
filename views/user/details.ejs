@@ -1499,7 +1499,7 @@ function addToCart() {
         quantity: 1
     };
 
-    // Check for existing item with same variant ID and size
+
     const existingItem = cart.find(item => 
         item.variantId === cartItem.variantId && 
         item.size === cartItem.size
@@ -1527,6 +1527,9 @@ function addToCart() {
 .catch(error => {
     console.error("Fetch Error:", error);
     showErrorNotification("You are not logged in, please login.");
+    setTimeout(()=>{
+        window.location.href = '/login';
+    },1500)
 });
 }
 
@@ -1574,7 +1577,7 @@ function showSuccessNotification(message) {
         position: 'top',
         toast: true,
         showConfirmButton: false,
-        timer: 3000,
+        timer: 1500,
         timerProgressBar: true,
         showClass: {
             popup: 'animate__animated animate__shakeX'
