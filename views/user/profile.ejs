@@ -1965,8 +1965,6 @@ function editDetails(event) {
     let name = document.getElementById("Dname").value.trim();
     let phone = document.getElementById("Dphone").value.trim();
 
-
-    // Name validation
     if (name === "") {
         showError("error-Dname", "Name is required");
         isValid = false;
@@ -2284,78 +2282,7 @@ function populateEditForm(addressData) {
     }
 }
 
-function editAddress(event) {
-    event.preventDefault();
-    let isValid = true;
-    
-    // Get form values
-    let addressId = document.getElementById("addressId").value.trim();
-    let title = document.getElementById("title2").value.trim();
-    let address = document.getElementById("name6").value.trim();
-    let city = document.getElementById("city2").value.trim();
-    let pincode = document.getElementById("pincode2").value.trim();
-    let phone = document.getElementById("name5").value.trim();
-    let state = document.getElementById("input-state-ope").value;
 
-    // Validate fields - corrected error element IDs
-    isValid = validateField("title2", title, "error-title", "Title is required") && isValid;
-    isValid = validateField("name6", address, "error-address1", "Address is required") && isValid;
-    isValid = validateField("name5", phone, "error-phone1", "Enter a valid phone number (e.g. 9876543210)", 
-        value => /^\d{10}$/.test(value)) && isValid;
-    isValid = validateField("input-state-ope", state, "error-state1", "Please select a state", 
-        value => value !== "Select State" && value !== null) && isValid;
-    isValid = validateField("city2", city, "error-city1", "City is required") && isValid;
-    isValid = validateField("pincode2", pincode, "error-pincode1", "Enter a valid Pin Code", 
-        value => /^\d{4,6}$/.test(value)) && isValid;
-
-    if (!addressId) {
-        showErrorNotification("Invalid address ID!");
-        return;
-    }
-
-    if (isValid) {
-        let editedAddress = {
-            title: title,
-            address: address,
-            city: city,
-            pincode: pincode,
-            phone: phone,
-            state: state
-        };
-
-        fetch(`/editaddress?id=${addressId}`, {
-            method: "PUT",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(editedAddress)
-        })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.success) {
-                showSuccessNotification("Address updated successfully!");
-                // Close the modal
-                const modal = bootstrap.Modal.getInstance(document.querySelector('.modal'));
-                if (modal) {
-                    modal.hide();
-                }
-                setTimeout(() => {
-                    location.reload();
-                }, 1500);
-            } else {
-                throw new Error(data.message || "Failed to update address.");
-            }
-        })
-        .catch(error => {
-            showErrorNotification("Error updating address: " + error.message);
-        });
-    }
-}
 
 </script>
 

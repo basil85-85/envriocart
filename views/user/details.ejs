@@ -2,10 +2,21 @@
 <!-- jQuery -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- ElevateZoom Plugin -->
-
 <style>
-
+.out-of-stock-badge {
+    background: linear-gradient(45deg, #ff4444, #cc0000);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: inline-block;
+    margin: 0;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
 .product-gallery {
         position: relative;
         margin-bottom: 30px;
@@ -294,13 +305,15 @@
                                         class="product-size-cont <%= variantIndex === 0 ? '' : 'display-none' %>" 
                                         id="product-size-cont<%= variantIndex %>"
                                     >
-                                        <div class="variation-box size-box mt-2 " style="width: 22%;">
+                                    <%  if( availableSizes.length>0) {  %>
+                                        <div class="variation-box size-box mt-2 " style="width: 30%;">
                                             <h4 class="sub-title">Size:</h4>
                                             <select 
                                                 class="size-selector form-control form-control-sm"
                                                 data-variant-index="<%= variantIndex %>"
                                                 style="font-size: 16px; padding: 10px;"
                                             >
+                                           
                                                 <% availableSizes.forEach((size, index) => { 
                                                     const stock = variant.size[size];
                                                 %>
@@ -313,7 +326,9 @@
                                                     </option>
                                                 <% }); %>
                                             </select>
+                                          
 
+                                         
                                             <div class="stock-availability">
                                                 <% availableSizes.forEach((size) => { 
                                                     const stock = variant.size[size];
@@ -327,7 +342,11 @@
                                                     </span>
                                                 <% }); %>
                                             </div>
+                                          
                                         </div>
+                                        <% } else { %>
+                                            <p class="out-of-stock-badge">Out of Stock</p>
+                                        <% } %>
                                     </div>
                                 <% }); %>
                             </div>
@@ -393,7 +412,7 @@
                                                     <a href="/details?id=<%= product._id %>">
                                                       
                                                         <% if (product.variants && product.variants.length > 0 && product.variants[0].productImg && product.variants[0].productImg.length > 0) { %>
-                                                            <img src="/<%= product.variants[0].productImg[0] %>" class="card-img-top img-fluid" style="width: 50%;" alt="<%= product.productName %>s">
+                                                            <img src="/<%= product.variants[0].productImg[0] %>" class="card-img-top img-fluid"  alt="<%= product.productName %>s">
                                                         <% } else { %>
                                                             <img src="/default-image.jpg" class="card-img-top img-fluid" alt="No Image Available">
                                                         <% } %>
@@ -405,7 +424,7 @@
                                                         </p>
                                                        
                                                         <a href="/details?id=<%= product._id %>" class="btn btn-primary">View Product</a>
-                                                        <!-- Display all variant colors -->
+                                                      
                                                         <div class="color-panel mt-2">
                                                             <% product.variants.forEach((variant) => { %>
                                                                 <span class="color-dot" style="background-color: <%= variant.productcolor %>; width: 15px; height: 15px; display: inline-block; border-radius: 50%; margin-right: 5px;"></span>
@@ -1465,19 +1484,19 @@ function addToCart() {
     const activeVariantIndex = document.querySelector('.color-variant .active button')?.getAttribute('onclick')?.match(/'(\d+)'/)[1];
     
     if (activeVariantIndex === undefined) {
-        alert('Please select a variant.');
+        showErrorNotification('Please select a variant.');
         return;
     }
     const activeColorButton = document.querySelector('.color-variant .active button');
     const variantId = document.getElementById(`variant-id-${activeVariantIndex}`).value;
     if (!variantId) {
-        alert('Variant ID not found.');
+        showErrorNotification('Variant ID not found.');
         return;
     }
 
     const sizeSelector = document.querySelector(`#product-size-cont${activeVariantIndex} .size-selector`);
     if (!sizeSelector) {
-        alert('Size selection not available.');
+        showErrorNotification("Out of the Stock")
         return;
     }
     const selectedSize = sizeSelector.value;

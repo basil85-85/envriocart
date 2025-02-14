@@ -48,6 +48,8 @@ router.put("/updateCartQuantity",auth.userAuth,cartMangement.quantityCart)
 
 // checkout
 router.get("/checkout",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement. getCheckout)
+router.post('/placeOrder',auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.placeOrder)
+router.get("/order-success",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.getOrderSuccess)
 
 export default router
             

@@ -81,6 +81,8 @@ const Addaddress = async (req, res) => {
         if (!user) {
             return res.status(404).json({ success: false, message: "User not found. Try logging in again." });
         }
+        console.log(req.body)
+
         const newAddress = new Address({
             userId,
             title,

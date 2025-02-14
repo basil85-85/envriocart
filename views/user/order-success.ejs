@@ -1,246 +1,338 @@
 <%- include('../partial/user/header') %>
+<style>
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+        font-family: 'Arial', sans-serif;
+    }
 
-    <!-- breadcrumb start -->
-    <div class="breadcrumb-section">
-        <div class="container">
-            <h2>checkout</h2>
-            <nav class="theme-breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="">
-                        <a href="/">Home /</a>
-                    </li>
-                    <li class="active">checkout</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
-    <!-- breadcrumb End -->
+    .success-container {
+        text-align: center;
+        padding: 40px;
+        max-width: 800px;
+        margin: 40px auto;
+    }
+
+    .checkmark-wrapper {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+    }
+
+    .star {
+        position: absolute;
+        fill: #3b82f6;
+        opacity: 0;
+        width: 19px;
+        height: 19px;
+    }
+
+    .star:nth-child(1) { top: -10%; left: 20%; animation-delay: 0.2s; }
+    .star:nth-child(2) { top: 20%; right: -10%; animation-delay: 0.4s; }
+    .star:nth-child(3) { top: 40%; left: -10%; animation-delay: 0.6s; }
+    .star:nth-child(4) { top: 60%; right: -10%; animation-delay: 0.8s; }
+    .star:nth-child(5) { top: 80%; left: -5%; animation-delay: 1s; }
+    .star:nth-child(6) { top: 90%; right: 0%; animation-delay: 1.2s; }
+
+    .star {
+        animation: starRotate 2s ease-in-out infinite;
+    }
+
+    @keyframes starRotate {
+        0% { transform: scale(0) rotate(0deg); opacity: 0; }
+        50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+        100% { transform: scale(0) rotate(360deg); opacity: 0; }
+    }
+
+    .checkmark__check {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation: checkmark 1s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        fill: #22c55e;
+        z-index: 2;
+    }
+
+    @keyframes checkmark {
+        0% { transform: translate(-50%, -50%) scale(0); }
+        50% { transform: translate(-50%, -50%) scale(1.2); }
+        100% { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .checkmark__background {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        animation: background 1s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+        fill: #bbf7d0;
+        z-index: 1;
+    }
+
+    @keyframes background {
+        from { transform: translate(-50%, -50%) scale(0); }
+        to { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .success-text {
+        text-align: center;
+        margin-top: 30px;
+        animation: fadeUp 0.8s ease-out forwards;
+        opacity: 0;
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+        color: #0f172a;
+        font-size: 2.5em;
+        margin: 20px 0;
+    }
+
+    p {
+        color: #475569;
+        font-size: 1.2em;
+        margin: 10px 0;
+    }
+
+    .transaction-id {
+        font-family: monospace;
+        color: #3b82f6;
+        font-size: 1.1em;
+        background: rgba(59, 130, 246, 0.1);
+        padding: 10px 20px;
+        border-radius: 8px;
+        display: inline-block;
+        margin: 20px 0;
+    }
+
+    button {
+        background: #3b82f6;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 1.1em;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    button:hover {
+        background: #2563eb;
+    }
+   
+
+  
 
 
-    <!-- section start -->
-    <section class="section-b-space checkout-section-2">
-        <div class="container">
-            <div class="checkout-page">
-                <div class="checkout-form">
-                    <div class="row g-sm-4 g-3">
-                        <div class="col-lg-7">
-                            <div class="left-sidebar-checkout">
-                                <div class="checkout-detail-box">
-                                    <ul>
-                                        <li>
-                                            <div class="checkout-box">
-                                                <div class="checkout-title">
-                                                    <h4>Shipping Address</h4>
-                                                    <button data-bs-toggle="modal" data-bs-target="#addAddress"
-                                                        class="d-flex align-items-center btn"><i
-                                                            class="ri-add-line me-1"></i> Add New</button>
-                                                </div>
+    h2 {
+        color: #0f172a;
+        font-size: 2.5em;
+        text-transform: capitalize;
+        margin: 20px 0;
+    }
 
-                                                <div class="checkout-detail">
-                                                    <div class="row g-3">
-                                                       <% if(details && details.length >0) { %>
-                                                        <% details.forEach((details)=>{%>
+    p {
+        color: #475569;
+        font-size: 1.2em;
+        margin: 10px 0;
+    }
 
-                                                      
-                                                        <div class="col-xxl-6 col-lg-12 col-md-6">
-                                                            <div class="delivery-address-box">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="flexRadioDefault" id="check" checked>
-                                                                <label class="form-check-label" for="check">
-                                                                    <span class="name"><%=details.title%></span>
-                                                                    <span class="address text-content"><span
-                                                                            class="text-title">Address :</span> 
-                                                                            <p><%=details.address%>,
-                                                                            <%=details.state%>,
-                                                                                <%=details.city%></p>
-                                                                    <span class="address text-content"><span
-                                                                            class="text-title">Pin Code : </span>
-                                                                            <%=details.pincode%></span>
-                                                                    <span class="address text-content"><span
-                                                                            class="text-title">Phone :</span>
-                                                                            <%=details.phone%></span>
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                        <% }) %>
-                                                        <% }else { %> 
-                                                            <h3>There is no address added</h3>
-                                                       <% } %>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
+    .transaction-id {
+        font-family: monospace;
+        color: #3b82f6;
+        font-size: 1.1em;
+        background: rgba(59, 130, 246, 0.1);
+        padding: 10px 20px;
+        border-radius: 8px;
+        display: inline-block;
+        margin: 20px 0;
+    }
 
-                                       
-                                        <li>
-                                           
-                                            <div class="checkout-box">
-                                                <div class="checkout-title">
-                                                    <h4>Payment Options</h4>
-                                                </div>
+    .confetti {
+        position: fixed;
+        width: 10px;
+        height: 10px;
+        animation: confetti 3s ease-in-out infinite;
+    }
 
-                                                <div class="checkout-detail">
-                                                    <div class="row g-3">
-                                                        <div class="col-sm-6">
-                                                            <div class="delivery-address-box">
-                                                                <input class="form-check-input" type="radio"
-                                                                    name="checkbox3" id="check9">
-                                                                <label class="form-check-label" for="check9">CASH ON
-                                                                    DELIVERY</label>
-                                                            </div>
-                                                        </div>
+    @keyframes confetti {
+        0% { transform: translateY(-100vh) rotate(0deg); }
+        100% { transform: translateY(100vh) rotate(360deg); }
+    }
+</style>
 
-                                                      
-                                                      
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <% if(cart && cart.items.length > 0 ) {%>
-                        <div class="col-lg-5">
-                            <div class="checkout-right-box">
-                                <div class="checkout-details">
-                                    <div class="order-box">
-                                        <div class="title-box">
-                                            <h4>Summary Order</h4>
-                                            <p>For a better experience, verify your goods and choose your shipping
-                                                option.</p>
-                                        </div>
+<script>
+    function createConfetti() {
+        const colors = ['#3b82f6', '#22c55e', '#eab308', '#ef4444'];
+        for (let i = 0; i < 50; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.animationDelay = Math.random() * 3 + 's';
+            document.body.appendChild(confetti);
+        }
+    }
+    createConfetti();
+</script>
 
-                                        <ul class="qty">
-                                            <% cart.items.forEach((item) => { %>
-                                                <li>
-                                                    <div class="cart-image">
-                                                        <img src="<%= item.image %>" class="img-fluid" alt="">
-                                                    </div>
-                                                    <div class="cart-content">
-                                                        <div>
-                                                            <h4><%= item.productName %> (<%= item.color %>)</h4>
-                                                            <h5>Rs: <%= item.price  %> x <%=item.quantity  %></h5>
-                                                        </div>
-                                                        <span class="text-theme"> Rs : <%=item.total %></span>
-                                                    </div>
-                                                </li>
-                                            <% }) %>
-                                        </ul>
-                                    </div>
-                                </div>
-
-                                <div class="checkout-details">
-                                    <div class="order-box">
-                                        <div class="title-box">
-                                            <h4>Billing Summary</h4>
-                                            <div class="promo-code-box">
-                                                <div class="promo-title">
-                                                    <h5>Promo code</h5>
-                                                    <button class="btn" data-bs-toggle="modal"
-                                                        data-bs-target="#couponModal"><i class="ri-coupon-line"></i>View
-                                                        All</button>
-                                                </div>
-                                                <div class="row g-sm-3 g-2 mb-3">
-                                                    <!-- <div class="col-md-6">
-                                                        <div class="coupon-box">
-                                                            <div class="card-name">
-                                                                <h6>Holiday Savings</h6>
-                                                            </div>
-                                                            <div class="coupon-content">
-                                                                <div class="coupon-apply">
-                                                                    <h6 class="coupon-code success-color">#HOLIDAY40
-                                                                    </h6>
-                                                                    <a class="btn theme-btn border-btn copy-btn mt-0"
-                                                                        href="#!">Copy Code</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-md-6">
-                                                        <div class="coupon-box">
-                                                            <div class="card-name">
-                                                                <h6>Holiday Savings</h6>
-                                                            </div>
-                                                            <div class="coupon-content">
-                                                                <div class="coupon-apply">
-                                                                    <h6 class="coupon-code success-color">#HOLIDAY40
-                                                                    </h6>
-                                                                    <a class="btn theme-btn border-btn copy-btn mt-0"
-                                                                        href="#!">Copy Code</a>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div> -->
-                                                </div>
-                                                <div class="coupon-input-box">
-                                                    <input type="text" id="coupon" class="form-control"
-                                                        placeholder="Enter Coupon Code Here...">
-                                                    <button class="apply-button btn">Apply now</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="custom-box-loader">
-                                            <ul class="sub-total">
-                                                <li>Sub Total <span class="count">Rs : <%=cart.totalPrice  %> .00</span></li>
-                                                <li> Shipping <span class="count">Rs: 0.00</span></li>
-                                                <!-- <li> Tax <span class="count">$1.46</span></li> -->
-                                                <!-- <li>
-                                                    <h4 class="txt-muted">Points</h4>
-                                                    <h4 class="price txt-muted">$65.66</h4>
-                                                </li> -->
-                                                <!-- <li class="border-cls">
-                                                    <label for="ponts" class="form-check-label m-0">Would you prefer
-                                                        to pay using points?</label>
-                                                    <input type="checkbox" id="ponts"
-                                                        class="checkbox_animated check-it">
-                                                </li> -->
-                                                <!-- <li>
-                                                    <h4>Wallet Balance</h4>
-                                                    <h4 class="price">$8.47</h4>
-                                                </li>
-                                                <li class="border-cls">
-                                                    <label for="wallet" class="form-check-label m-0">Would you
-                                                        prefer to pay using wallet?</label>
-                                                    <input type="checkbox" id="wallet"
-                                                        class="checkbox_animated check-it">
-                                                </li> -->
-                                            </ul>
-                                        </div>
-                                        <ul class="total">
-                                            <li>Total <span class="count">Rs : <%=cart.totalPrice  %>.00 </span></li>
-                                        </ul>
-                                        <div class="text-end">
-                                            <button class="btn order-btn" type="button" onclick="placeOrder(event,'<%=cart.userId%>')">Place Order</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <%} else { %>
-                            <div class="col-lg-5">
-                                <div class="checkout-right-box text-center">
-                                    <div class="checkout-details">
-                                        <div class="order-box">
-                                            <div class="title-box">
-                                                <h4>Your Cart is Empty</h4>
-                                                <p>Add some products to your cart before proceeding to checkout.</p>
-                                            </div>
-                                            <a href="/shop" class="btn btn-primary">Continue Shopping</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <% } %>
                         
+                <div class="success-container">
+                    <div class="checkmark-wrapper">
+                        <svg class="star" viewBox="0 0 19 19" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.296.747c.532-.972 1.393-.973 1.925 0l2.665 4.872 4.876 2.66c.974.532.975 1.393 0 1.926l-4.875 2.666-2.664 4.876c-.53.972-1.39.973-1.924 0l-2.664-4.876L.76 10.206c-.972-.532-.973-1.393 0-1.925l4.872-2.66L8.296.746z"/>
+                        </svg>
+                        <svg class="star" viewBox="0 0 19 19" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.296.747c.532-.972 1.393-.973 1.925 0l2.665 4.872 4.876 2.66c.974.532.975 1.393 0 1.926l-4.875 2.666-2.664 4.876c-.53.972-1.39.973-1.924 0l-2.664-4.876L.76 10.206c-.972-.532-.973-1.393 0-1.925l4.872-2.66L8.296.746z"/>
+                        </svg>
+                        <svg class="star" viewBox="0 0 19 19" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.296.747c.532-.972 1.393-.973 1.925 0l2.665 4.872 4.876 2.66c.974.532.975 1.393 0 1.926l-4.875 2.666-2.664 4.876c-.53.972-1.39.973-1.924 0l-2.664-4.876L.76 10.206c-.972-.532-.973-1.393 0-1.925l4.872-2.66L8.296.746z"/>
+                        </svg>
+                        <svg class="star" viewBox="0 0 19 19" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.296.747c.532-.972 1.393-.973 1.925 0l2.665 4.872 4.876 2.66c.974.532.975 1.393 0 1.926l-4.875 2.666-2.664 4.876c-.53.972-1.39.973-1.924 0l-2.664-4.876L.76 10.206c-.972-.532-.973-1.393 0-1.925l4.872-2.66L8.296.746z"/>
+                        </svg>
+                        <svg class="star" viewBox="0 0 19 19" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.296.747c.532-.972 1.393-.973 1.925 0l2.665 4.872 4.876 2.66c.974.532.975 1.393 0 1.926l-4.875 2.666-2.664 4.876c-.53.972-1.39.973-1.924 0l-2.664-4.876L.76 10.206c-.972-.532-.973-1.393 0-1.925l4.872-2.66L8.296.746z"/>
+                        </svg>
+                        <svg class="star" viewBox="0 0 19 19" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M8.296.747c.532-.972 1.393-.973 1.925 0l2.665 4.872 4.876 2.66c.974.532.975 1.393 0 1.926l-4.875 2.666-2.664 4.876c-.53.972-1.39.973-1.924 0l-2.664-4.876L.76 10.206c-.972-.532-.973-1.393 0-1.925l4.872-2.66L8.296.746z"/>
+                        </svg>
+                        
+                        <svg class="checkmark__background" height="115" viewBox="0 0 120 115" width="120" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M107.332 72.938c-1.798 5.557 4.564 15.334 1.21 19.96-3.387 4.674-14.646 1.605-19.298 5.003-4.61 3.368-5.163 15.074-10.695 16.878-5.344 1.743-12.628-7.35-18.545-7.35-5.922 0-13.206 9.088-18.543 7.345-5.538-1.804-6.09-13.515-10.696-16.877-4.657-3.398-15.91-.334-19.297-5.002-3.356-4.627 3.006-14.404 1.208-19.962C10.93 67.576 0 63.442 0 57.5c0-5.943 10.93-10.076 12.668-15.438 1.798-5.557-4.564-15.334-1.21-19.96 3.387-4.674 14.646-1.605 19.298-5.003C35.366 13.73 35.92 2.025 41.45.22c5.344-1.743 12.628 7.35 18.545 7.35 5.922 0 13.206-9.088 18.543-7.345 5.538 1.804 6.09 13.515 10.696 16.877 4.657 3.398 15.91.334 19.297 5.002 3.356 4.627-3.006 14.404-1.208 19.962C109.07 47.424 120 51.562 120 57.5c0 5.943-10.93 10.076-12.668 15.438z"/>
+                        </svg>
+                        
+                        <svg class="checkmark__check" height="36" viewBox="0 0 48 36" width="48" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M47.248 3.9L43.906.667a2.428 2.428 0 0 0-3.344 0l-23.63 23.09-9.554-9.338a2.432 2.432 0 0 0-3.345 0L.692 17.654a2.236 2.236 0 0 0 .002 3.233l14.567 14.175c.926.894 2.42.894 3.342.01L47.248 7.128c.922-.89.922-2.34 0-3.23"/>
+                        </svg>
+                    </div>
+                    
+                    <div class="success-text">
+                        <h2>Thank You</h2>
+                        <p>Payment is successfully processed and your order is on the way</p>
+                        <div class="transaction-id">Transaction ID: 267676GHERT105467</div>
+                        <button type="button" onclick="GoShop()">Continue to Shopping</button>
+                    </div>
+                </div>
+             
+
+    <!-- Section ends -->
+
+
+    <!-- order-detail section start -->
+    <section class="section-b-space">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="product-order">
+                        <table class="table product-order-table">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>product name</th>
+                                    <th>quantity</th>
+                                    <th>price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <img src="../assets copy/images/fashion-1/product/1.jpg" alt=""
+                                            class="img-fluid blur-up lazyload">
+                                    </td>
+                                    <td>Boyfriend Shirts</td>
+                                    <td>1</td>
+                                    <td>$10.69</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <img src="../assets copy/images/fashion-1/product/4.jpg" alt=""
+                                            class="img-fluid blur-up lazyload">
+                                    </td>
+                                    <td>Chic Denim</td>
+                                    <td>2</td>
+                                    <td>$5.94</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <img src="../assets copy/images/fashion-1/product/6.jpg" alt=""
+                                            class="img-fluid blur-up lazyload">
+                                    </td>
+                                    <td>Chic Mini Dress</td>
+                                    <td>1</td>
+                                    <td>$9.40</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2">subtotal</td>
+                                    <td colspan="2">$55.00</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">shipping</td>
+                                    <td colspan="2">$12.00</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">tax(GST)</td>
+                                    <td colspan="2">$10.00</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">total</td>
+                                    <td colspan="2">$77.00</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="order-success-sec">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <h4>summery</h4>
+                                <ul class="order-detail">
+                                    <li>order ID: 5563853658932</li>
+                                    <li>Order Date: October 22, 2018</li>
+                                    <li>Order Total: $907.28</li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-6">
+                                <h4>shipping address</h4>
+                                <ul class="order-detail">
+                                    <li>gerg harvell</li>
+                                    <li>568, suite ave.</li>
+                                    <li>Austrlia, 235153</li>
+                                    <li>Contact No. 987456321</li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-12 payment-mode">
+                                <h4>payment method</h4>
+                                <p>Pay on Delivery (Cash/Card). Cash on delivery (COD) available. Card/Net banking
+                                    acceptance subject to device availability.</p>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="delivery-sec">
+                                    <h3>expected date of delivery: <span>october 22, 2018</span></h3>
+                                    <a href="order-tracking.html">track order</a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-    <!-- section end -->
+    <!-- Section ends -->
+
+
     <%- include('../partial/user/footer') %>
+    <!-- Footer Section End -->
 
 
     <!-- Search Modal Start -->
@@ -1393,251 +1485,6 @@
     <!-- theme setting end -->
 
 
-    <!-- Add new address modal start -->
-    <div class="modal fade theme-modal-2" id="addAddress">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title fw-semibold">Modal title</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal">
-                        <i class="ri-close-line"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row g-sm-4 g-2">
-                        <div class="col-12">
-                            <div class="form-box">
-                                <label for="title" class="form-label"> title</label>
-                                <select class="form-control form-select quantity-variant select-dropdown"
-                                    id="title">
-                                    <option value="0" class="">Other</option>
-                                    <option value="1" class="">Home</option>
-                                    <option value="2" class="">Job</option>
-                                    </select>
-                            </div>
-                            <span id="error-title"></span>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-box">
-                                <label for="address" class="form-label">Address</label>
-                                <input type="text" class="form-control" id="address" placeholder="Enter Address">
-                            </div>
-                            <span id="error-address"></span>
-                        </div>
-                        <div class="col-12">
-                            <div class="form-box">
-                                <label for="number" class="form-label">Phone Number</label>
-                                <input type="number" class="form-control" id="phone"
-                                    placeholder="Enter Your Phone Number">
-                            </div>
-                            <span id="error-phone"></span>
-
-                        </div>
-                        <div class="col-6">
-                            <div class="form-box">
-                                <label class="form-label">Country</label>
-                                <select class="form-select" id="country">
-                                   
-                                    <option value="5">India</option>
-                                  
-                                </select>
-                            </div>
-                            <span id="error-country"></span>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-box">
-                                <label class="form-label">State</label>
-                                <select class="form-control form-select quantity-variant select-dropdown"
-                                    id="state">
-                                    <option selected="" disabled>Select State </option>
-                                    <option value="0" class="">Andhra Pradesh</option>
-                                    <option value="1" class="">Arunachal Pradesh</option>
-                                    <option value="2" class="">Assam</option>
-                                    <option value="3" class="">Bihar</option>
-                                    <option value="4" class="">Chhattisgarh</option>
-                                    <option value="5" class="">Goa</option>
-                                    <option value="6" class="">Gujarat</option>
-                                    <option value="7" class="">Haryana</option>
-                                    <option value="8" class="">Himachal Pradesh</option>
-                                    <option value="9" class="">Jharkhand</option>
-                                    <option value="10" class="">Karnataka</option>
-                                    <option value="11" class="">Kerala</option>
-                                    <option value="12" class="">Madhya Pradesh</option>
-                                    <option value="13" class="">Maharashtra</option>
-                                    <option value="14" class="">Manipur</option>
-                                    <option value="15" class="">Meghalaya</option>
-                                    <option value="16" class="">Mizoram</option>
-                                    <option value="17" class="">Nagaland</option>
-                                    <option value="18" class="">Odisha</option>
-                                    <option value="19" class="">Punjab</option>
-                                    <option value="20" class="">Rajasthan</option>
-                                    <option value="21" class="">Sikkim</option>
-                                    <option value="22" class="">Tamil Nadu</option>
-                                    <option value="23" class="">Telangana</option>
-                                    <option value="24" class="">Tripura</option>
-                                    <option value="25" class="">Uttar Pradesh</option>
-                                    <option value="26" class="">Uttarakhand</option>
-                                    <option value="27" class="">West Bengal</option>
-                                </select>
-                            </div>
-                            <span id="error-state"></span>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-box">
-                                <label for="city" class="form-label">City</label>
-                                <input type="text" class="form-control" id="city" placeholder="Enter City">
-                            </div>
-                            <span id="error-city"></span>
-                        </div>
-                        <div class="col-6">
-                            <div class="form-box">
-                                <label for="pin" class="form-label">PinCode</label>
-                                <input type="number" class="form-control" id="pincode" placeholder="Enter PinCode">
-                            </div>
-                            <span id="error-pincode"></span>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-md btn-outline fw-bold"
-                            data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" onclick="addAddress(event,'<%=cart.userId%>')" class="btn btn-solid" data-bs-dismiss="">Submit</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Add new address modal End -->
-
-
-    <!-- Coupon modal start -->
-    <div class="modal coupon-modal fade theme-modal-2" id="couponModal">
-        <div class="modal-dialog modal-dialog-centered modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 class="modal-title fw-semibold">Apply Coupon</h3>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal">
-                        <i class="ri-close-line"></i>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="row g-3">
-                        <div class="col-md-6">
-                            <div class="coupon-box">
-                                <div class="coupon-name">
-                                    <div class="card-name">
-                                        <div>
-                                            <h5 class="fw-semibold dark-text">Holiday Savings</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="coupon-content">
-                                    <p>Save 40% on holiday gifts and decorations.</p>
-                                    <div class="coupon-apply">
-                                        <h6 class="coupon-code success-color">#HOLIDAY40</h6>
-                                        <a href="#!" class="btn theme-btn border-btn copy-btn mt-0"> Copy Code </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="coupon-box">
-                                <div class="coupon-name">
-                                    <div class="card-name">
-                                        <div>
-                                            <h5 class="fw-semibold dark-text">Free Shipping</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="coupon-content">
-                                    <p>Free shipping on orders over $50</p>
-                                    <div class="coupon-apply">
-                                        <h6 class="coupon-code success-color">#FREESHIP50</h6>
-                                        <a href="#!" class="btn theme-btn border-btn copy-btn mt-0"> Copy Code </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="coupon-box">
-                                <div class="coupon-name">
-                                    <div class="card-name">
-                                        <div>
-                                            <h5 class="fw-semibold dark-text">Welcome Offer</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="coupon-content">
-                                    <p>Welcome to our store! Take 15% off on your first order.</p>
-                                    <div class="coupon-apply">
-                                        <h6 class="coupon-code success-color">#WELCOME15</h6>
-                                        <a href="#!" class="btn theme-btn border-btn copy-btn mt-0"> Copy Code </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="coupon-box">
-                                <div class="coupon-name">
-                                    <div class="card-name">
-                                        <div>
-                                            <h5 class="fw-semibold dark-text">New Year Discount</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="coupon-content">
-                                    <p>Enjoy 25% off on your New Year purchases.</p>
-                                    <div class="coupon-apply">
-                                        <h6 class="coupon-code success-color">#NY2024</h6>
-                                        <a href="#!" class="btn theme-btn border-btn copy-btn mt-0"> Copy Code </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="coupon-box">
-                                <div class="coupon-name">
-                                    <div class="card-name">
-                                        <div>
-                                            <h5 class="fw-semibold dark-text">Summer Sale</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="coupon-content">
-                                    <p>Get 20% off on all summer collections.</p>
-                                    <div class="coupon-apply">
-                                        <h6 class="coupon-code success-color">#SUMMER20</h6>
-                                        <a href="#!" class="btn theme-btn border-btn copy-btn mt-0"> Copy Code </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="coupon-box">
-                                <div class="coupon-name">
-                                    <div class="card-name">
-                                        <div>
-                                            <h5 class="fw-semibold dark-text">Special Alert Saving 10% Off</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="coupon-content">
-                                    <p>Apply code SPECIAL10 at checkout and enjoy a generous $10 discount on orders of
-                                        $40 or more.</p>
-                                    <div class="coupon-apply">
-                                        <h6 class="coupon-code success-color">#SPECIAL10</h6>
-                                        <a href="#!" class="btn theme-btn border-btn copy-btn mt-0"> Copy Code </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Coupon modal End -->
-
-
     <!-- tap to top start -->
     <div class="tap-top">
         <div>
@@ -1677,350 +1524,12 @@
         function closeSearch() {
             document.getElementById("search-overlay").style.display = "none";
         }
-
-
-        async function addAddress(event, userId) {
-    event.preventDefault();
-
-    let isValid = true;
-    const errorIcons = {
-        error: "❌",
-        warning: "⚠️",
-        success: "✅"
-    };
-
-    // Validation Rules Object
-    const validationRules = {
-        title: {
-            element: document.getElementById("title"),
-            getValue: (el) => el ? el.options[el.selectedIndex].text.trim() : "",
-            validate: (value) => {
-                if (!value || value.toLowerCase() === "select") {
-                    return { isValid: false, message: `${errorIcons.error} Please select a valid title` };
-                }
-                return { isValid: true };
-            }
-        },
-        address: {
-            element: document.getElementById("address"),
-            getValue: (el) => el?.value.trim() || "",
-            validate: (value) => {
-                if (!value) {
-                    return { isValid: false, message: `${errorIcons.error} Address is required` };
-                }
-                if (value.length < 5) {
-                    return { isValid: false, message: `${errorIcons.warning} Address must be at least 5 characters` };
-                }
-                if (!/^[a-zA-Z0-9\s,.-]+$/.test(value)) {
-                    return { isValid: false, message: `${errorIcons.error} Address contains invalid characters` };
-                }
-                if (value.length > 200) {
-                    return { isValid: false, message: `${errorIcons.warning} Address should not exceed 200 characters` };
-                }
-                return { isValid: true };
-            }
-        },
-        phone: {
-            element: document.getElementById("phone"),
-            getValue: (el) => el?.value.trim() || "",
-            validate: (value) => {
-                if (!value) {
-                    return { isValid: false, message: `${errorIcons.error} Phone number is required` };
-                }
-                if (!/^[6-9]\d{9}$/.test(value)) {
-                    return { isValid: false, message: `${errorIcons.error} Enter a valid Indian mobile number` };
-                }
-                return { isValid: true };
-            }
-        },
-        country: {
-            element: document.getElementById("country"),
-            getValue: (el) => el ? el.options[el.selectedIndex].text.trim() : "",
-            validate: (value) => {
-                if (!value || value.toLowerCase() === "select") {
-                    return { isValid: false, message: `${errorIcons.error} Please select a country` };
-                }
-                return { isValid: true };
-            }
-        },
-        pincode: {
-            element: document.getElementById("pincode"),
-            getValue: (el) => el?.value.trim() || "",
-            validate: (value) => {
-                if (!value) {
-                    return { isValid: false, message: `${errorIcons.error} PIN code is required` };
-                }
-                if (!/^[1-9][0-9]{5}$/.test(value)) {
-                    return { isValid: false, message: `${errorIcons.error} Enter a valid 6-digit PIN code` };
-                }
-                return { isValid: true };
-            }
-        },
-        state: {
-            element: document.getElementById("state"),
-            getValue: (el) => el ? el.options[el.selectedIndex].text.trim() : "",
-            validate: (value) => {
-                if (!value || value.toLowerCase() === "select state") {
-                    return { isValid: false, message: `${errorIcons.error} Please select a state` };
-                }
-                return { isValid: true };
-            }
-        },
-        city: {
-            element: document.getElementById("city"),
-            getValue: (el) => el?.value.trim() || "",
-            validate: (value) => {
-                if (!value) {
-                    return { isValid: false, message: `${errorIcons.error} City is required` };
-                }
-                if (value.length < 3) {
-                    return { isValid: false, message: `${errorIcons.warning} City name must be at least 3 characters` };
-                }
-                if (!/^[a-zA-Z\s]+$/.test(value)) {
-                    return { isValid: false, message: `${errorIcons.error} City name should contain only letters and spaces` };
-                }
-                if (value.length > 50) {
-                    return { isValid: false, message: `${errorIcons.warning} City name should not exceed 50 characters` };
-                }
-                return { isValid: true };
-            }
+        function GoShop(){
+            window.location.href="/shop"
         }
-    };
-
-    // Form Data Object
-    const formData = {};
-
-    // Validate each field
-    for (const [field, rules] of Object.entries(validationRules)) {
-        const value = rules.getValue(rules.element);
-        formData[field] = value;
-
-        const validation = rules.validate(value);
-        if (!validation.isValid) {
-            isValid = false;
-            showError(`error-${field}`, validation.message);
-            highlightField(rules.element, 'error');
-        } else {
-            clearError(`error-${field}`);
-            highlightField(rules.element, 'success');
-        }
-    }
-
-    if (!isValid) {
-        showErrorNotification('Please fix the errors in the form', 'error');
-        return;
-    }
-
-    try {
-        const submitButton = event.target;
-        submitButton.disabled = true;
-        submitButton.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Saving...';
-        const response = await fetch(`/address?id=${userId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
-        const data = await response.json();
-
-        if (response.ok) {
-            showSuccessNotification('Address added successfully!', 'success');
-            // const modal = bootstrap.Modal.getInstance(document.getElementById('addAddress'));
-            // if (modal) modal.hide();
-            
-            setTimeout(() => location.reload(), 1500);
-        } else {
-            throw new Error(data.message || 'Failed to add address');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        showErrorNotification(error.message || 'Something went wrong!', 'error');
-    } finally {
-        // Reset button state
-        submitButton.disabled = false;
-        submitButton.innerHTML = 'Submit';
-    }
-}
-
-// Enhanced error display function
-function showError(id, message) {
-    const errorElement = document.getElementById(id);
-    if (errorElement) {
-        errorElement.textContent = message;
-        errorElement.style.color = "#dc3545";
-        errorElement.style.fontSize = "12px";
-        errorElement.style.marginTop = "4px";
-        errorElement.style.display = "block";
-    }
-}
-
-function clearError(id) {
-    const errorElement = document.getElementById(id);
-    if (errorElement) {
-        errorElement.textContent = "";
-        errorElement.style.display = "none";
-    }
-}
-
-function highlightField(element, status) {
-    if (element) {
-        element.style.borderColor = status === 'error' ? "#dc3545" : "#198754";
-        element.style.boxShadow = status === 'error' 
-            ? "0 0 0 0.2rem rgba(220, 53, 69, 0.25)"
-            : "0 0 0 0.2rem rgba(25, 135, 84, 0.25)";
-    }
-}
-
-function showSuccessNotification(message) {
-            Swal.fire({
-                title: 'Success',
-                text: message,
-                icon: 'success',
-                position: 'top',
-                toast: true,
-                showConfirmButton: false,
-                timer: 1500,
-                timerProgressBar: true,
-                showClass: {
-                    popup: 'animate__animated animate__fadeInDown'
-                },
-                hideClass: {
-                    popup: 'animate__animated animate__fadeOutUp'
-                },
-                background: '#fff',
-                color: '#1a1a1a',
-                iconColor: '#4CAF50',
-                customClass: {
-                    popup: 'premium-toast',
-                    title: 'premium-title',
-                    timerProgressBar: 'premium-progress'
-                }
-    })
-}
-
-
-function showErrorNotification(message) {
-
-    Swal.fire({
-        title: 'Error',
-        text: message || 'Verification failed',
-        icon: 'error',
-        position: 'top',
-        toast: true,
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        showClass: {
-            popup: 'animate__animated animate__shakeX'
-        },
-        hideClass: {
-            popup: 'animate__animated animate__fadeOutUp'
-        },
-        background: '#fff',
-        color: '#1a1a1a',
-        iconColor: '#FF3B30',
-        customClass: {
-            popup: 'premium-error-toast',
-            title: 'premium-error-title',
-            timerProgressBar: 'premium-error-progress'
-        }
-    });
-}
-
-
-
-function placeOrder(e,userId) {
-    e.preventDefault();
-    let isvaild = true; // Correct spelling
-
-    // Get selected address
-    const selectedAddress = document.querySelector('input[name="flexRadioDefault"]:checked');
-    if (!selectedAddress) {
-        isvaild = false;
-        showErrorNotification("Please select a delivery address");
-    }
-
-    let Address = {};
-    if (isvaild) {
-        const addressBox = selectedAddress.closest('.delivery-address-box');
-        Address = {
-            id: selectedAddress.value,
-            name: addressBox.querySelector('.name').innerText,
-            address: addressBox.querySelector('.address p').innerText,
-            pincode: addressBox.querySelector('.address span:nth-child(3)').innerText.split(":")[1].trim(),
-            phone: addressBox.querySelector('.address span:nth-child(4)').innerText.split(":")[1].trim()
-        };
-    }
-
-    // Get selected payment method
-    const selectedPayment = document.querySelector('input[name="checkbox3"]:checked');
-    if (!selectedPayment) {
-        isvaild = false;
-        showErrorNotification("Please select a payment method");
-    }
-
-    let paymentDetails = {};
-    if (isvaild) {
-        paymentDetails = {
-            method: selectedPayment.nextElementSibling.innerText.trim(),
-            id: selectedPayment.value
-        };
-    }
-
-    // Get cart items
-    const cartItems = [];
-    const items = document.querySelectorAll('.qty li');
-
-    if (items.length === 0) {
-        isvaild = false;
-        showErrorNotification("Cart is empty");
-    }
-
-    if (isvaild) {
-        items.forEach(item => {
-            const price = item.querySelector('h5').innerText.split("Rs:")[1].split("x")[0].trim();
-            const quantity = item.querySelector('h5').innerText.split("x")[1].trim();
-
-            cartItems.push({
-                name: item.querySelector('h4').innerText,
-                price: parseFloat(price),
-                quantity: parseInt(quantity),
-                total: parseFloat(item.querySelector('.text-theme').innerText.split("Rs :")[1].trim()),
-                image: item.querySelector('img').src
-            });
-        });
-    }
-
-    if (!isvaild) return;
-
-    fetch(`/placeOrder?id=${userId}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            address: Address,
-            payment: paymentDetails,
-            cartItems: cartItems
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showSuccessNotification("Order placed successfully!");
-            window.location.href = "/order-success"; // Redirect to success page
-        } else {
-            showErrorNotification("Error placing order: " + data.message);
-        }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        showErrorNotification("Something went wrong. Please try again.");
-    });
-}
-
     </script>
 </body>
 
 
-<!-- Mirrored from themes.pixelstrap.com/multikart/front-end/checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 Jan 2025 02:41:26 GMT -->
+<!-- Mirrored from themes.pixelstrap.com/multikart/front-end/order-success.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 Jan 2025 02:41:26 GMT -->
 </html>
