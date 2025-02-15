@@ -346,10 +346,10 @@
             <h2>Dashboard</h2>
             <nav class="theme-breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">
-                        <a href="index.html">Home</a>
+                    <li class="">
+                        <a href="/">Home /  </a>
                     </li>
-                    <li class="breadcrumb-item active">Dashboard</li>
+                    <li class=" active"> Dashboard</li>
                 </ol>
             </nav>
         </div>
@@ -1050,7 +1050,7 @@
                                                                         <td><span class="amount">$<%= order.grandTotal.toFixed(2) %></span></td>
                                                                         <td>
                                                                             <div class="custom-badge <%= 
-                                                                                order.orderStatus.toLowerCase() === 'pending' ? 'bg-pending' : 
+                                                                                order.orderStatus.toLowerCase() === 'pending' ? 'bg-warning' : 
                                                                                 order.orderStatus.toLowerCase() === 'Cancelled' ? 'bg-danger' : 
                                                                                 order.orderStatus.toLowerCase() === 'success' ? 'bg-success' : 
                                                                                 'bg-failed' 

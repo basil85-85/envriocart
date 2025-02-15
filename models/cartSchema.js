@@ -11,11 +11,11 @@ const cartSchema = new Schema(
         },
         items: [
             {
-                verientId: {
-                    type: Schema.Types.ObjectId,
-                    ref: "Verient", 
-                    required: true,
-                },
+              verientId: {
+                        type: Schema.Types.ObjectId,
+                        ref: "Verient", 
+                        required: true,
+                    },
                 productName:{
                     type: String,
                     required: false,

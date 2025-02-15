@@ -9,8 +9,10 @@ const getOrders = async (req, res) => {
         // }
         
         // Pagination setup
-        const page = parseInt(req.query.page) || 1;
-        const limit = 10; // Number of orders per page
+        
+
+        const page =Math.max(1, parseInt(req.query.page) || 1)
+        const limit = 10; 
         const skip = (page - 1) * limit;
         
         // Get total number of orders for pagination
@@ -27,19 +29,32 @@ const getOrders = async (req, res) => {
         return res.render("orders-list", { 
             orders, 
             moment, 
-            currentPage: page,
-            totalPages,
-            hasNextPage: page < totalPages,
-            hasPreviousPage: page > 1,
-            nextPage: page + 1,
-            previousPage: page - 1,
-            lastPage: totalPages
+            pagination: {
+                currentPage: page,
+                totalPages,
+                totalItems: totalOrders,
+                hasNextPage: page < totalPages,
+                hasPrevPage: page > 1,
+          },
         });
     } catch (error) {
         console.log(`Error occurred while rendering the orders page: ${error}`);
         return res.render("404");
     }
 };
+const ViewOrders =async (req,res) => {
+    try {
+        let id=req.query.id
+        console.log(id)
+        const order =await Order.findById(id)
+        console.log(order)
+        return res.render("order-detail",{order,moment})
+    } catch (error) {
+        console.log(`error occur on the rendering the view page due to:${error}`)
+        return res.render("pages-404")
+    }
+}
 export default {
-    getOrders
+    getOrders,
+    ViewOrders
 }

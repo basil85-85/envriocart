@@ -44,15 +44,22 @@ const orderSchema = new Schema(
             cartItems: [
                   {
                         name: { type: String, required: true },
+                        color: { type: String, required: true },
                         price: { type: Number, required: true },
+                        size: { type: String, required: true },
                         quantity: { type: Number, required: true, min: 1 },
                         total: { type: Number, required: true },
                         image: { type: String, required: true },
+                        verientId: {
+                              type: Schema.Types.ObjectId,
+                              ref: 'Verient',
+                              required: true,
+                        },
                   },
             ],
             discount: { type: Number, default: 0 },
             deliveryCharge: { type: Number, default: 0 },
-            totalAmount: { type: Number, required: true }, 
+            totalAmount: { type: Number, required: true },
             grandTotal: { type: Number, required: true },
             couponApplied: { type: Boolean, default: false },
             orderStatus: {

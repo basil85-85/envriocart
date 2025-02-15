@@ -203,7 +203,7 @@
 
                                    <!-- <div class="dropdown-divider my-1"></div> -->
 
-                                   <a class="dropdown-item text-danger" href="auth-signin.html">
+                                   <a class="dropdown-item text-danger" href="/admin/logout">
                                         <i class="bx bx-log-out fs-18 align-middle me-1"></i><span class="align-middle">Logout</span>
                                    </a>
                               </div>
@@ -648,7 +648,7 @@
                              <th>Order ID</th>
                              <th>Created at</th>
                              <th>Customer</th>
-                             <th>Priority</th>
+                            
                              <th>Total</th>
                              <th>Payment Status</th>
                              <th>Items</th>
@@ -668,35 +668,37 @@
                                              <%= order.userId ? order.userId.name : 'N/A' %>
                                          </a>
                                      </td>
-                                     <td>Normal</td>
-                                     <td>$<%= order.grandTotal.toFixed(2) %></td>
+                                   
+                                     <td>Rs: <%= order.grandTotal.toFixed(2) %></td>
                                      <td>
                                          <span class="badge <%= order.payment.status === 'Paid' ? 'bg-success' : 'bg-light text-dark' %> px-2 py-1 fs-13">
                                              <%= order.payment.status %>
                                          </span>
                                      </td>
                                      <td><%= order.cartItems ? order.cartItems.length : 0 %></td>
-                                     <td><%= order.deliveryNumber || '-' %></td>
+                                     <td><%= order.address.phone|| '-' %></td>
                                      <td>
                                          <span class="badge 
                                              <%= order.orderStatus === 'Delivered' ? 'border border-success text-success' : 
                                                 order.orderStatus === 'Shipped' ? 'border border-primary text-primary' :
-                                                order.orderStatus === 'Processing' ? 'border border-warning text-warning' :
+                                                order.orderStatus === 'Pending' ? 'border border-warning text-warning' :
+                                                order.orderStatus === 'Cancelled' ? 'border border-danger text-danger' :
                                                 'border border-secondary text-secondary' %> px-2 py-1 fs-13">
                                              <%= order.orderStatus %>
                                          </span>
                                      </td>
                                      <td>
                                          <div class="d-flex gap-2">
-                                             <a href="/admin/orders/<%= order._id %>" class="btn btn-light btn-sm">
+                                             <a href="/admin/order/view?id=<%= order._id %>" class="btn btn-light btn-sm">
                                                  <iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon>
                                              </a>
-                                             <a href="/admin/orders/edit/<%= order._id %>" class="btn btn-soft-primary btn-sm">
+                                             <!-- <a href="/admin/orders/edit?id=<%= order._id %>" class="btn btn-soft-primary btn-sm">
                                                  <iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon>
-                                             </a>
+                                             </a> -->
                                              <a href="#" class="btn btn-soft-danger btn-sm delete-order" data-id="<%= order._id %>">
-                                                 <iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon>
-                                             </a>
+                                                  <iconify-icon icon="material-symbols:cancel-outline" class="align-middle fs-18"></iconify-icon>
+                                              </a>
+                                              
                                          </div>
                                      </td>
                                  </tr>
@@ -712,86 +714,53 @@
              <!-- end table-responsive -->
          </div>
          <div class="card-footer border-top">
-             <nav aria-label="Page navigation">
-                 <ul class="pagination justify-content-end mb-0">
-                     <% if (hasPreviousPage) { %>
-                         <li class="page-item">
-                             <a class="page-link" href="/admin/orders?page=<%= previousPage %>">Previous</a>
-                         </li>
-                     <% } else { %>
-                         <li class="page-item disabled">
-                             <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                         </li>
-                     <% } %>
-                     
-                     <% 
-                     // Calculate range of page numbers to show
-                     let startPage = Math.max(1, currentPage - 2);
-                     let endPage = Math.min(totalPages, currentPage + 2);
-                     
-                     // Always show first page
-                     if (startPage > 1) { %>
-                         <li class="page-item">
-                             <a class="page-link" href="/admin/orders?page=1">1</a>
-                         </li>
-                         <% if (startPage > 2) { %>
-                             <li class="page-item disabled">
-                                 <a class="page-link" href="#">...</a>
-                             </li>
-                         <% } %>
-                     <% } %>
-                     
-                     <% for (let i = startPage; i <= endPage; i++) { %>
-                         <li class="page-item <%= i === currentPage ? 'active' : '' %>">
-                             <a class="page-link" href="/admin/orders?page=<%= i %>"><%= i %></a>
-                         </li>
-                     <% } %>
-                     
-                     <% // Always show last page
-                     if (endPage < totalPages) { 
-                         if (endPage < totalPages - 1) { %>
-                             <li class="page-item disabled">
-                                 <a class="page-link" href="#">...</a>
-                             </li>
-                         <% } %>
-                         <li class="page-item">
-                             <a class="page-link" href="/admin/orders?page=<%= totalPages %>"><%= totalPages %></a>
-                         </li>
-                     <% } %>
-                     
-                     <% if (hasNextPage) { %>
-                         <li class="page-item">
-                             <a class="page-link" href="/admin/orders?page=<%= nextPage %>">Next</a>
-                         </li>
-                     <% } else { %>
-                         <li class="page-item disabled">
-                             <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Next</a>
-                         </li>
-                     <% } %>
-                 </ul>
-             </nav>
+          <% if (orders && orders.length > 0 && pagination.totalPages > 1) { %>
+               <div class="card-footer border-top">
+                   <nav aria-label="Product pagination">
+                       <ul class="pagination justify-content-end mb-0">
+                           <% if (pagination.hasPrevPage) { %>
+                               <li class="page-item">
+                                   <a class="page-link" href="/admin/order?page=<%= pagination.currentPage - 1 %>">Previous</a>
+                               </li>
+                           <% } %>
+                           
+                           <% for(let i = 1; i <= pagination.totalPages; i++) { %>
+                               <li class="page-item <%= i === pagination.currentPage ? 'active' : '' %>">
+                                   <a class="page-link" href="/admin/order?page=<%= i %>"><%= i %></a>
+                               </li>
+                           <% } %>
+                           
+                           <% if (pagination.hasNextPage) { %>
+                               <li class="page-item">
+                                   <a class="page-link" href="/admin/order?page=<%= pagination.currentPage + 1 %>">Next</a>
+                               </li>
+                           <% } %>
+                       </ul>
+                   </nav>
+               </div>
+           <% } %>
          </div>
      </div>
  </div>
  
  <!-- Delete confirmation modal -->
- <div class="modal fade" id="deleteOrderModal" tabindex="-1" aria-labelledby="deleteOrderModalLabel" aria-hidden="true">
-     <div class="modal-dialog">
-         <div class="modal-content">
-             <div class="modal-header">
-                 <h5 class="modal-title" id="deleteOrderModalLabel">Confirm Delete</h5>
-                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-             </div>
-             <div class="modal-body">
-                 Are you sure you want to delete this order?
-             </div>
-             <div class="modal-footer">
-                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                 <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
-             </div>
-         </div>
-     </div>
- </div>
+                         <div class="modal fade" id="deleteOrderModal" tabindex="-1" aria-labelledby="deleteOrderModalLabel" aria-hidden="true">
+                              <div class="modal-dialog">
+                              <div class="modal-content">
+                                   <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteOrderModalLabel">Confirm </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                   </div>
+                                   <div class="modal-body">
+                                        Are you sure you want to Canel this order?
+                                   </div>
+                                   <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                        <button type="button" class="btn btn-danger" id="confirmDelete">Cancel Order</button>
+                                   </div>
+                              </div>
+                              </div>
+                         </div>
  
 
                               </div>
@@ -822,7 +791,7 @@
          // Handle confirmation
          confirmDeleteBtn.addEventListener('click', function() {
              if (orderToDelete) {
-                 window.location.href = `/admin/orders/delete/${orderToDelete}`;
+                 window.location.href = `/admin/order/cancel?id=${orderToDelete}`;
              }
          });
      });

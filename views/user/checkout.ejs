@@ -1,5 +1,23 @@
 <%- include('../partial/user/header') %>
+<style>
+    .qty {
+    width: 100%; /* Make it full width */
+    max-width: 800px; /* Adjust max-width as needed */
+    margin: 0 auto; /* Center the list */
+}
+.qty li {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Ensure each list item takes full width */
+    padding: 10px;
+    border-bottom: 1px solid #ddd; /* Optional: Adds separation */
+}
+.cart-content {
+    flex-grow: 1; /* Allow content to expand */
+    padding-left: 15px;
+}
 
+</style>
     <!-- breadcrumb start -->
     <div class="breadcrumb-section">
         <div class="container">
@@ -113,16 +131,20 @@
 
                                         <ul class="qty">
                                             <% cart.items.forEach((item) => { %>
-                                                <li>
+                                                <li >
                                                     <div class="cart-image">
                                                         <img src="<%= item.image %>" class="img-fluid" alt="">
                                                     </div>
                                                     <div class="cart-content">
                                                         <div>
-                                                            <h4><%= item.productName %> (<%= item.color %>)</h4>
+                                                            <h4><%= item.productName %> </h4>
+                                                            <p><%= item.color %></p>
+                                                            <h6><%= item.size %></h6>
                                                             <h5>Rs: <%= item.price  %> x <%=item.quantity  %></h5>
+                                                            
                                                         </div>
                                                         <span class="text-theme"> Rs : <%=item.total %></span>
+                                                        <input id="veraent-Id" hidden value="<%=item.verientId%>">
                                                     </div>
                                                 </li>
                                             <% }) %>
@@ -1980,10 +2002,16 @@ function placeOrder(e,userId) {
     if (isvaild) {
         items.forEach(item => {
             const price = item.querySelector('h5').innerText.split("Rs:")[1].split("x")[0].trim();
+            const color = item.querySelector('p')?.innerText.trim() || "N/A";
+            const size = item.querySelector('h6')?.innerText.trim() || "N/A";
+            const verientId = item.querySelector("#veraent-Id")?.value || "";
             const quantity = item.querySelector('h5').innerText.split("x")[1].trim();
 
             cartItems.push({
                 name: item.querySelector('h4').innerText,
+                color:color,
+                size:size,
+                verientId:verientId,
                 price: parseFloat(price),
                 quantity: parseInt(quantity),
                 total: parseFloat(item.querySelector('.text-theme').innerText.split("Rs :")[1].trim()),

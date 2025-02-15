@@ -165,7 +165,13 @@
             align-items: center;
             gap: 8px;
         }
-
+        .product-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
         .btn-primary {
             background: #0066cc;
             color: white;
@@ -212,7 +218,20 @@
             background: rgba(255, 0, 0, 0.1); /* Light red hover effect */
             transform: scale(1.1); /* Slight zoom effect */
         }
-
+        .back-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #f5f5f5;
+    border: none;
+    padding: 8px 12px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.back-button:hover {
+    background: #e0e0e0;
+}
     </style>
 </head>
 <body>
@@ -220,31 +239,24 @@
         
         <% if(formattedOrder) {%>
             <div class="order-header">
-                <a href="javascript:history.back()" class="go-back-link" title="Go Back">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M15 18l-6-6 6-6"></path>
+                <button type="button" class="back-button" onclick="history.back()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
                     </svg>
-                    Go Back
-                </a>
+                    Back
+                </button>
             
             <h1>
                 OrderId: <%=formattedOrder.orderId%>
-                <% if(formattedOrder.status!=="Cancelled") {%>
+                
                 <button class="cancel-btn" onclick="OrderCancel('<%=formattedOrder.orderId%>')" title="Cancel the order">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10" stroke="red"></circle>
                         <path d="M15 9L9 15M9 9l6 6" stroke="red"></path>
                     </svg>
                 </button>
-                <% }else { %>
-                    <button class="reorder-btn" onclick="Reorder('<%=formattedOrder.orderId%>')" title="Reorder">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10" stroke="green"></circle>
-                            <path d="M9 12h6M12 9v6" stroke="green"></path>
-                        </svg>
-                    </button>
-                    
-               <% }%>
+                
+               
                 <span class="order-status"> <%=formattedOrder.status%></span>
             </h1>
             
@@ -279,6 +291,8 @@
                     <tr>
                         <th>Product</th>
                         <th>Price</th>
+                        <th>Color</th>
+                        <th>Size</th>
                         <th>Quantity</th>
                         <th>Total</th>
                     </tr>
@@ -290,14 +304,24 @@
                     <tr>
                         <td>
                             <div class="item-info">
-                                <img src="<%=item.image%>" alt="Product">
+                                <img src="<%=item.image%>" alt="Luxury T-Shirt" class="product-image">
                                 <div class="item-details">
                                     <h3><%=item.name%></h3>
                                     
                                 </div>
                             </div>
                         </td>
+                       
                         <td><%=item.price%></td>
+                        <td>
+                            <button 
+                                type="button"
+                                class="color-selector circle"
+                                style="background-color: <%= item.color %>; border: 2px solid #ddd; width: 30px; height: 30px; border-radius: 50%; display: inline-block;"
+                            >
+                            </button>
+                        </td>
+                        <td><%=item.size%></td>
                         <td><%=item.quantity%></td>
                         <td><%=item.total%></td>
                     </tr>

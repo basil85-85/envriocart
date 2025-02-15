@@ -144,6 +144,8 @@ const ViewOrder = async (req, res) => {
             items: (order.cartItems || []).map(item => ({
                 name: item.name,
                 price: item.price,
+                color:item.color||"null",
+                size:item.size,
                 quantity: item.quantity,
                 total: item.total,
                 image: item.image
