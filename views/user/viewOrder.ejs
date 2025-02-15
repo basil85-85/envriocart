@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #f5f7fa;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Order Header */
+        .order-header {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+            top: 1px;
+        }
+
+        .order-header h1 {
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .order-status {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            background: #e6f3ff;
+            color: #0066cc;
+        }
+
+        .order-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+
+        .meta-item {
+            color: #666;
+        }
+
+        .meta-item span {
+            display: block;
+            color: #1a1a1a;
+            font-weight: 500;
+            margin-top: 5px;
+        }
+
+        /* Order Items */
+        .order-items {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .item-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .item-table th {
+            text-align: left;
+            padding: 12px;
+            background: #f8fafc;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .item-table td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .item-info img {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+
+        .item-details h3 {
+            color: #1a1a1a;
+            margin-bottom: 5px;
+        }
+
+        .item-details p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* Price Summary */
+        .price-summary {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            color: #64748b;
+        }
+
+        .summary-row.total {
+            border-top: 1px solid #eee;
+            margin-top: 10px;
+            padding-top: 20px;
+            color: #1a1a1a;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #0066cc;
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #64748b;
+            border: 1px solid #e2e8f0;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .item-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        .cancel-btn {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: transform 0.2s ease-in-out, background 0.2s ease-in-out;
+        }
+
+        .cancel-btn:hover {
+            background: rgba(255, 0, 0, 0.1); /* Light red hover effect */
+            transform: scale(1.1); /* Slight zoom effect */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        
+        <% if(formattedOrder) {%>
+            <div class="order-header">
+                <a href="javascript:history.back()" class="go-back-link" title="Go Back">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 18l-6-6 6-6"></path>
+                    </svg>
+                    Go Back
+                </a>
+            
+            <h1>
+                OrderId: <%=formattedOrder.orderId%>
+                <% if(formattedOrder.status!=="Cancelled") {%>
+                <button class="cancel-btn" onclick="OrderCancel('<%=formattedOrder.orderId%>')" title="Cancel the order">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10" stroke="red"></circle>
+                        <path d="M15 9L9 15M9 9l6 6" stroke="red"></path>
+                    </svg>
+                </button>
+                <% }else { %>
+                    <button class="reorder-btn" onclick="Reorder('<%=formattedOrder.orderId%>')" title="Reorder">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10" stroke="green"></circle>
+                            <path d="M9 12h6M12 9v6" stroke="green"></path>
+                        </svg>
+                    </button>
+                    
+               <% }%>
+                <span class="order-status"> <%=formattedOrder.status%></span>
+            </h1>
+            
+            <div class="order-meta">
+                <div class="meta-item">
+                    Order Date
+                    <td><span class="date"><%= moment(formattedOrder.orderDate).format("DD MMM YYYY hh:mm A") %></span>
+                </div>
+                
+               
+                
+                
+                <div class="meta-item">
+                    Payment Method
+                    <span> <%=formattedOrder.payment.method%></span>
+                </div>
+                <div class="meta-item">
+                    Shipping address
+                    <span> <%=formattedOrder.address.name%></span>
+                    <span><%=formattedOrder.address.address%></span>
+                    <span><%=formattedOrder.address.pincode%></span>
+                    <span><%=formattedOrder.address.phone%></span>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="order-items">
+            <h2>Order Items</h2>
+            <table class="item-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%formattedOrder.items.forEach((item)=>{ %>
+
+                 
+                    <tr>
+                        <td>
+                            <div class="item-info">
+                                <img src="<%=item.image%>" alt="Product">
+                                <div class="item-details">
+                                    <h3><%=item.name%></h3>
+                                    
+                                </div>
+                            </div>
+                        </td>
+                        <td><%=item.price%></td>
+                        <td><%=item.quantity%></td>
+                        <td><%=item.total%></td>
+                    </tr>
+                    <%  })%>  
+                </tbody>
+            </table>
+        </div>
+
+        <div class="price-summary">
+            <h2>Price Summary</h2>
+            <!-- <div class="summary-row">
+                <span>Subtotal</span>
+                <span>$349.97</span>
+            </div>
+            <div class="summary-row">
+                <span>Shipping</span>
+                <span>$15.00</span>
+            </div>
+            <div class="summary-row">
+                <span>Tax</span>
+                <span>$35.00</span>
+            </div> -->
+            <div class="summary-row total">
+                <span>Total</span>
+                <span><%=formattedOrder.summary.grandTotal%></span>
+            </div>
+
+            <div class="action-buttons">
+                <button class="btn btn-primary">
+                    <i class="ri-download-2-line"></i>
+                    Download Invoice
+                </button>
+                <button class="btn btn-secondary">
+                    <i class="ri-printer-line"></i>
+                    Print Order
+                </button>
+            </div>
+        </div>
+        <% }else {%>
+            <h3>there is empty</h3>
+            <% } %>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function OrderCancel(orderId) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you really want to cancel this order?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, cancel it!",
+            cancelButtonText: "No, keep it"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Proceed with cancellation (You can send an API request here)
+                fetch(`/cancelorder?id=${orderId}`, {
+                    method: "PUT",
+                })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire(
+                        "Cancelled!",
+                        "Your order has been cancelled.",
+                        "success"
+                        
+                    )
+                    .then(()=>{
+                        location.reload()
+                    })
+
+                    
+                })
+                .catch(error => {
+                    Swal.fire(
+                        "Error!",
+                        "Something went wrong. Try again.",
+                        "error"
+                    );
+                });
+            }
+        });
+    }
+
+
+    function Reorder(orderId) {
+    Swal.fire({
+        title: "Reorder Confirmation",
+        text: "Do you want to reorder this item?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Reorder",
+        cancelButtonText: "No, Cancel"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/reorder?id=${orderId}`, {
+                method: "PUT",
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire("Reordered!", "Your order has been placed again.", "success").then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire("Error", data.message, "error");
+                }
+            })
+            .catch(error => Swal.fire("Error", "Something went wrong!", "error"));
+        }
+    });
+}
+
+</script>
+
+</body>
+
+</html>

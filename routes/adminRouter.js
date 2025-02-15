@@ -5,6 +5,8 @@ import  auth from '../MiddleWare/auth.js'
 import customerController from "../controller/admin/customerController.js"
 import categoryController from "../controller/admin/categoryController.js"
 import productController from "../controller/admin/productController.js"
+
+import orderController from '../controller/admin/orderController.js'
 // import multer from '../config/multer.js'
 import multer from 'multer'
 import path from 'path'
@@ -70,4 +72,7 @@ router.get("/product/edit",auth.adminAuth,productController.editproduct)
 router.put("/product/editproduct",auth.adminAuth,productController.editingProduct)
 router.patch("/product/isblock",auth.adminAuth,productController.isblocked)
 router.put("/product/image-upload",auth.adminAuth,upload.array('image', 3),productController.ImageUpdate)
+
+//order mangement controller
+router.get("/order",orderController.getOrders)
 export default router 

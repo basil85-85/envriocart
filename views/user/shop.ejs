@@ -553,22 +553,21 @@
                                                     </div>
                                                 </div>
                                             </div>
-
+                                                <!-- filtering throe the price and asscending order -->
                                             <div class="product-filter-content sidebar-popup-filter-content">
                                                 <div class="d-flex align-items-center gap-3 w-100">
-                                                    <select class="form-select">
-                                                        <option selected>Ascending Order</option>
-                                                        <option value="1">Descending Order</option>
-                                                        <option value="2">Low - High Price</option>
-                                                        <option value="3">High - Low Price</option>
+                                                    <select class="form-select" id="sortOption">
+                                                        <option value="select">select to filter</option>
+                                                        <option value="ascending">Ascending Order</option>
+                                                        <option value="descending">Descending Order</option>
+                                                        <option value="lowToHigh">Low - High Price</option>
+                                                        <option value="highToLow">High - Low Price</option>
+                                                        <option value="offerprice">OfferPrice</option>
+                                                        <option value="newArrival">newArrival</option>
+
                                                     </select>
 
-                                                    <select class="form-select">
-                                                        <option selected>10 Products</option>
-                                                        <option value="1">25 Products</option>
-                                                        <option value="2">50 Products</option>
-                                                        <option value="3">100 Products</option>
-                                                    </select>
+                                                 
                                                 </div>
 
 
@@ -598,11 +597,12 @@
 
                                       
                                         <div class="product-wrapper-grid">
-                                            <div class="row g-md-4 g-sm-4">
+                                            <div class="row g-md-4 g-sm-4" id="containerforSort">
                                                 <% products.forEach((val)=>{ %>
-                                                <div class="col-xl-4 col-6 col-grid-box">
+                                                <div class="col-xl-4 col-6 col-grid-box product-item" data-price="<%= val.salePrice %>" data-regularprice="<%=val.regularPrice%>" data-date="<%=val.dateAdded%>">
                                                     <div class="basic-product theme-product-1">
                                                         <div class="overflow-hidden">
+                                                           
                                                             <div class="img-wrapper">
                                                                 <a href="/details?id=<%=val._id%>">
                                                                     <img src="/<%=val.variants[0].productImg[0]%>"
@@ -1119,7 +1119,63 @@
         function closeSearch() {
             document.getElementById("search-overlay").style.display = "none";
         }
+
+        document.getElementById("sortOption").addEventListener("change", function () {
+    let sortType = this.value;
+    let container = document.getElementById("containerforSort");
+    let products = Array.from(container.getElementsByClassName("product-item"));
+
+    products.sort((a, b) => {
+        let priceA = parseFloat(a.getAttribute("data-price") || "0");
+        let priceB = parseFloat(b.getAttribute("data-price") || "0");
+
+        let titleElemA = a.querySelector(".product-title");
+        let titleElemB = b.querySelector(".product-title");
+        let nameA = titleElemA ? titleElemA.textContent.trim().toLowerCase() : "";
+        let nameB = titleElemB ? titleElemB.textContent.trim().toLowerCase() : "";
+
+        let regularPriceA = parseFloat(a.getAttribute("data-regularprice") || "0");
+        let regularPriceB = parseFloat(b.getAttribute("data-regularprice") || "0");
+
+        let dateStrA = a.getAttribute("data-date");
+        let dateStrB = b.getAttribute("data-date");
+
+        console.log("Raw Date A:", dateStrA);
+        console.log("Raw Date B:", dateStrB);
+
+        let dateA = moment(dateStrA).isValid() ? moment(dateStrA) : null;
+        let dateB = moment(dateStrB).isValid() ? moment(dateStrB) : null;
+
+        let offerA = regularPriceA - priceA;
+        let offerB = regularPriceB - priceB;
+
+        if (sortType === "lowToHigh") return priceA - priceB;
+        if (sortType === "highToLow") return priceB - priceA;
+        if (sortType === "ascending") return nameA.localeCompare(nameB);
+        if (sortType === "descending") return nameB.localeCompare(nameA);
+        if (sortType === "offerprice") return offerB - offerA;
+
+        console.log(`Parsed Date A: ${dateA ? dateA.format() : "Invalid"}`);
+        console.log(`Parsed Date B: ${dateB ? dateB.format() : "Invalid"}`);
+
+        if (sortType === "newArrival") {
+            if (!dateA) return 1;
+            if (!dateB) return -1;
+            return dateB.valueOf() - dateA.valueOf();
+        }
+
+        return 0;
+    });
+
+    // Clear and reinsert sorted items
+    container.innerHTML = "";
+    products.forEach(product => container.appendChild(product));
+});
+
+
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+
 </body>
 
 

@@ -4,7 +4,7 @@ const categoryInfo = async (req, res) => {
       try {
             
             const page = Math.max(1, parseInt(req.query.page) || 1) 
-            const limit = 4 // Consider making this configurable
+            const limit = 4 
             const skip = (page - 1) * limit
 
           

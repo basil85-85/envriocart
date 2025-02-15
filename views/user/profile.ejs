@@ -1,6 +1,345 @@
 <%- include('../partial/user/header') %>
 
+<style>
 
+
+.modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            backdrop-filter: blur(3px);
+        }
+
+        /* Modal Content */
+        .modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            z-index: 1001;
+        }
+
+        /* Modal Header */
+        .modal-header {
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: white;
+            z-index: 1;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #333;
+            margin: 0;
+        }
+
+        /* Close Button */
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            padding: 0.5rem;
+            margin: -0.5rem;
+            border-radius: 50%;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #f0f0f0;
+            color: #333;
+        }
+
+        /* Modal Body */
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        /* Order Details Styling */
+        .order-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .info-label {
+            font-size: 0.875rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        /* Status Badge */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Animation */
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -48%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .modal.active {
+            animation: modalFadeIn 0.3s ease-out;
+        }
+
+      .table-container {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        padding: 1.5rem;
+        margin: 2rem auto;
+        overflow-x: auto;
+    }
+
+    .order-table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    .table-head {
+        background: #f8fafc;
+    }
+
+    .order-table th {
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.875rem;
+        letter-spacing: 0.05em;
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 2px solid #e2e8f0;
+    }
+
+    .order-table td {
+        padding: 1rem;
+        color: #334155;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 0.95rem;
+    }
+
+    .order-table tbody tr {
+        transition: background-color 0.2s;
+    }
+
+    .order-table tbody tr:hover {
+        background-color: #f8fafc;
+    }
+
+    .order-id {
+        font-weight: 600;
+        color: #1e293b;
+        font-family: monospace;
+        font-size: 1.1em;
+    }
+
+    .date {
+        color: #64748b;
+    }
+
+    .amount {
+        font-weight: 600;
+        color: #047857;
+    }
+
+    .custom-badge {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.375rem 0.75rem;
+        border-radius: 6px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        line-height: 1;
+    }
+
+    .bg-pending {
+        background-color: #fff7ed;
+        color: #c2410c;
+    }
+
+    .bg-success {
+        background-color: #f0fdf4;
+        color: #15803d;
+    }
+
+    .bg-failed {
+        background-color: #fef2f2;
+        color: #dc2626;
+    }
+
+    .payment-method {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .action-btn {
+        color: #3b82f6;
+        padding: 0.5rem;
+        border-radius: 6px;
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+        text-decoration: none;
+    }
+
+    .action-btn:hover {
+        background-color: #eff6ff;
+        color: #2563eb;
+    }
+
+    .action-btn i {
+        font-size: 1.25rem;
+    }
+
+    /* Animation for new orders */
+    @keyframes highlight {
+        0% { background-color: #f0fdf4; }
+        100% { background-color: transparent; }
+    }
+
+    .new-order {
+        animation: highlight 2s ease-out;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .table-container {
+            margin: 1rem;
+            padding: 1rem;
+        }
+
+        .order-table {
+            font-size: 0.9rem;
+        }
+
+        .custom-badge {
+            padding: 0.25rem 0.5rem;
+        }
+    }
+
+
+  
+        .pagination {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            justify-content: center;
+            gap: 5px;
+            margin: 20px 0;
+        }
+
+        .page-item {
+            margin: 0;
+        }
+
+        .page-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 35px;
+            height: 35px;
+            padding: 5px 10px;
+            border: 1px solid #dee2e6;
+            color: #007bff;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .page-item.active .page-link {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+
+        .page-link:hover:not(.active) {
+            background-color: #f8f9fa;
+            border-color: #dee2e6;
+            color: #0056b3;
+        }
+
+        .page-item.disabled .page-link {
+            color: #6c757d;
+            pointer-events: none;
+            background-color: #fff;
+            border-color: #dee2e6;
+        }
+
+        /* Icon styles */
+        .pagination-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+    
+</style>
     <!-- breadcrumb start -->
     <div class="breadcrumb-section">
         <div class="container">
@@ -685,199 +1024,99 @@
                                         <div class="top-sec">
                                             <h3>My Orders</h3>
                                         </div>
+                                         <% if (orders.length > 0) { %>
                                         <div class="total-box mt-0">
                                             <div class="wallet-table mt-0">
-                                                <div class="table-responsive">
-                                                    <table class="table cart-table order-table">
-                                                        <thead>
-                                                            <tr class="table-head">
-                                                                <th>Order Number</th>
-                                                                <th>Date</th>
-                                                                <th>Amount</th>
-                                                                <th>Payment Status</th>
-                                                                <th>Payment Method</th>
-                                                                <th>Option</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td><span class="fw-bolder">#1020</span></td>
-                                                                <td>06 Jul 2024 03:51:PM
-                                                                </td>
-                                                                <td>$61.73</td>
-                                                                <td>
-                                                                    <div
-                                                                        class="badge bg-pending custom-badge rounded-0">
-                                                                        <span>Pending</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>COD</td>
-                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><span class="fw-bolder">#1017</span></td>
-                                                                <td>06 Jul 2024 03:15:PM
-                                                                </td>
-                                                                <td>$1.97</td>
-                                                                <td>
-                                                                    <div
-                                                                        class="badge bg-pending custom-badge rounded-0">
-                                                                        <span>Pending</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>COD</td>
-                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><span class="fw-bolder">#1016</span></td>
-                                                                <td>26 Jun 2024 10:23:AM
-                                                                </td>
-                                                                <td>$46.14</td>
-                                                                <td>
-                                                                    <div
-                                                                        class="badge bg-pending custom-badge rounded-0">
-                                                                        <span>Pending</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>COD</td>
-                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><span class="fw-bolder">#1015</span></td>
-                                                                <td>25 Jun 2024 06:34:PM
-                                                                </td>
-                                                                <td>$18.75</td>
-                                                                <td>
-                                                                    <div
-                                                                        class="badge bg-pending custom-badge rounded-0">
-                                                                        <span>Pending</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>COD</td>
-                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><span class="fw-bolder">#1013</span></td>
-                                                                <td>24 Jun 2024 02:29:PM
-                                                                </td>
-                                                                <td>$1.72</td>
-                                                                <td>
-                                                                    <div
-                                                                        class="badge bg-pending custom-badge rounded-0">
-                                                                        <span>Pending</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>COD</td>
-                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><span class="fw-bolder">#1012</span></td>
-                                                                <td>21 Jun 2024 05:18:PM
-                                                                </td>
-                                                                <td>$6.23</td>
-                                                                <td>
-                                                                    <div
-                                                                        class="badge bg-pending custom-badge rounded-0">
-                                                                        <span>Pending</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>COD</td>
-                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><span class="fw-bolder">#1011</span></td>
-                                                                <td>21 Jun 2024 05:18:PM
-                                                                </td>
-                                                                <td>$39.72</td>
-                                                                <td>
-                                                                    <div
-                                                                        class="badge bg-pending custom-badge rounded-0">
-                                                                        <span>Pending</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>COD</td>
-                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><span class="fw-bolder">#1010</span></td>
-                                                                <td>21 Jun 2024 04:29:PM
-                                                                </td>
-                                                                <td>$3.76</td>
-                                                                <td>
-                                                                    <div
-                                                                        class="badge bg-pending custom-badge rounded-0">
-                                                                        <span>Pending</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>COD</td>
-                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><span class="fw-bolder">#1009</span></td>
-                                                                <td>21 Jun 2024 03:57:PM
-                                                                </td>
-                                                                <td>$1.52</td>
-                                                                <td>
-                                                                    <div
-                                                                        class="badge bg-pending custom-badge rounded-0">
-                                                                        <span>Pending</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>COD</td>
-                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td><span class="fw-bolder">#1006</span></td>
-                                                                <td>21 Jun 2024 03:48:PM
-                                                                </td>
-                                                                <td>$5.49</td>
-                                                                <td>
-                                                                    <div
-                                                                        class="badge bg-pending custom-badge rounded-0">
-                                                                        <span>Pending</span>
-                                                                    </div>
-                                                                </td>
-                                                                <td>COD</td>
-                                                                <td><a href="#!"><i class="ri-eye-line"></i></a></td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
+                                               
+                                                <div class="table-container">
+                                                   
+                                                        <table class="order-table">
+                                                            <thead>
+                                                                <tr class="table-head">
+                                                                    <th>Order Number</th>
+                                                                    <th>Date</th>
+                                                                    <th>Amount</th>
+                                                                    <th>order Status</th>
+
+                                                                    <th>Payment Method</th>
+                                                                    <th>Actions</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <% orders.forEach((order) => { %>
+                                                                    <tr class="<%= Date.now() - new Date(order.createdAt) < 3600000 ? 'new-order' : '' %>">
+                                                                        <td><span class="order-id">#<%= order.orderId %></span></td>
+                                                                        <td><span class="date"><%= moment(order.createdAt).format("DD MMM YYYY hh:mm A") %></span></td>
+                                                                        <td><span class="amount">$<%= order.grandTotal.toFixed(2) %></span></td>
+                                                                        <td>
+                                                                            <div class="custom-badge <%= 
+                                                                                order.orderStatus.toLowerCase() === 'pending' ? 'bg-pending' : 
+                                                                                order.orderStatus.toLowerCase() === 'Cancelled' ? 'bg-danger' : 
+                                                                                order.orderStatus.toLowerCase() === 'success' ? 'bg-success' : 
+                                                                                'bg-failed' 
+                                                                            %>">
+                                                                                <span><%= order.orderStatus %></span>
+                                                                            </div>
+                                                                        </td>
+                                                                       
+                                                                        <td>
+                                                                            <div class="payment-method">
+                                                                                <%= order.payment.method %>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td>
+                                                                            <a href="/viewsorders?id=<%=order.orderId%>" onclick="openModal('<%= order.orderId %>')" class="view-btn" style="top: 1px;">
+                                                                                <i class="ri-eye-line"></i>
+                                                                                View Details
+                                                                             </a>
+                                                                        </td>
+                                                                    </tr>
+                                                                <% }) %>
+                                                            </tbody>
+                                                        </table>
+                                                   
                                                 </div>
                                             </div>
                                             <div class="product-pagination">
                                                 <div class="theme-paggination-block">
-                                                    <nav>
-                                                        <ul class="pagination">
-                                                            <li class="page-item">
-                                                                <a class="page-link" href="#!" aria-label="Previous">
-                                                                    <span>
-                                                                        <i class="ri-arrow-left-s-line"></i>
-                                                                    </span>
-                                                                    <span class="sr-only">Previous</span>
-                                                                </a>
-                                                            </li>
-                                                            <li class="page-item active">
-                                                                <a class="page-link" href="#!">1</a>
-                                                            </li>
-                                                            <li class="page-item">
-                                                                <a class="page-link" href="#!">2</a>
-                                                            </li>
-                                                            <li class="page-item">
-                                                                <a class="page-link" href="#!">3</a>
-                                                            </li>
-                                                            <li class="page-item">
-                                                                <a class="page-link" href="#!" aria-label="Next">
-                                                                    <span>
-                                                                        <i class="ri-arrow-right-s-line"></i>
-                                                                    </span>
-                                                                    <span class="sr-only">Next</span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </nav>
+                                                    <% if (pagination.totalPages > 1) { %>
+                                                        <nav aria-label="Page navigation">
+                                                            <ul class="pagination">
+                                                                <!-- Previous button -->
+                                                                <% if (pagination.hasPrevPage) { %>
+                                                                    <li class="page-item">
+                                                                        <a class="page-link" href="/profile?page=<%= pagination.previousPage %>" aria-label="Previous">
+                                                                            <span aria-hidden="true">&laquo;</span>
+                                                                        </a>
+                                                                    </li>
+                                                                <% } %>
+                                                    
+                                                                <!-- Page numbers -->
+                                                                <% for(let i = pagination.startPage; i <= pagination.endPage; i++) { %>
+                                                                    <li class="page-item <%= pagination.currentPage === i ? 'active' : '' %>">
+                                                                        <a class="page-link" href="/profile?page=<%= i %>"><%= i %></a>
+                                                                    </li>
+                                                                <% } %>
+                                                    
+                                                                <!-- Next button -->
+                                                                <% if (pagination.hasNextPage) { %>
+                                                                    <li class="page-item">
+                                                                        <a class="page-link" href="/profile?page=<%= pagination.nextPage %>" aria-label="Next">
+                                                                            <span aria-hidden="true">&raquo;</span>
+                                                                        </a>
+                                                                    </li>
+                                                                <% } %>
+                                                            </ul>
+                                                        </nav>
+                                                    <% } %>
                                                 </div>
                                             </div>
                                         </div>
+                                        <% } else { %>
+                                            <div class="empty-state">
+                                                <p style="text-align: center; color: #64748b; padding: 2rem;">No orders found.</p>
+                                            </div>
+                                        <% } %>
                                     </div>
                                 </div>
                             </div>
@@ -1902,7 +2141,7 @@
     </div>
     <!-- add address end -->
 
- 
+   
     <!-- logout starts -->
     <div class="modal fade theme-modal-2 exit-modal" id="logout" data-bs-backdrop="static" tabindex="-1">
         <div class=" modal-dialog modal-dialog-centered">

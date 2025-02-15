@@ -42,6 +42,7 @@ const productSchema = new Schema(
             variants: [
                   { type: mongoose.Schema.Types.ObjectId, ref: 'Verient' },
             ],
+            dateAdded: { type: Date, default: Date.now },
       },
       { timestamps: true }
 )

@@ -50,6 +50,9 @@ router.put("/updateCartQuantity",auth.userAuth,cartMangement.quantityCart)
 router.get("/checkout",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement. getCheckout)
 router.post('/placeOrder',auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.placeOrder)
 router.get("/order-success",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.getOrderSuccess)
+router.get("/viewsorders",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.ViewOrder)
+router.put("/cancelorder",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.cancelOrder)
+router.put("/reorder",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.ReOrder)
 
 export default router
             
