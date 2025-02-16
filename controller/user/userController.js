@@ -330,7 +330,20 @@ const logout = (req, res) => {
             res.redirect('/pageNotFound')
       }
 }
-
+const forgotLoad = async (req,res) => {
+      try {
+            const userId = req.session.userId;
+            console.log(userId)
+            if (!userId) {
+                  return res.render('', { message: null })
+            } else {
+                  return res.redirect('/')
+            }
+      } catch (error) {
+            console.log(`Register page not loaded: ${error}`)
+            res.status(500).render("404")
+      }    
+}
 export default {
       loadLogHomepage,
       pageNotfound,
@@ -341,4 +354,5 @@ export default {
       Loadverify,
       Verify,
       logout,
+      forgotLoad
 }

@@ -3,78 +3,6 @@
 <style>
 
 
-.modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            backdrop-filter: blur(3px);
-        }
-
-        /* Modal Content */
-        .modal {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: white;
-            padding: 0;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-            width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow-y: auto;
-            z-index: 1001;
-        }
-
-        /* Modal Header */
-        .modal-header {
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid #eee;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            background: white;
-            z-index: 1;
-        }
-
-        .modal-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: #333;
-            margin: 0;
-        }
-
-        /* Close Button */
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #666;
-            padding: 0.5rem;
-            margin: -0.5rem;
-            border-radius: 50%;
-            transition: all 0.2s;
-        }
-
-        .modal-close:hover {
-            background: #f0f0f0;
-            color: #333;
-        }
-
-        /* Modal Body */
-        .modal-body {
-            padding: 1.5rem;
-        }
-
         /* Order Details Styling */
         .order-info {
             display: grid;
@@ -2013,7 +1941,7 @@
                     <div class="mt-3 d-flex align-items-center justify-content-end gap-2">
                         <button class="btn btn-md btn-outline fw-bold" type="button"
                             data-bs-dismiss="modal">Cancel</button>
-                        <button class="btn btn-solid" type="button" onclick="addAddress(event)" data-bs-dismiss="">Submit</button>
+                        <button class="btn btn-solid" type="button" onclick="addAddress(event,'<%=details._id%>')" data-bs-dismiss="">Submit</button>
                     </div>
                 </div>
             </div>
@@ -2199,7 +2127,7 @@
 function editDetails(event) {
     event.preventDefault(); 
 
-    let isValid = true; // Fixed typo (was "isvaild")
+    let isValid = true;
 
     let name = document.getElementById("Dname").value.trim();
     let phone = document.getElementById("Dphone").value.trim();
@@ -2382,7 +2310,179 @@ function showError(id, message) {
     });
 }
 
-   function addAddress(event) {
+// Animation styles
+const styles = `
+<style>
+.input-shake {
+    animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+}
+
+.success-checkmark {
+    animation: scaleCheckmark 0.3s ease-in-out forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.5s ease-out forwards;
+}
+
+@keyframes shake {
+    10%, 90% { transform: translateX(-1px); }
+    20%, 80% { transform: translateX(2px); }
+    30%, 50%, 70% { transform: translateX(-4px); }
+    40%, 60% { transform: translateX(4px); }
+}
+
+@keyframes scaleCheckmark {
+    0% { transform: scale(0); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+.field-animation {
+    transition: all 0.3s ease;
+}
+
+.field-success {
+    border-color: #28a745 !important;
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+}
+
+.field-error {
+    border-color: #dc3545 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+}
+</style>
+`;
+
+// Add styles to document
+document.head.insertAdjacentHTML('beforeend', styles);
+
+// Function to validate fields with animation
+function validateField(id, value, errorId, errorMessage, regexOrFunc = v => v.trim() !== "") {
+    const field = document.getElementById(id);
+    const isValid = typeof regexOrFunc === "function" ? regexOrFunc(value) : regexOrFunc.test(value);
+    
+    if (!isValid) {
+        showError(errorId, errorMessage);
+        field.classList.add('field-animation', 'field-error', 'input-shake');
+        field.addEventListener('animationend', () => {
+            field.classList.remove('input-shake');
+        });
+        return false;
+    } else {
+        clearError(errorId);
+        field.classList.remove('field-error');
+        field.classList.add('field-animation', 'field-success');
+        return true;
+    }
+}
+
+// Enhanced error display function
+function showError(elementId, message) {
+    const errorElement = document.getElementById(elementId);
+    if (errorElement) {
+        errorElement.innerHTML = `<span class="error-icon">❌</span> ${message}`;
+        errorElement.style.opacity = '0';
+        errorElement.style.display = 'block';
+        setTimeout(() => {
+            errorElement.style.opacity = '1';
+        }, 10);
+    }
+}
+
+// Enhanced error clear function
+function clearError(elementId) {
+    const errorElement = document.getElementById(elementId);
+    if (errorElement) {
+        errorElement.classList.add('fade-out');
+        setTimeout(() => {
+            errorElement.textContent = '';
+            errorElement.classList.remove('fade-out');
+        }, 500);
+    }
+}
+
+// Success notification with animation
+function showSuccessNotification(message) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #28a745;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-out;
+    `;
+    
+    notification.innerHTML = `
+        <span class="success-checkmark">✓</span>
+        <span>${message}</span>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    requestAnimationFrame(() => {
+        notification.style.transform = 'translateX(0)';
+    });
+
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+// Error notification with animation
+function showErrorNotification(message) {
+    const notification = document.createElement('div');
+    notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #dc3545;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-out;
+    `;
+    
+    notification.innerHTML = `
+        <span class="error-icon">⚠️</span>
+        <span>${message}</span>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    requestAnimationFrame(() => {
+        notification.style.transform = 'translateX(0)';
+    });
+
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => notification.remove(), 300);
+    }, 3000);
+}
+
+// Main address validation and submission function
+function addAddress(event,details) {
     event.preventDefault();
     let isValid = true;
 
@@ -2394,19 +2494,52 @@ function showError(id, message) {
     let state = document.getElementById("input-state-04").value;
     let city = document.getElementById("City").value.trim();
     let pincode = document.getElementById("pincode").value.trim();
+
+    // Validate each field with animations
     isValid = validateField("title", title, "error-title", "Title is required") && isValid;
     isValid = validateField("Address", address, "error-address", "Address is required") && isValid;
-    isValid = validateField("Adphone", phone, "error-phone", "Enter a valid phone number (e.g. +91 9876543210)",value => /^\d{10}$/.test(value)) && isValid;
-    isValid = validateField("input-state-02", country, "error-country", "Please select a country", value => value !== "Select Country") && isValid;
-    isValid = validateField("input-state-04", state, "error-state", "Please select a state", value => value !== "Select State") && isValid;
+    isValid = validateField(
+        "Adphone", 
+        phone, 
+        "error-phone", 
+        "Enter a valid phone number (e.g. +91 9876543210)", 
+        value => /^\d{10}$/.test(value)
+    ) && isValid;
+    isValid = validateField(
+        "input-state-02", 
+        country, 
+        "error-country", 
+        "Please select a country", 
+        value => value !== "Select Country"
+    ) && isValid;
+    isValid = validateField(
+        "input-state-04", 
+        state, 
+        "error-state", 
+        "Please select a state", 
+        value => value !== "Select State"
+    ) && isValid;
     isValid = validateField("City", city, "error-city", "City is required") && isValid;
-    isValid = validateField("pincode", pincode, "error-pincode", "Enter a valid Pin Code", value => /^\d{4,6}$/.test(value)) && isValid;
+    isValid = validateField(
+        "pincode", 
+        pincode, 
+        "error-pincode", 
+        "Enter a valid Pin Code", 
+        value => /^\d{4,6}$/.test(value)
+    ) && isValid;
 
-    // If valid, process the data
     if (isValid) {
-        let formData = { title, address, phone, country, state, city, pincode };
+        const formData = { title, address, phone, country, state, city, pincode };
+        const submitButton = document.querySelector('.btn-solid');
+         console.log(formData)
+        // Add loading animation
+        submitButton.disabled = true;
+        submitButton.innerHTML = `
+            <span class="spinner-border spinner-border-sm mr-2"></span>
+            <span>Saving...</span>
+        `;
 
-        fetch(`/address?id=<%=details._id_%>`, {
+        fetch(`/address?id=${details}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(formData)
@@ -2414,8 +2547,15 @@ function showError(id, message) {
         .then(response => response.json())
         .then(data => {
             if (data.success) {
+                console.log(data)
                 showSuccessNotification("Details updated successfully!");
-                setTimeout(() => { location.reload(); }, 1500);
+                // Add success animation to form
+                const form = document.querySelector('.modal-content');
+                form.style.transition = 'transform 0.3s ease-out';
+                form.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
             } else {
                 showErrorNotification(data.message);
             }
@@ -2423,20 +2563,29 @@ function showError(id, message) {
         .catch(error => {
             console.error("Error:", error);
             showErrorNotification("Something went wrong. Please try again later.");
+        })
+        .finally(() => {
+            submitButton.disabled = false;
+            submitButton.innerHTML = 'Submit';
         });
     }
 }
 
-// Function to validate fields
-function validateField(id, value, errorId, errorMessage, regexOrFunc = v => v.trim() !== "") {
-    if (typeof regexOrFunc === "function" ? !regexOrFunc(value) : !regexOrFunc.test(value)) {
-        showError(errorId, errorMessage);
-        return false;
-    } else {
-        clearError(errorId);
-        return true;
-    }
-}
+// Add input event listeners for real-time validation
+document.addEventListener('DOMContentLoaded', () => {
+    const fields = ['title', 'Address', 'Adphone', 'input-state-02', 'input-state-04', 'City', 'pincode'];
+    
+    fields.forEach(fieldId => {
+        const element = document.getElementById(fieldId);
+        if (element) {
+            element.addEventListener('input', (e) => {
+                element.classList.add('field-animation');
+                validateField(fieldId, e.target.value, `error-${fieldId.toLowerCase()}`, 
+                    element.getAttribute('data-error-message') || 'This field is required');
+            });
+        }
+    });
+});
 
 function deleteAddress(addressid) {
     Swal.fire({
@@ -2521,6 +2670,134 @@ function populateEditForm(addressData) {
     }
 }
 
+function editAddress(event) {
+    event.preventDefault();
+    let isValid = true;
+
+    // Get form values
+    let title = document.getElementById("title2").value.trim();
+    let address = document.getElementById("name6").value.trim();
+    let phone = document.getElementById("name5").value.trim();
+    let country = document.getElementById("input-state-06").value;
+    let state = document.getElementById("input-state-ope").value;
+    let city = document.getElementById("city2").value.trim();
+    let pincode = document.getElementById("pincode2").value.trim();
+    let addressId = document.getElementById("addressId").value;
+
+    // Validate each field with animations
+    isValid = validateField("title2", title, "error-title", "Title is required") && isValid;
+    
+    isValid = validateField("name6", address, "error-address1", "Address is required") && isValid;
+    
+    isValid = validateField(
+        "name5", 
+        phone, 
+        "error-phone1", 
+        "Enter a valid phone number (e.g. +91 9876543210)", 
+        value => /^\d{10}$/.test(value)
+    ) && isValid;
+    
+    isValid = validateField(
+        "input-state-06", 
+        country, 
+        "error-country1", 
+        "Please select a country", 
+        value => value !== "Select Country"
+    ) && isValid;
+    
+    isValid = validateField(
+        "input-state-ope", 
+        state, 
+        "error-state1", 
+        "Please select a state", 
+        value => value !== "Select State"
+    ) && isValid;
+    
+    isValid = validateField("city2", city, "error-city1", "City is required") && isValid;
+    
+    isValid = validateField(
+        "pincode2", 
+        pincode, 
+        "error-pincode1", 
+        "Enter a valid Pin Code", 
+        value => /^\d{4,6}$/.test(value)
+    ) && isValid;
+
+    if (isValid) {
+        const formData = {
+            title,
+            address,
+            phone,
+            country,
+            state,
+            city,
+            pincode,
+            addressId
+        };
+
+        const submitButton = event.target;
+        submitButton.disabled = true;
+        submitButton.innerHTML = `
+            <span class="spinner-border spinner-border-sm mr-2"></span>
+            <span>Updating...</span>
+        `;
+
+        fetch(`/editAddress?id=${addressId}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showSuccessNotification("Address updated successfully!");
+                // Add success animation to form
+                const form = document.querySelector('#edit-address .modal-content');
+                form.style.transition = 'transform 0.3s ease-out';
+                form.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    location.reload();
+                }, 1500);
+            } else {
+                showErrorNotification(data.message || "Failed to update address");
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            showErrorNotification("Something went wrong. Please try again later.");
+        })
+        .finally(() => {
+            submitButton.disabled = false;
+            submitButton.innerHTML = 'Submit';
+        });
+    }
+}
+
+
+
+// Add input event listeners for real-time validation
+document.addEventListener('DOMContentLoaded', () => {
+    const editFields = [
+        { id: 'title2', errorId: 'error-title' },
+        { id: 'name6', errorId: 'error-address1' },
+        { id: 'name5', errorId: 'error-phone1' },
+        { id: 'input-state-06', errorId: 'error-country1' },
+        { id: 'input-state-ope', errorId: 'error-state1' },
+        { id: 'city2', errorId: 'error-city1' },
+        { id: 'pincode2', errorId: 'error-pincode1' }
+    ];
+    
+    editFields.forEach(field => {
+        const element = document.getElementById(field.id);
+        if (element) {
+            element.addEventListener('input', (e) => {
+                element.classList.add('field-animation');
+                validateField(field.id, e.target.value, field.errorId, 
+                    element.getAttribute('data-error-message') || 'This field is required');
+            });
+        }
+    });
+});
 
 
 </script>

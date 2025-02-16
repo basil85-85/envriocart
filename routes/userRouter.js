@@ -24,6 +24,7 @@ router.get('/pageNotfound',auth.cartCountMiddleware, userController.pageNotfound
 router.get('/auth/google', passport.authenticate('google', {scope: ['email', 'profile'] }));
 router.get('/auth/google/callback', passport.authenticate('google', { successRedirect:"/", failureRedirect: '/login'  }) )
 router.get("/logout",userController.logout)
+router.get("/forgot",userController.forgotLoad)
                                              
 
 // shopController
