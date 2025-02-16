@@ -678,26 +678,29 @@
                                      <td><%= order.cartItems ? order.cartItems.length : 0 %></td>
                                      <td><%= order.address.phone|| '-' %></td>
                                      <td>
-                                         <span class="badge 
-                                             <%= order.orderStatus === 'Delivered' ? 'border border-success text-success' : 
-                                                order.orderStatus === 'Shipped' ? 'border border-primary text-primary' :
-                                                order.orderStatus === 'Pending' ? 'border border-warning text-warning' :
-                                                order.orderStatus === 'Cancelled' ? 'border border-danger text-danger' :
-                                                'border border-secondary text-secondary' %> px-2 py-1 fs-13">
+                                        <span id="orderStatusID-<%= order._id %>" class="badge 
+                                             <%= order.orderStatus === 'Delivered' ? 'bg-success text-white' : 
+                                                order.orderStatus === 'Shipped' ? 'bg-primary text-white' :
+                                                order.orderStatus === 'Pending' ? 'bg-warning text-dark' :
+                                                order.orderStatus === 'Processing' ? 'bg-info text-dark' :
+                                                order.orderStatus === 'Cancelled' ? 'bg-danger text-white' :
+                                                'bg-secondary text-white' %> px-2 py-1 fs-13">
                                              <%= order.orderStatus %>
                                          </span>
                                      </td>
                                      <td>
                                          <div class="d-flex gap-2">
-                                             <a href="/admin/order/view?id=<%= order._id %>" class="btn btn-light btn-sm">
-                                                 <iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon>
-                                             </a>
-                                             <!-- <a href="/admin/orders/edit?id=<%= order._id %>" class="btn btn-soft-primary btn-sm">
-                                                 <iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon>
-                                             </a> -->
-                                             <a href="#" class="btn btn-soft-danger btn-sm delete-order" data-id="<%= order._id %>">
+                                             
+                                             <button type="button" onclick="ForViewPage('<%=order._id%>')" class="btn btn-primary change-status" data-id="<%= order._id %>">
+                                                  <iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon>
+                                              </button>
+                                             <button type="button" onclick="changeStatus('<%=order._id%>')" class="btn btn-primary change-status" data-id="<%= order._id %>">
+                                                  <i data-lucide="refresh-cw" class="align-middle fs-18"></i>
+                                              </button>
+                                              
+                                              <button type="button" onclick="OrderCancel('<%=order._id%>')" class="btn btn-primary change-status" data-id="<%= order._id %>">
                                                   <iconify-icon icon="material-symbols:cancel-outline" class="align-middle fs-18"></iconify-icon>
-                                              </a>
+                                              </button>
                                               
                                          </div>
                                      </td>
@@ -771,7 +774,10 @@
 
 
                     <%- include('../partial/admin/footer') %>
-
+                    <script src="https://unpkg.com/lucide@latest"></script>
+                    <script>
+                        lucide.createIcons();
+                    </script>
  <script>
      document.addEventListener('DOMContentLoaded', function() {
          // Handle delete button clicks
@@ -795,4 +801,164 @@
              }
          });
      });
+
+
+     async function changeStatus(orderId) {
+          const statusElement = document.querySelector(`#orderStatusID-${orderId}`);
+         
+    try {
+        const response = await fetch(`/admin/order/changestatus?id=${orderId}`, {
+            method: "PUT", 
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ status: "Updated" }) 
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            showSuccessNotification(result.message||"status changed sucessfully")
+            statusElement.innerHTML= result.order.orderStatus
+
+             statusElement.classList.remove(
+                "bg-success", "bg-primary", "bg-warning", 
+                "bg-info", "bg-danger", "bg-secondary", 
+                "text-white", "text-dark"
+            );
+            let newClass = "bg-secondary text-white"; 
+            switch (result.order.orderStatus) {
+                case "Delivered": newClass = "bg-success text-white"; break;
+                case "Shipped": newClass = "bg-primary text-white"; break;
+                case "Pending": newClass = "bg-warning text-dark"; break;
+                case "Processing": newClass = "bg-info text-dark"; break;
+                case "Cancelled": newClass = "bg-danger text-white"; break;
+            }
+
+            statusElement.classList.add(...newClass.split(" "));
+
+        } else {
+            showErrorNotification(result.message || "Failed to update status.")
+        }
+    } catch (error) {
+        console.error("Error updating status:", error);
+        showErrorNotification("Something went wrong. Try again!");
+    }
+}
+
+function showSuccessNotification(message) {
+            Swal.fire({
+                title: 'Success',
+                text: message||"sucessfully created",
+                icon: 'success',
+                position: 'top',
+                toast: true,
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                },
+                background: '#fff',
+                color: '#1a1a1a',
+                iconColor: '#4CAF50',
+                customClass: {
+                    popup: 'premium-toast',
+                    title: 'premium-title',
+                    timerProgressBar: 'premium-progress'
+                }
+    })
+}
+
+// Error notification function
+function showErrorNotification(message) {
+    Swal.fire({
+        title: 'Error',
+        text: message || 'Verification failed',
+        icon: 'error',
+        position: 'top',
+        toast: true,
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        showClass: {
+            popup: 'animate__animated animate__shakeX'
+        },
+        hideClass: {
+            popup: 'animate__animated animate__fadeOutUp'
+        },
+        background: '#fff',
+        color: '#1a1a1a',
+        iconColor: '#FF3B30',
+        customClass: {
+            popup: 'premium-error-toast',
+            title: 'premium-error-title',
+            timerProgressBar: 'premium-error-progress'
+        }
+    });
+}
+function ForViewPage(orderid){
+
+     window.location.href=`/admin/order/view?id=${orderid}`
+}
+
+
+function OrderCancel(orderId) {
+    const statusElement = document.querySelector(`#orderStatusID-${orderId}`);
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "Do you really want to cancel this order?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, cancel it!",
+        cancelButtonText: "No, keep it"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            fetch(`/admin/order/cancel?id=${orderId}`, {
+                method: "PUT",
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showSuccessNotification(data.message);
+
+                    // ✅ Update status text
+                    statusElement.innerHTML = data.order.orderStatus;
+
+                    // ✅ Remove old classes
+                    statusElement.classList.remove(
+                        "bg-success", "bg-primary", "bg-warning", 
+                        "bg-info", "bg-danger", "bg-secondary", 
+                        "text-white", "text-dark"
+                    );
+
+                    // ✅ Add new class dynamically based on updated status
+                    let newClass = "bg-secondary text-white"; // Default
+                    switch (data.order.orderStatus) {  // <-- FIXED: Use `data.order.orderStatus`
+                        case "Delivered": newClass = "bg-success text-white"; break;
+                        case "Shipped": newClass = "bg-primary text-white"; break;
+                        case "Pending": newClass = "bg-warning text-dark"; break;
+                        case "Processing": newClass = "bg-info text-dark"; break;
+                        case "Cancelled": newClass = "bg-danger text-white"; break;
+                    }
+
+                    statusElement.classList.add(...newClass.split(" "));
+                } else {
+                    showErrorNotification(data.message);
+                }
+            })
+            .catch(error => {
+              showErrorNotification(error)
+            });  
+        }
+    });
+}
+
+
  </script>

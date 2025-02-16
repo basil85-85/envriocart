@@ -27,7 +27,7 @@ const getCheckout = async (req,res) => {
 //post method for oder the page of the in there check out page 
 const placeOrder = async (req, res) => {
     try {
-    
+                             
         let userId=req.query.id
         const { address, payment, cartItems, discount, deliveryCharge } = req.body;
         if (!userId || !address || !payment || !cartItems || cartItems.length === 0) {

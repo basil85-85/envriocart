@@ -61,7 +61,7 @@ app.use("/admin",adminRoute)
 app.use( auth.checkBan)
 
            
-db()
+db()                                            
 
 app.listen(process.env.PORT, () => {
       console.log(process.env.POST_LISTEN)

@@ -76,4 +76,6 @@ router.put("/product/image-upload",auth.adminAuth,upload.array('image', 3),produ
 //order mangement controller
 router.get("/order",orderController.getOrders)
 router.get("/order/view",orderController.ViewOrders)
+router.put("/order/changestatus",orderController.changeStatus)
+router.put("/order/cancel",orderController.cancelOrder)
 export default router 

@@ -80,6 +80,6 @@ const customerUnblocked = async (req, res) => {
 export default {
     customerInfo,
     customerBlocked,
-    customerUnblocked
-};
+    customerUnblocked                                         
+};        
               
