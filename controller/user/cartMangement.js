@@ -120,7 +120,6 @@ const getCart = async (req, res) => {
             const userID = req.session.userId
             const cartItems = await Cart.findOne({ userId: userID })
             const countCart = res.locals.cartCount
-
             return res.render('cart', { isLoggedIn, cartItems, countCart })
       } catch (error) {
             console.log(`error on page rendering the cart${error}`)

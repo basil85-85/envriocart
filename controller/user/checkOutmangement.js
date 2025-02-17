@@ -2,6 +2,7 @@ import Cart from "../../models/cartSchema.js"
 import Address from "../../models/addressSchema.js"
 import Order from "../../models/orderSchema.js";
 import moment from "moment";
+import Verient from "../../models/verientSchema.js";
 
 const getCheckout = async (req,res) => {
     try {
@@ -27,15 +28,35 @@ const getCheckout = async (req,res) => {
 //post method for oder the page of the in there check out page 
 const placeOrder = async (req, res) => {
     try {
-                             
-        let userId=req.query.id
+        let userId = req.query.id;
         const { address, payment, cartItems, discount, deliveryCharge } = req.body;
+
         if (!userId || !address || !payment || !cartItems || cartItems.length === 0) {
             return res.status(400).json({ success: false, message: "Missing required fields" });
         }
+
         let totalAmount = cartItems.reduce((sum, item) => sum + item.total, 0);
         let grandTotal = totalAmount + (deliveryCharge || 0) - (discount || 0);
-        
+
+        for (let item of cartItems) {
+
+            const variant = await Verient.findOne({ _id: item.verientId });
+
+            if (!variant) {
+                return res.status(404).json({ success: false, message: `Variant for ${item.name} not found.` });
+            }
+
+
+            if (variant.size[item.size] < item.quantity) {
+                return res.status(400).json({ success: false, message: `${item.name} (Size: ${item.size}) is out of stock!` });
+            }
+
+ 
+            variant.size[item.size] -= item.quantity;
+            await variant.save();
+        }
+
+
         const newOrder = new Order({
             userId,
             address,
@@ -47,9 +68,9 @@ const placeOrder = async (req, res) => {
             grandTotal,
         });
 
-
         await newOrder.save();
         await Cart.deleteOne({ userId });
+
         res.status(201).json({ success: true, message: "Order placed successfully", order: newOrder });
 
     } catch (error) {
@@ -57,6 +78,7 @@ const placeOrder = async (req, res) => {
         res.status(500).json({ success: false, message: "Internal server error" });
     }
 };
+
 
 //render the order sucess page for oder render this page 
 // const getOrderSuccess = async (req, res) => {
@@ -94,7 +116,7 @@ const getOrderSuccess = async (req, res) => {
         const userID = req.session.userId;
 
         const orders = await Order.findOne({ userId: userID }).sort({ createdAt: -1 });
-         console.log(orders)
+        //  console.log(orders)
         if (orders) {
          
             return res.render("order-success", {
@@ -180,7 +202,7 @@ const cancelOrder =async (req,res) => {
        if (order.orderStatus === "Delivered") {
         return res.status(400).json({ success: false, message: "Delivered orders cannot be cancelled" });
     }
-    console.log(order)
+    // console.log(order)
     order.orderStatus = "Cancelled";
     await order.save();
 

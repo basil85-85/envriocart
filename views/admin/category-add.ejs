@@ -493,14 +493,12 @@ async function  handleFormSubmit(event) {
           body:JSON.stringify(Formdata)
           
       })
-      if(response.ok){
-          const result =await response.json()
+      const result =await response.json()
+      if(result.success){      
           showSuccessNotification(result.message)
-
       }
       else{
-          const errorResult =await response.json()
-          showErrorNotification(errorResult.message)
+          showErrorNotification(result.message)
       }
 
        

@@ -74,8 +74,8 @@ router.patch("/product/isblock",auth.adminAuth,productController.isblocked)
 router.put("/product/image-upload",auth.adminAuth,upload.array('image', 3),productController.ImageUpdate)
 
 //order mangement controller
-router.get("/order",orderController.getOrders)
-router.get("/order/view",orderController.ViewOrders)
-router.put("/order/changestatus",orderController.changeStatus)
-router.put("/order/cancel",orderController.cancelOrder)
+router.get("/order",auth.adminAuth,orderController.getOrders)
+router.get("/order/view",auth.adminAuth,orderController.ViewOrders)
+router.put("/order/changestatus",auth.adminAuth,orderController.changeStatus)
+router.put("/order/cancel",auth.adminAuth,orderController.cancelOrder)
 export default router 

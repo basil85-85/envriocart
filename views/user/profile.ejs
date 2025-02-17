@@ -372,8 +372,8 @@
                                         <div class="counter-box">
                                             <img src="../assets copy/images/dashboard/balance.png" alt="" class="img-fluid">
                                             <div>
-                                                <h3>$12.46</h3>
-                                                <h5>Total Order</h5>
+                                                <h3>RS: <%= totalPrice%></h3>
+                                                <h5>Total Order price :</h5>
                                             </div>
                                         </div>
                                     </div>
@@ -382,7 +382,7 @@
                                         <div class="counter-box">
                                             <img src="../assets copy/images/dashboard/order.png" alt="" class="img-fluid">
                                             <div>
-                                                <h3>15</h3>
+                                                <h3><%= pagination.totalItems%></h3>
                                                 <h5>Total Orders</h5>
                                             </div>
                                         </div>
@@ -975,7 +975,7 @@
                                                                     <tr class="<%= Date.now() - new Date(order.createdAt) < 3600000 ? 'new-order' : '' %>">
                                                                         <td><span class="order-id">#<%= order.orderId %></span></td>
                                                                         <td><span class="date"><%= moment(order.createdAt).format("DD MMM YYYY hh:mm A") %></span></td>
-                                                                        <td><span class="amount">$<%= order.grandTotal.toFixed(2) %></span></td>
+                                                                        <td><span class="amount">Rs: <%= order.grandTotal.toFixed(2) %></span></td>
                                                                         <td>
                                                                             <div class="custom-badge <%= 
                                                                                 order.orderStatus.toLowerCase() === 'pending' ? 'bg-warning' : 

@@ -25,7 +25,10 @@ router.get('/auth/google', passport.authenticate('google', {scope: ['email', 'pr
 router.get('/auth/google/callback', passport.authenticate('google', { successRedirect:"/", failureRedirect: '/login'  }) )
 router.get("/logout",userController.logout)
 router.get("/forgot",userController.forgotLoad)
-                                             
+router.post("/forgot",userController.checkingEmail)
+router.get("/otpforgot",userController.OtpFogot)
+router.post("/Otpforgot",userController.checkingOtp)
+router.put("/forgotPassword",userController.forgotPassword)                                   
 
 // shopController
 router.get("/shop",auth.cartCountMiddleware,shopController.shoppage)

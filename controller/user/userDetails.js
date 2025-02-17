@@ -9,16 +9,24 @@ import moment from 'moment'
 const profile = async (req, res) => {
     try {
         let isLoggedIn = true;
-        // Get current page from query params with validation
+
         const page = Math.max(1, parseInt(req.query.page) || 1);
         const limit = 10;
         const skip = (page - 1) * limit;
 
-        // Get total count of orders for this user
+        const result = await Order.aggregate([
+            {
+              $group: {
+                _id: null,
+                totalRevenue: { $sum: "$grandTotal" } 
+              }
+            }
+          ])
+      
+          const totalPrice = result.length > 0 ? result[0].totalRevenue : 0
         const totalOrder = await Order.countDocuments({ userId: req.session.userId });
         const totalPages = Math.ceil(totalOrder / limit);
 
-        // Redirect if page number is out of bounds
         if (page > totalPages && totalPages > 0) {
             return res.redirect(`/profile?page=${totalPages}`);
         }
@@ -42,6 +50,7 @@ const profile = async (req, res) => {
             countCart,
             orders,
             moment,
+            totalPrice,
             pagination: {
                 currentPage: page,
                 totalPages,

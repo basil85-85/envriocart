@@ -199,11 +199,8 @@ const login = async (req, res) => {
                   })
             }
 
-            // Store user session details
             req.session.userId = Finduser._id
             req.session.isLogged = true
-
-            // Send success response
             return res.json({
                   success: true,
                   message: 'Successfully logged in.',
@@ -335,14 +332,146 @@ const forgotLoad = async (req,res) => {
             const userId = req.session.userId;
             console.log(userId)
             if (!userId) {
-                  return res.render('', { message: null })
+                  return res.render('forgot')
             } else {
                   return res.redirect('/')
             }
       } catch (error) {
-            console.log(`Register page not loaded: ${error}`)
+            console.log(`forgot page not loaded: ${error}`)
             res.status(500).render("404")
       }    
+}
+
+const checkingEmail = async (req,res) => {
+      try {
+            const { email } = req.body
+            const user = await User.findOne({email:email})
+            if(!user){
+                  return res.status(401).json({success:false,message:"User is not founding"})
+            }
+             // Generate OTP
+             const otp = generateOTP()
+
+             // Send OTP via email
+             const mailOptions = {
+                   from: process.env.AUTH_EMAIL,
+                   to: email,
+                   subject: 'Your OTP for Forgot password',
+                   text: `Your OTP is: ${otp}. `,
+             }
+             req.session.EmailOPtion = mailOptions
+ 
+             await transporter.sendMail(mailOptions)
+             console.log('OTP sent successfully:', otp)
+             req.session.otp = otp
+             req.session.Email = email
+            return res.status(201).json({success:true,message:"Otp is sending sucessfulyy"})
+      } catch (error) {
+            console.log(`forgot page not posting email: ${error}`)
+            res.status(500).render("404")
+      }
+}
+const OtpFogot = async (req,res) => {
+      try {
+            const userId = req.session.userId;
+            console.log(userId)
+            if (!userId && req.session.otp) {
+                  return res.render('Otpforgot')
+            } else {
+                  return res.redirect('/')
+            }
+      } catch (error) {
+            console.log(`forgot page not loaded: ${error}`)
+            res.status(500).render("404")
+      }  
+}
+const checkingOtp = async (req,res) => {
+      try {
+            const { action, code } = req.body
+            if (!req.session || !req.session.Email) {
+                  return res.status(400).json({
+                        success: false,
+                        message: 'Session expired. Please try again.',
+                  })
+            }
+
+            if (action === 'resend') {
+                  // Generate a new OTP
+                  const newOtp = generateOTP()
+                  req.session.otp = newOtp.toString() 
+                  console.log(`new Otp generated sucessfully:  ${newOtp}`)
+                  const mailOptions = {
+                        from: process.env.AUTH_EMAIL,
+                        to: req.session.Email,
+                        subject: 'Your OTP for Registration',
+                        text: `Your OTP is: ${newOtp}.`,
+                  }
+
+                  await transporter.sendMail(mailOptions)
+                  return res.status(200).json({
+                        success: true,
+                        message: 'New OTP has been sent successfully',
+                  })
+            } else if (action === 'verify') {
+            
+                  const sessionOtp = req.session.otp
+                        ? req.session.otp.toString().trim()
+                        : ''
+                  const submittedCode = code ? code.toString().trim() : ''
+
+                  if (
+                        !sessionOtp ||
+                        !submittedCode ||
+                        sessionOtp !== submittedCode
+                  ) {
+                        return res.status(400).json({
+                              success: false,
+                              message: 'Invalid or expired OTP',
+                        })
+                  }
+                  
+                  
+                  delete req.session.otp
+
+                  return res.status(200).json({
+                        success: true,
+                        message: 'User verified successfully',
+                  })
+            } else {
+                  return res.status(400).json({
+                        success: false,
+                        message: 'Invalid action provided',
+                  })
+            }
+      } catch (error) {
+            console.log(`forgot page not checking otp: ${error}`)
+            res.status(500).render("404")
+      }
+}
+const forgotPassword = async (req,res) => {
+ try {
+      const { password } = req.body;
+      const email = req.session.Email;
+
+      if (!email) {
+          return res.status(400).json({ success: false, message: "Session expired. Please request OTP again." });
+      }
+      const user = await User.findOne({ email });
+
+      if (!user) {
+          return res.status(404).json({ success: false, message: "User not found." });
+      }
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
+      user.password = hashedPassword;
+      await user.save();
+
+      return res.status(200).json({ success: true, message: "Password updated successfully." });
+
+ } catch (error) {
+      console.log(`error occur on the Pasward saving du to:${error}`)
+      return res.render("404")
+ }      
 }
 export default {
       loadLogHomepage,
@@ -354,5 +483,9 @@ export default {
       Loadverify,
       Verify,
       logout,
-      forgotLoad
+      forgotLoad,
+      checkingEmail,
+      OtpFogot,
+      checkingOtp,
+      forgotPassword
 }

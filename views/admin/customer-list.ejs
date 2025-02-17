@@ -559,60 +559,54 @@
                 <div class="row">
                     <div class="col-xl-12">
                          <div class="card">
-                              <div class="d-flex card-header justify-content-between align-items-center">
+                              <div class="card-header">
+                                   <!-- Top search bar -->
                                    <div>
-                                        <h4 class="card-title">All Customers List</h4>
-                                   </div>
-                                  
-                              </div>
-                              <div>
-                                   <div class="table-responsive">
+                                        <h4 class="card-title mb-0">All Customers List</h4>
+                                    </div>
+                                    
+                                    <!-- Search Bar -->
+                                    <input type="text" id="search" class="form-control mt-2 mb-3" placeholder="Search customers..." oninput="searchCustomers()">
+                                    
+                                    <div class="table-responsive">
                                         <table class="table align-middle mb-0 table-hover table-centered">
-                                             <thead class="bg-light-subtle">
-                                                  <tr>
-                                                      <th>Customer Name</th>
-                                                       <th>Email address</th>
-                                                       <th>Status</th>
-                                                       <th>phone number</th>
-                                                       <!-- <th>A</th> -->
-                                                       <!-- <th>Due Date</th>
-                                                       <th>Payment Method</th> -->
-                                                       <th>Action</th>
-                                                  </tr>
-                                             </thead>
-                                             <tbody>
-                                                  <% for (let i = 0; i < data.length; i++) { %>
-                                                       <tr>
-                                                         
-                                                           <td>
-                                                              
-                                                               <%= data[i].name %>
-                                                           </td>
-                                                           <td>
-                                                               <a href="javascript: void(0);" class="text-body"><%= data[i].email %></a>
-                                                           </td>
-                                                           <td>
-                                                               <span class="badge <%= data[i].isBlocked ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success' %> py-1 px-2">
-                                                                   <%= data[i].isBlocked ? 'Blocked' : 'Active' %>
-                                                               </span>
-                                                           </td>
-                                                           <td>
-                                                               <%= data[i].phone %>
-                                                           </td>
-                                                           <td>
-                                                               <div class="d-flex gap-2">
-                                                                   <button 
-                                                                       class="btn <%= data[i].isBlocked ? 'btn-soft-danger' : 'btn-soft-primary' %> btn-sm action-btn" 
-                                                                       data-id="<%= data[i].id %>" 
-                                                                       data-action="<%= data[i].isBlocked ? 'unblock' : 'block' %>">
-                                                                       <%= data[i].isBlocked ? 'Unblock' : 'Block' %>
-                                                                   </button>
-                                                               </div>
-                                                           </td>
-                                                       </tr>
-                                                   <% } %>
-                                                   
-                                             </tbody>
+                                            <thead class="bg-light-subtle">
+                                                <tr>
+                                                    <th>Customer Name</th>
+                                                    <th>Email address</th>
+                                                    <th>Status</th>
+                                                    <th>Phone Number</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="customerTable">
+                                                <% for (let i = 0; i < data.length; i++) { %>
+                                                <tr>
+                                                    <td><%= data[i].name %></td>
+                                                    <td><a href="javascript: void(0);" class="text-body"><%= data[i].email %></a></td>
+                                                    <td>
+                                                        <span class="badge <%= data[i].isBlocked ? 'bg-danger-subtle text-danger' : 'bg-success-subtle text-success' %> py-1 px-2">
+                                                            <%= data[i].isBlocked ? 'Blocked' : 'Active' %>
+                                                        </span>
+                                                    </td>
+                                                    <% if(data[i].phone){ %>
+                                                    <td><%= data[i].phone %></td>
+                                                    <%}else { %>
+                                                       <td>Google ID</td>
+                                                       <% } %>
+                                                    <td>
+                                                        <div class="d-flex gap-2">
+                                                            <button 
+                                                                class="btn <%= data[i].isBlocked ? 'btn-soft-danger' : 'btn-soft-primary' %> btn-sm action-btn" 
+                                                                data-id="<%= data[i].id %>" 
+                                                                data-action="<%= data[i].isBlocked ? 'unblock' : 'block' %>">
+                                                                <%= data[i].isBlocked ? 'Unblock' : 'Block' %>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                            </tbody>
                                         </table>
                                    </div>
                                    <!-- end table-responsive -->
@@ -693,6 +687,23 @@
                        });
                    });
                });
+
+               function searchCustomers() {
+               const query = document.getElementById("search").value.toLowerCase();
+               const rows = document.querySelectorAll("#customerTable tr");
+
+               rows.forEach(row => {
+                    const name = row.children[0].textContent.toLowerCase();
+                    const email = row.children[1].textContent.toLowerCase();
+                    const phone = row.children[3].textContent.toLowerCase();
+
+                    if (name.includes(query) || email.includes(query) || phone.includes(query)) {
+                         row.style.display = "";
+                    } else {
+                         row.style.display = "none";
+                    }
+               });
+               }
                </script>
             <%- include('../partial/admin/footer') %>
           

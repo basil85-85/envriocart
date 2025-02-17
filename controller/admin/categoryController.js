@@ -60,7 +60,9 @@ const AddCategory = async (req, res) => {
       const { name, description } = req.body
       console.log(name, description)
       try {
-            const existingCategory = await Category.findOne({ name })
+            const existingCategory = await Category.findOne({
+                  name: { $regex: new RegExp(name, "i") }
+              });              
 
             if (existingCategory) {
                   return res.json({

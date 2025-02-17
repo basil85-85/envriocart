@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+        .login-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(45deg, #4CAF50, #2E7D32);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #9E9E9E;
+        }
+        .back-link {
+            display: block;
+            margin-top: 15px;
+            text-decoration: none;
+            color: #007bff;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+<body>
+
+<div class="container">
+    <h1 class="login-title">EnviroCart</h1>
+    <h2>Forgot Your Password?</h2>
+    <p>Enter your email address below, and we'll send you a link to reset your password.</p>
+    
+    <form id="forgot-password-form" >
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                placeholder="name@example.com" 
+                required
+            >
+            <div class="error-message" id="email-error">Please enter a valid email address</div>
+        </div>
+        
+        <button type="submit" id="submit-btn">Send Code</button>
+    </form>
+    
+   
+    
+    <a href="/login" class="back-link">Back to Login</a>
+</div>
+
+<script>
+    const form = document.getElementById('forgot-password-form');
+    const emailInput = document.getElementById('email');
+    const emailError = document.getElementById('email-error');
+    const submitBtn = document.getElementById('submit-btn');
+    const successMessage = document.getElementById('success-message');
+    const errorMessage = document.getElementById('error-message');
+
+    function isValidEmail(email) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
+
+    emailInput.addEventListener('input', function() {
+        if (emailInput.value.trim() === '') {
+            emailError.style.display = 'none';
+            return;
+        }
+        
+        if (!isValidEmail(emailInput.value)) {
+            emailError.style.display = 'block';
+            submitBtn.disabled = true;
+        } else {
+            emailError.style.display = 'none';
+            submitBtn.disabled = false;
+        }
+    });
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const email = emailInput.value.trim();
+        
+        if (!email || !isValidEmail(email)) {
+            emailError.style.display = 'block';
+            return;
+        }
+        
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending...';
+
+        fetch("/forgot", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ email }) 
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+               showSuccessNotification(data.message)
+               setTimeout(()=>{
+                window.location.href="/otpforgot"
+               },2500)
+            } else {
+                showErrorNotification(data.message)
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'block';
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Code';
+        });
+    });
+
+
+
+  function showSuccessNotification(message) {
+            Swal.fire({
+                title: 'Success',
+                text: message,
+                icon: 'success',
+                position: 'top',
+                toast: true,
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                },
+                background: '#fff',
+                color: '#1a1a1a',
+                iconColor: '#4CAF50',
+                customClass: {
+                    popup: 'premium-toast',
+                    title: 'premium-title',
+                    timerProgressBar: 'premium-progress'
+                }
+    })
+}
+
+// Error notification function
+function showErrorNotification(message) {
+
+Swal.fire({
+    title: 'Error',
+    text: message || 'Verification failed',
+    icon: 'error',
+    position: 'top',
+    toast: true,
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    showClass: {
+        popup: 'animate__animated animate__shakeX'
+    },
+    hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+    },
+    background: '#fff',
+    color: '#1a1a1a',
+    iconColor: '#FF3B30',
+    customClass: {
+        popup: 'premium-error-toast',
+        title: 'premium-error-title',
+        timerProgressBar: 'premium-error-progress'
+    }
+});
+}
+
+</script>
+
+</body>
+</html>

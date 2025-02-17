@@ -81,8 +81,8 @@ const Addingproduct = async (req, res) => {
 
 
             const exproduct = await Product.findOne({
-                  productName: productName,
-            })
+                  productName: { $regex: new RegExp(productName, "i") }
+              });
 
             if (exproduct) {
                   return res.json({
