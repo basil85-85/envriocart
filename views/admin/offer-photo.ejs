@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 1 Premium Photo Upload</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e9edf2 100%);
+        }
+
+        .upload-container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            width: 95%;
+            max-width: 620px;
+            text-align: center;
+        }
+
+        .title {
+            color: #1a1f36;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .upload-area {
+            border: 2.5px dashed #e0e0e0;
+            border-radius: 16px;
+            padding: 3rem 2rem;
+            margin: 1.5rem 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fafbfc;
+        }
+
+        .upload-area:hover {
+            border-color: #6366f1;
+            background: #f8faff;
+        }
+
+        .upload-area p {
+            color: #64748b;
+            margin: 1rem 0;
+            font-size: 1.1rem;
+        }
+
+        .icon {
+            font-size: 4rem;
+            color: #6366f1;
+            margin-bottom: 1rem;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .preview-container {
+            display: none;
+            margin-top: 1.5rem;
+        }
+
+        .preview-image {
+            max-width: 100%;
+            max-height: 400px;
+        }
+
+        .cropper-container {
+            margin: 1rem 0;
+        }
+
+        .buttons-container {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.8rem 1.8rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: #6366f1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4f46e5;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(71, 85, 105, 0.1);
+        }
+
+        .btn:disabled {
+            background: #e2e8f0;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .crop-controls {
+            display: none;
+            margin: 1.5rem 0;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .aspect-ratio-btn {
+            padding: 0.6rem 1.2rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .aspect-ratio-btn:hover {
+            background: #f8faff;
+            border-color: #6366f1;
+        }
+
+        .aspect-ratio-btn.active {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+        }
+
+        .loading {
+            display: none;
+            justify-content: center;
+            align-items: center;
+            margin: 1.5rem 0;
+        }
+
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #6366f1;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .error-text {
+            color: #ef4444;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Toast styles */
+        .premium-toast {
+            border-radius: 10px !important;
+            font-family: 'Segoe UI', Arial, sans-serif !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+        }
+
+        .premium-title {
+            font-weight: 600 !important;
+            font-size: 1.1rem !important;
+        }
+
+        .premium-progress {
+            background: rgba(76, 175, 80, 0.3) !important;
+        }
+
+        .premium-error-toast {
+            border-radius: 10px !important;
+            font-family: 'Segoe UI', Arial, sans-serif !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1) !important;
+        }
+
+        .premium-error-title {
+            font-weight: 600 !important;
+            font-size: 1.1rem !important;
+        }
+
+        .premium-error-progress {
+            background: rgba(255, 59, 48, 0.3) !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="upload-container animate__animated animate__fadeIn">
+        <form id="photoUploadForm" enctype="multipart/form-data">
+            <h1 class="title">offer image</h1>
+            <p class="subtitle">Offer Image uplaoding</p>
+            
+            <div class="upload-area" id="dropZone">
+                <div class="icon">📸</div>
+                <p>Drop your photo here or click to browse</p>
+                <p style="font-size: 0.9rem; color: #94a3b8;">Supported formats: JPG, PNG, WEBP</p>
+            </div>
+            <input type="file" id="fileInput" accept="image/*">
+            
+            <div class="preview-container" id="previewContainer">
+                <img class="preview-image" id="previewImage">
+                <div class="crop-controls" id="cropControls">
+                    <button type="button" class="aspect-ratio-btn active" data-ratio="NaN">Free</button>
+                    <button type="button" class="aspect-ratio-btn" data-ratio="1">1:1</button>
+                    <button type="button" class="aspect-ratio-btn" data-ratio="1.33333">4:3</button>
+                    <button type="button" class="aspect-ratio-btn" data-ratio="1.77778">16:9</button>
+                </div>
+                <p class="error-text" id="error-image"></p>
+                <input type="hidden" id="offerId" value="<%=offer._id%>">
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+            </div>
+
+            <div class="buttons-container">
+                <button type="button" class="btn btn-secondary" id="cancelBtn" style="display: none;">Cancel</button>
+                <button type="submit" class="btn btn-primary" id="uploadBtn" style="display: none;">Crop & Upload</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        let cropper = null;
+        const propertyId = new URLSearchParams(window.location.search).get('id');
+        
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const previewImage = document.getElementById('previewImage');
+        const cropControls = document.getElementById('cropControls');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const loading = document.getElementById('loading');
+        const errorText = document.getElementById('error-image');
+        const photoForm = document.getElementById('photoUploadForm');
+
+        // Drag and drop handlers
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#6366f1';
+        });
+
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#e0e0e0';
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.borderColor = '#e0e0e0';
+            errorText.style.display = 'none';
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                handleFile(file);
+            } else {
+                errorText.textContent = "Please upload a valid image file";
+                errorText.style.display = 'block';
+            }
+        });
+
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            errorText.style.display = 'none';
+            
+            if (e.target.files.length) {
+                const file = e.target.files[0];
+                if (file.type.startsWith('image/')) {
+                    handleFile(file);
+                } else {
+                    errorText.textContent = "Please upload a valid image file";
+                    errorText.style.display = 'block';
+                }
+            }
+        });
+
+        function handleFile(file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                previewImage.src = e.target.result;
+                previewContainer.style.display = 'block';
+                dropZone.style.display = 'none';
+                cropControls.style.display = 'flex';
+                uploadBtn.style.display = 'block';
+                cancelBtn.style.display = 'block';
+
+                if (cropper) {
+                    cropper.destroy();
+                }
+
+                cropper = new Cropper(previewImage, {
+                    viewMode: 2,
+                    dragMode: 'move',
+                    aspectRatio: NaN,
+                    autoCropArea: 0.8,
+                    restore: false,
+                    guides: true,
+                    center: true,
+                    highlight: false,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    toggleDragModeOnDblclick: false,
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Aspect ratio controls
+        document.querySelectorAll('.aspect-ratio-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.aspect-ratio-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const ratio = parseFloat(btn.dataset.ratio);
+                cropper.setAspectRatio(ratio);
+            });
+        });
+
+        // Cancel button handler
+        cancelBtn.addEventListener('click', () => {
+            resetForm();
+        });
+
+        function resetForm() {
+            if (cropper) {
+                cropper.destroy();
+                cropper = null;
+            }
+            previewContainer.style.display = 'none';
+            dropZone.style.display = 'block';
+            uploadBtn.style.display = 'none';
+            cancelBtn.style.display = 'none';
+            fileInput.value = '';
+            errorText.style.display = 'none';
+        }
+
+        // Form submission handler
+        photoForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            
+            if (!propertyId) {
+                showErrorNotification("Property ID is missing. Please try again.");
+                return;
+            }
+
+            if (!cropper) {
+                errorText.textContent = "Please select and crop an image first!";
+                errorText.style.display = 'block';
+                return;
+            }
+            
+            try {
+                // Show loading spinner
+                loading.style.display = 'flex';
+                uploadBtn.disabled = true;
+                
+                // Get the cropped image as a blob
+                const canvas = cropper.getCroppedCanvas({
+                    width: 800,  // Max width for better quality
+                    height: 800, // Max height for better quality
+                    minWidth: 200,
+                    minHeight: 200,
+                    imageSmoothingEnabled: true,
+                    imageSmoothingQuality: 'high',
+                });
+                
+                const blob = await new Promise(resolve => {
+                    canvas.toBlob(resolve, 'image/jpeg', 0.95);
+                });
+                
+                // Create a File object from the blob with a name
+                const filename = `property-${propertyId}-${Date.now()}.jpg`;
+                const croppedImage = new File([blob], filename, { type: 'image/jpeg' });
+                let offerId =document.getElementById("offerId").value
+                // Create FormData object and append the cropped image
+                const formData = new FormData();
+                formData.append('image', croppedImage);
+                
+                // Send the form data to the server
+                const response = await fetch(`/admin/offer/addphoto?id=${offerId}`, {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                // Hide loading spinner
+                loading.style.display = 'none';
+                uploadBtn.disabled = false;
+                
+                if (result.success) {
+                    showSuccessNotification(result.message || "Image uploaded successfully!");
+                    resetForm();
+                    
+                    // Redirect after success if needed
+                    // setTimeout(() => {
+                    //     window.location.href = `/property/view?id=${propertyId}`;
+                    // }, 2000);
+                } else {
+                    showErrorNotification(result.message || "Failed to upload image.");
+                }
+                
+            } catch (error) {
+                console.error("Error during upload:", error);
+                loading.style.display = 'none';
+                uploadBtn.disabled = false;
+                showErrorNotification("An error occurred. Please try again.");
+            }
+        });
+
+        // Success notification function
+        function showSuccessNotification(message) {
+            Swal.fire({
+                title: 'Success',
+                text: message,
+                icon: 'success',
+                position: 'top',
+                toast: true,
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                },
+                background: '#fff',
+                color: '#1a1a1a',
+                iconColor: '#4CAF50',
+                customClass: {
+                    popup: 'premium-toast',
+                    title: 'premium-title',
+                    timerProgressBar: 'premium-progress'
+                }
+            });
+        }
+
+        // Error notification function
+        function showErrorNotification(message) {
+            Swal.fire({
+                title: 'Error',
+                text: message,
+                icon: 'error',
+                position: 'top',
+                toast: true,
+                showConfirmButton: false,
+                timer: 4000,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__shakeX'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                },
+                background: '#fff',
+                color: '#1a1a1a',
+                iconColor: '#FF3B30',
+                customClass: {
+                    popup: 'premium-error-toast',
+                    title: 'premium-error-title',
+                    timerProgressBar: 'premium-error-progress'
+                }
+            });
+        }
+    </script>
+</body>
+</html>

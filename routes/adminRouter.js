@@ -5,6 +5,7 @@ import  auth from '../MiddleWare/auth.js'
 import customerController from "../controller/admin/customerController.js"
 import categoryController from "../controller/admin/categoryController.js"
 import productController from "../controller/admin/productController.js"
+import offerController from '../controller/admin/offerController.js'
 
 import orderController from '../controller/admin/orderController.js'
 // import multer from '../config/multer.js'
@@ -78,4 +79,14 @@ router.get("/order",auth.adminAuth,orderController.getOrders)
 router.get("/order/view",auth.adminAuth,orderController.ViewOrders)
 router.put("/order/changestatus",auth.adminAuth,orderController.changeStatus)
 router.put("/order/cancel",auth.adminAuth,orderController.cancelOrder)
-export default router 
+
+
+//offer mangement controller
+router.get("/offer",offerController.getOffer)
+router.get("/offer/add",offerController.addOfferpage)
+router.post("/offer/create",offerController.createOffer)
+router.put("/offer/changeState",offerController.changeState)
+router.get("/offer/addphoto",offerController.getofferphoto)
+router.post("/offer/addphoto",upload.single('image'), offerController.photo);
+
+export default router              
