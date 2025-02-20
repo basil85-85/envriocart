@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<!-- Mirrored from techzaa.in/larkon/admin/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 03 Dec 2024 05:41:47 GMT -->
+<head>
+     <!-- Title Meta -->
+     <meta charset="utf-8" />
+     <title>Dashboard | Larkon - Responsive Admin Dashboard Template</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta name="description" content="A fully responsive premium admin dashboard template" />
+     <meta name="author" content="Techzaa" />
+     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+     <!-- App favicon -->
+     <link rel="shortcut icon" href="/assets/images/favicon.svg">
+
+     <!-- Vendor css (Require in all Page) -->
+     <link href="/assets/css/vendor.min.css" rel="stylesheet" type="text/css" />
+
+     <!-- Icons css (Require in all Page) -->
+     <link href="/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+
+     <!-- App css (Require in all Page) -->
+     <link href="/assets/css/app.min.css" rel="stylesheet" type="text/css" />
+
+     <!-- Theme Config js (Require in all Page) -->
+     <script src="/assets/js/config.js"></script>
+</head>
+
+<body>
+
+     <!-- START Wrapper -->
+     <div class="wrapper">
+
+          <!-- ========== Topbar Start ========== -->
+          <header class="topbar">
+               <div class="container-fluid">
+                    <div class="navbar-header">
+                         <div class="d-flex align-items-center">
+                              <!-- Menu Toggle Button -->
+                              <div class="topbar-item">
+                                   <button type="button" class="button-toggle-menu me-2">
+                                        <iconify-icon icon="solar:hamburger-menu-broken" class="fs-24 align-middle"></iconify-icon>
+                                   </button>
+                              </div>
+
+                              <!-- Menu Toggle Button -->
+                              <div class="topbar-item">
+                                   <h4 class="fw-bold topbar-button pe-none text-uppercase mb-0">REPORT</h4>
+                              </div>
+                         </div>
+
+                         <div class="d-flex align-items-center gap-1">
+
+                              <!-- Theme Color (Light/Dark) -->
+                              <!-- <div class="topbar-item">
+                                   <button type="button" class="topbar-button" id="light-dark-mode">
+                                        <iconify-icon icon="solar:moon-bold-duotone" class="fs-24 align-middle"></iconify-icon>
+                                   </button>
+                              </div> -->
+<!-- Notifications -->
+                              <!-- Notification -->
+                              <div class="dropdown topbar-item">
+                                   <button type="button" class="topbar-button position-relative" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <iconify-icon icon="solar:bell-bing-bold-duotone" class="fs-24 align-middle"></iconify-icon>
+                                        <span class="position-absolute topbar-badge fs-10 translate-middle badge bg-danger rounded-pill">3<span class="visually-hidden">unread messages</span></span>
+                                   </button>
+
+                                   </div>
+                             
+                              <div class="dropdown topbar-item">
+                                   <a type="button" class="topbar-button" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <span class="d-flex align-items-center">
+                                             <img class="rounded-circle" width="32" src="/assets/images/users/avatar-1.jpg" alt="avatar-3">
+                                        </span>
+                                   </a>
+                                   <div class="dropdown-menu dropdown-menu-end">
+                                        <!-- item-->
+                                        <h6 class="dropdown-header">Welcome Gaston!</h6>
+                                        <a class="dropdown-item" href="pages-profile.html">
+                                             <i class="bx bx-user-circle text-muted fs-18 align-middle me-1"></i><span class="align-middle">Profile</span>
+                                        </a>
+                                        <!-- <a class="dropdown-item" href="apps-chat.html">
+                                             <i class="bx bx-message-dots text-muted fs-18 align-middle me-1"></i><span class="align-middle">Messages</span>
+                                        </a> -->
+
+                                        <!-- <a class="dropdown-item" href="pages-pricing.html">
+                                             <i class="bx bx-wallet text-muted fs-18 align-middle me-1"></i><span class="align-middle">Pricing</span>
+                                        </a> -->
+                                        <!-- <a class="dropdown-item" href="pages-faqs.html">
+                                             <i class="bx bx-help-circle text-muted fs-18 align-middle me-1"></i><span class="align-middle">Help</span>
+                                        </a> -->
+                                        <!-- <a class="dropdown-item" href="auth-lock-screen.html">
+                                             <i class="bx bx-lock text-muted fs-18 align-middle me-1"></i><span class="align-middle">Lock screen</span>
+                                        </a> -->
+
+                                        <!-- <div class="dropdown-divider my-1"></div> -->
+
+                                        <a class="dropdown-item text-danger" href="/admin/logout">
+                                             <i class="bx bx-log-out fs-18 align-middle me-1"></i><span class="align-middle">Logout</span>
+                                        </a>
+                                   </div>
+                              </div>
+
+                              <!-- App Search-->
+                              <form class="app-search d-none d-md-block ms-2">
+                                   <div class="position-relative">
+                                        <input type="search" class="form-control" placeholder="Search..." autocomplete="off" value="">
+                                        <iconify-icon icon="solar:magnifer-linear" class="search-widget-icon"></iconify-icon>
+                                   </div>
+                              </form>
+                         </div>
+                    </div>
+               </div>
+          </header>
+
+          <!-- Activity Timeline -->
+         
+          <!-- ========== Topbar End ========== -->
+
+          <%- include('../partial/admin/header') %>
+ 
+
+          <!-- ==================================================== -->
+          <!-- Start right Content here -->
+          <!-- ==================================================== -->
+          <div class="page-content">
+
+               <!-- Start Container Fluid -->
+               <div class="container-fluid">
+
+                    <!-- Start here.... -->
+                    <div class="row">
+                        <!-- Total Orders Card -->
+                        <div class="col-md-6">
+                            <div class="card overflow-hidden shadow-sm">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-6">
+                                            <div class="avatar-md bg-soft-primary rounded-circle d-flex align-items-center justify-content-center">
+                                                <iconify-icon icon="solar:cart-5-bold-duotone" class="fs-32 text-primary"></iconify-icon>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <p class="text-muted mb-1">Total Orders</p>
+                                            <h3 class="text-dark mb-0">13,647</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer py-2 bg-light">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-success"><i class="bx bxs-up-arrow fs-12"></i> 2.3% Last Week</span>
+                                        <a href="#" class="text-primary fw-semibold fs-12">View More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Order Cancel Card -->
+                        <div class="col-md-6">
+                            <div class="card overflow-hidden shadow-sm">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-6">
+                                            <div class="avatar-md bg-soft-danger rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bx bx-award fs-24 text-danger"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <p class="text-muted mb-1">Order Cancel</p>
+                                            <h3 class="text-dark mb-0">9,526</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer py-2 bg-light">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-success"><i class="bx bxs-up-arrow fs-12"></i> 8.1% Last Month</span>
+                                        <a href="#" class="text-primary fw-semibold fs-12">View More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Total Stock Card -->
+                        <div class="col-md-6">
+                            <div class="card overflow-hidden shadow-sm">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-6">
+                                            <div class="avatar-md bg-soft-warning rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bx bxs-backpack fs-24 text-warning"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <p class="text-muted mb-1">Total Stock</p>
+                                            <h3 class="text-dark mb-0">976</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer py-2 bg-light">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-danger"><i class="bx bxs-down-arrow fs-12"></i> 0.3% Last Month</span>
+                                        <a href="#" class="text-primary fw-semibold fs-12">View More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Total Users Card -->
+                        <div class="col-md-6">
+                            <div class="card overflow-hidden shadow-sm">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-6">
+                                            <div class="avatar-md bg-soft-info rounded-circle d-flex align-items-center justify-content-center">
+                                                <i class="bx bx-dollar-circle fs-24 text-info"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <p class="text-muted mb-1">Total Users</p>
+                                            <h3 class="text-dark mb-0">$123.6k</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer py-2 bg-light">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-danger"><i class="bx bxs-down-arrow fs-12"></i> 10.6% Last Month</span>
+                                        <a href="#" class="text-primary fw-semibold fs-12">View More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+              
+                    
+                         
+
+                         
+
+                         
+
+                         
+                   
+
+                    <div class="row">
+                         <div class="col">
+                              <div class="card">
+                                   <div class="card-body">
+                                        <div class="d-flex align-items-center justify-content-between">
+                                             <h4 class="card-title">
+                                                  Recent Orders
+                                             </h4>
+
+                                             <a href="#!" class="btn btn-sm btn-soft-primary">
+                                                  <i class="bx bx-plus me-1"></i>Create Order
+                                             </a>
+                                        </div>
+                                   </div>
+                                   <!-- end card body -->
+                                   <div class="table-responsive table-centered">
+                                        <table class="table mb-0">
+                                             <thead class="bg-light bg-opacity-50">
+                                                  <tr>
+                                                       <th class="ps-3">
+                                                            Order ID.
+                                                       </th>
+                                                       <th>
+                                                            Date
+                                                       </th>
+                                                       <th>
+                                                            Product
+                                                       </th>
+                                                       <th>
+                                                            Customer Name
+                                                       </th>
+                                                       <th>
+                                                            Email ID
+                                                       </th>
+                                                       <th>
+                                                            Phone No.
+                                                       </th>
+                                                       <th>
+                                                            Address
+                                                       </th>
+                                                       <th>
+                                                            Payment Type
+                                                       </th>
+                                                       <th>
+                                                            Status
+                                                       </th>
+                                                  </tr>
+                                             </thead>
+                                             <!-- end thead-->
+                                             <tbody>
+                                                  <tr>
+                                                       <td class="ps-3">
+                                                            <a href="order-detail.html">#RB5625</a>
+                                                       </td>
+                                                       <td>29 April 2024</td>
+                                                       <td>
+                                                            <img src="/assets/images/products/product-1(1).png" alt="product-1(1)" class="img-fluid avatar-sm">
+                                                       </td>
+                                                       <td>
+                                                            <a href="#!">Anna M. Hines</a>
+                                                       </td>
+                                                       <td>anna.hines@mail.com</td>
+                                                       <td>(+1)-555-1564-261</td>
+                                                       <td>Burr Ridge/Illinois</td>
+                                                       <td>Credit Card</td>
+                                                       <td>
+                                                            <i class="bx bxs-circle text-success me-1"></i>Completed
+                                                       </td>
+                                                  </tr>
+                                                  <tr>
+                                                       <td class="ps-3">
+                                                            <a href="order-detail.html">#RB9652</a>
+                                                       </td>
+                                                       <td>25 April 2024</td>
+                                                       <td>
+                                                            <img src="/assets/images/products/product-4.png" alt="product-4" class="img-fluid avatar-sm">
+                                                       </td>
+                                                       <td>
+                                                            <a href="#!">Judith H. Fritsche</a>
+                                                       </td>
+                                                       <td>judith.fritsche.com</td>
+                                                       <td>(+57)-305-5579-759</td>
+                                                       <td>SULLIVAN/Kentucky</td>
+                                                       <td>Credit Card</td>
+                                                       <td>
+                                                            <i class="bx bxs-circle text-success me-1"></i>Completed
+                                                       </td>
+                                                  </tr>
+                                                  <tr>
+                                                       <td class="ps-3">
+                                                            <a href="order-detail.html">#RB5984</a>
+                                                       </td>
+                                                       <td>25 April 2024</td>
+                                                       <td>
+                                                            <img src="/assets/images/products/product-5.png" alt="product-5" class="img-fluid avatar-sm">
+                                                       </td>
+                                                       <td>
+                                                            <a href="#!">Peter T. Smith</a>
+                                                       </td>
+                                                       <td>peter.smith@mail.com</td>
+                                                       <td>(+33)-655-5187-93</td>
+                                                       <td>Yreka/California</td>
+                                                       <td>Pay Pal</td>
+                                                       <td>
+                                                            <i class="bx bxs-circle text-success me-1"></i>Completed
+                                                       </td>
+                                                  </tr>
+                                                  <tr>
+                                                       <td class="ps-3">
+                                                            <a href="order-detail.html">#RB3625</a>
+                                                       </td>
+                                                       <td>21 April 2024</td>
+                                                       <td>
+                                                            <img src="/assets/images/products/product-6.png" alt="product-6" class="img-fluid avatar-sm">
+                                                       </td>
+                                                       <td>
+                                                            <a href="#!">Emmanuel J. Delcid</a>
+                                                       </td>
+                                                       <td>
+                                                            emmanuel.delicid@mail.com
+                                                       </td>
+                                                       <td>(+30)-693-5553-637</td>
+                                                       <td>Atlanta/Georgia</td>
+                                                       <td>Pay Pal</td>
+                                                       <td>
+                                                            <i class="bx bxs-circle text-primary me-1"></i>Processing
+                                                       </td>
+                                                  </tr>
+                                                  <tr>
+                                                       <td class="ps-3">
+                                                            <a href="order-detail.html">#RB8652</a>
+                                                       </td>
+                                                       <td>18 April 2024</td>
+                                                       <td>
+                                                            <img src="/assets/images/products/product-1(2).png" alt="product-1(2)" class="img-fluid avatar-sm">
+                                                       </td>
+                                                       <td>
+                                                            <a href="#!">William J. Cook</a>
+                                                       </td>
+                                                       <td>william.cook@mail.com</td>
+                                                       <td>(+91)-855-5446-150</td>
+                                                       <td>Rosenberg/Texas</td>
+                                                       <td>Credit Card</td>
+                                                       <td>
+                                                            <i class="bx bxs-circle text-primary me-1"></i>Processing
+                                                       </td>
+                                                  </tr>
+                                             </tbody>
+                                             <!-- end tbody -->
+                                        </table>
+                                        <!-- end table -->
+                                   </div>
+                                   <!-- table responsive -->
+
+                                   <div class="card-footer border-top">
+                                        <div class="row g-3">
+                                             <div class="col-sm">
+                                                  <div class="text-muted">
+                                                       Showing
+                                                       <span class="fw-semibold">5</span>
+                                                       of
+                                                       <span class="fw-semibold">90,521</span>
+                                                       orders
+                                                  </div>
+                                             </div>
+
+                                             <div class="col-sm-auto">
+                                                  <ul class="pagination m-0">
+                                                       <li class="page-item">
+                                                            <a href="#" class="page-link"><i class="bx bx-left-arrow-alt"></i></a>
+                                                       </li>
+                                                       <li class="page-item active">
+                                                            <a href="#" class="page-link">1</a>
+                                                       </li>
+                                                       <li class="page-item">
+                                                            <a href="#" class="page-link">2</a>
+                                                       </li>
+                                                       <li class="page-item">
+                                                            <a href="#" class="page-link">3</a>
+                                                       </li>
+                                                       <li class="page-item">
+                                                            <a href="#" class="page-link"><i class="bx bx-right-arrow-alt"></i></a>
+                                                       </li>
+                                                  </ul>
+                                             </div>
+                                        </div>
+                                   </div>
+                              </div>
+                              <!-- end card -->
+                         </div>
+                         <!-- end col -->
+                    </div> <!-- end row -->
+
+               </div>
+               <!-- End Container Fluid -->
+
+               <!-- ========== Footer Start ========== -->
+               <%- include('../partial/admin/footer') %>

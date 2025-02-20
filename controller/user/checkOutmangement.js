@@ -58,14 +58,14 @@ const placeOrder = async (req, res) => {
 
 
         const newOrder = new Order({
-            userId,
-            address,
-            payment,
-            cartItems,
-            discount: discount || 0,
-            deliveryCharge: deliveryCharge || 0,
-            totalAmount,
-            grandTotal,
+                userId,
+                address,
+                payment,
+                cartItems,
+                discount: discount || 0,
+                deliveryCharge: deliveryCharge || 0,
+                totalAmount,
+                grandTotal,
         });
 
         await newOrder.save();

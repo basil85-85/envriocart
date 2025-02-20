@@ -238,6 +238,7 @@
                                     <th></th>
                                     <th>product name</th>
                                     <th>quantity</th>
+                                    <th>status</th>
                                     <th>price</th>
                                 </tr>
                             </thead>
@@ -250,6 +251,7 @@
                                     </td>
                                     <td><%=cart.name%></td>
                                     <td><%=cart.quantity%></td>
+                                    <td><%=orders.payment.status%></td>
                                     <td><%=cart.total%></td>
                                 </tr>
                                 <%  })%>
@@ -297,7 +299,7 @@
                                 </ul>
                             </div>
                             <div class="col-sm-12 payment-mode">
-                                <h4>payment method</h4>
+                                <h4>payment method: <%=orders.payment.method %> </h4>
                                 <p>Pay on Delivery (Cash/Card). Cash on delivery (COD) available. Card/Net banking
                                     acceptance subject to device availability.</p>
                             </div>

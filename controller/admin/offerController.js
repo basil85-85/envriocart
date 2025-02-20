@@ -28,7 +28,6 @@ const getOffer = async (req, res) => {
                   .skip(skip)
                   .limit(limit)
                   .lean()
-            console.log(offer)
             return res.render('offer-list', {
                   offer,
                   moment,
@@ -267,11 +266,10 @@ const photo = async (req, res) => {
               });
           }
   
-          // Create public directory for images
           const PUBLIC_DIR = 'public';
           const IMAGES_DIR = path.join(PUBLIC_DIR, 'images', 'offers');
   
-          // Ensure directory exists
+
           if (!fs.existsSync(IMAGES_DIR)) {
               fs.mkdirSync(IMAGES_DIR, { recursive: true });
           }
@@ -279,15 +277,15 @@ const photo = async (req, res) => {
           const uniqueFilename = `${Date.now()}-${req.file.originalname}`;
           const imagePath = path.join(IMAGES_DIR, uniqueFilename);
           
-          // Resize and save image
+
           await sharp(req.file.path)
               .resize({ width: 440, height: 400, fit: 'cover' })
               .toFile(imagePath);
   
-          // Update offer with new image
+
           const existingOffer = await Offer.findById(offerId);
           if (!existingOffer) {
-              // Clean up if offer not found
+   
               if (fs.existsSync(imagePath)) {
                   fs.unlinkSync(imagePath);
               }
@@ -297,7 +295,6 @@ const photo = async (req, res) => {
               });
           }
   
-          // If there's an existing image, try to delete it
           if (existingOffer.image) {
               try {
                   const oldImagePath = path.join(process.cwd(), 'public', existingOffer.image);

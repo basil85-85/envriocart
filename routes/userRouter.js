@@ -6,7 +6,7 @@ import shopController from '../controller/user/shopController.js'
 
 import userDetails from '../controller/user/userDetails.js'
 import cartMangement from '../controller/user/cartMangement.js'
-
+import razorpay from "../controller/user/rozarpay.js"
 import auth from '../MiddleWare/auth.js'
 
 import CheckOutmangement from '../controller/user/checkOutmangement.js'
@@ -58,5 +58,7 @@ router.get("/viewsorders",auth.cartCountMiddleware,auth.userAuth,CheckOutmangeme
 router.put("/cancelorder",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.cancelOrder)
 router.put("/reorder",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.ReOrder)
 
+router.post("/create-order",razorpay.createOrder)
+router.post('/verify-payment',razorpay.verifyPayment);
 export default router
             

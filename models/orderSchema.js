@@ -27,18 +27,15 @@ const orderSchema = new Schema(
                         type: String,
                         enum: [
                               'CASH ON DELIVERY',
-                              'Credit Card',
-                              'Debit Card',
-                              'Net Banking',
-                              'UPI',
+                              "RAZOR PAY"
                         ],
                         required: true,
                   },
                   id: { type: String, required: true },
                   status: {
                         type: String,
-                        enum: ['Pending', 'Paid', 'Failed'],
-                        default: 'Pending',
+                        enum: ['unpaid', 'Paid', 'Failed'],
+                        default: 'unpaid',
                   },
             },
             cartItems: [

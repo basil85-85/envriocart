@@ -1,22 +1,23 @@
 <%- include('../partial/user/header') %>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
 <style>
     .qty {
-    width: 100%; /* Make it full width */
-    max-width: 800px; /* Adjust max-width as needed */
-    margin: 0 auto; /* Center the list */
+    width: 100%; 
+    max-width: 800px; 
+    margin: 0 auto; 
 }
 .qty li {
     display: flex;
     align-items: center;
-    width: 100%; /* Ensure each list item takes full width */
+    width: 100%; 
     padding: 10px;
-    border-bottom: 1px solid #ddd; /* Optional: Adds separation */
+    border-bottom: 1px solid #ddd; 
 }
 .cart-content {
-    flex-grow: 1; /* Allow content to expand */
+    flex-grow: 1; 
     padding-left: 15px;
 }
-/* Order Details Styling */
 .order-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -44,8 +45,6 @@
             color: #333;
             font-weight: 600;
         }
-
-        /* Status Badge */
         .status-badge {
             display: inline-flex;
             align-items: center;
@@ -71,7 +70,6 @@
         }
 
 </style>
-    <!-- breadcrumb start -->
     <div class="breadcrumb-section">
         <div class="container">
             <h2>checkout</h2>
@@ -85,10 +83,6 @@
             </nav>
         </div>
     </div>
-    <!-- breadcrumb End -->
-
-
-    <!-- section start -->
     <section class="section-b-space checkout-section-2">
         <div class="container">
             <div class="checkout-page">
@@ -110,7 +104,7 @@
                                                 <div class="checkout-detail">
                                                     <div class="row g-3">
                                                        <% if(details && details.length >0) { %>
-                                                        <% details.forEach((details)=>{%>
+                                                    <% details.forEach((details)=>{%>
 
                                                       
                                                         <div class="col-xxl-6 col-lg-12 col-md-6">
@@ -163,9 +157,19 @@
                                                         <div class="col-sm-6">
                                                             <div class="delivery-address-box">
                                                                 <input class="form-check-input" type="radio"
-                                                                    name="checkbox3" id="check9">
-                                                                <label class="form-check-label" for="check9">CASH ON
-                                                                    DELIVERY</label>
+                                                                       name="payment_method" id="cash_on_delivery" checked>
+                                                                <label class="form-check-label" for="cash_on_delivery">
+                                                                    CASH ON DELIVERY
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="delivery-address-box">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="payment_method" id="razorpay">
+                                                                <label class="form-check-label" for="razorpay">
+                                                                    RAZOR PAY
+                                                                </label>
                                                             </div>
                                                         </div>
 
@@ -2128,10 +2132,9 @@ function showErrorNotification(message) {
 }
 
 
-
-function placeOrder(e,userId) {
+async function placeOrder(e, userId) {
     e.preventDefault();
-    let isvaild = true; // Correct spelling
+    let isvaild = true;
 
     // Get selected address
     const selectedAddress = document.querySelector('input[name="flexRadioDefault"]:checked');
@@ -2153,7 +2156,7 @@ function placeOrder(e,userId) {
     }
 
     // Get selected payment method
-    const selectedPayment = document.querySelector('input[name="checkbox3"]:checked');
+    const selectedPayment = document.querySelector('input[name="payment_method"]:checked');
     if (!selectedPayment) {
         isvaild = false;
         showErrorNotification("Please select a payment method");
@@ -2186,9 +2189,9 @@ function placeOrder(e,userId) {
 
             cartItems.push({
                 name: item.querySelector('h4').innerText,
-                color:color,
-                size:size,
-                verientId:verientId,
+                color: color,
+                size: size,
+                verientId: verientId,
                 price: parseFloat(price),
                 quantity: parseInt(quantity),
                 total: parseFloat(item.querySelector('.text-theme').innerText.split("Rs :")[1].trim()),
@@ -2199,28 +2202,95 @@ function placeOrder(e,userId) {
 
     if (!isvaild) return;
 
-    fetch(`/placeOrder?id=${userId}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-            address: Address,
-            payment: paymentDetails,
-            cartItems: cartItems
-        })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            showSuccessNotification("Order placed successfully!");
-            window.location.href = "/order-success"; // Redirect to success page
-        } else {
-            showErrorNotification("Error placing order: " + data.message);
+
+    // If Razorpay is selected
+    if (paymentDetails.method==="RAZOR PAY") {
+        try {
+            // First create order in your backend
+            const orderResponse = await fetch(`/create-order?id=${userId}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                address: Address,
+                payment: paymentDetails,
+                cartItems: cartItems
+            })
+            });
+            const orderData = await orderResponse.json();
+
+            if (!orderData.success) {
+                throw new Error(orderData.message);
+            }
+
+            const options = {
+                key: 'rzp_test_Bj3nLhzRxxOUEo', 
+                amount: orderData.amount,
+                currency: "INR",
+                name: "ENVRIO CART",
+                description: "Order Payment",
+                order_id: orderData.orderId,
+                handler: async function (response) {
+                    const verifyResponse = await fetch(`/verify-payment?id=${userId}`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_signature: response.razorpay_signature,
+                            address: Address,
+                            cartItems: cartItems
+                        })
+                    });
+                    const verifyData = await verifyResponse.json();
+
+                    if (verifyData.success) {
+                        showSuccessNotification("Payment successful!");
+                        window.location.href = "/order-success";
+                    } else {
+                        showErrorNotification("Payment verification failed!");
+                    }
+                },
+                prefill: {
+                    name: Address.name,
+                    contact: Address.phone
+                },
+                theme: {
+                    color: "#3399cc"
+                }
+            };
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+
+        } catch (error) {
+            console.error("Error:", error);
+            showErrorNotification("Payment initialization failed. Please try again.");
         }
-    })
-    .catch(error => {
-        console.error("Error:", error);
-        showErrorNotification("Something went wrong. Please try again.");
-    });
+    } else {
+        // Original COD flow
+        fetch(`/placeOrder?id=${userId}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                address: Address,
+                payment: paymentDetails,
+                cartItems: cartItems
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                showSuccessNotification("Order placed successfully!");
+                window.location.href = "/order-success";
+            } else {
+                showErrorNotification("Error placing order: " + data.message);
+            }
+        })
+        .catch(error => {
+            console.error("Error:", error);
+            showErrorNotification("Something went wrong. Please try again.");
+        });
+    }
 }
 
 

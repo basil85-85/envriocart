@@ -6,8 +6,10 @@ import customerController from "../controller/admin/customerController.js"
 import categoryController from "../controller/admin/categoryController.js"
 import productController from "../controller/admin/productController.js"
 import offerController from '../controller/admin/offerController.js'
-
+import couponController from '../controller/admin/couponController.js'
 import orderController from '../controller/admin/orderController.js'
+import saleController from '../controller/admin/saleController.js'
+
 // import multer from '../config/multer.js'
 import multer from 'multer'
 import path from 'path'
@@ -88,5 +90,16 @@ router.post("/offer/create",offerController.createOffer)
 router.put("/offer/changeState",offerController.changeState)
 router.get("/offer/addphoto",offerController.getofferphoto)
 router.post("/offer/addphoto",upload.single('image'), offerController.photo);
+
+//coupon mangement controller
+router.get("/coupon",couponController.getCoupon)
+router.get("/coupon/add",couponController.getAddcoupon)
+router.post("/coupon/add",couponController.addingCoupon)
+router.put("/coupon/changeState",couponController.changeSate)
+router.delete("/coupon/delect",couponController.deleteCoupon)
+
+
+// sale report
+router.get("/sale-Report",saleController.getSalereport)
 
 export default router              
