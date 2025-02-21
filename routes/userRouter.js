@@ -35,6 +35,8 @@ router.put("/forgotPassword",userController.forgotPassword)
 // shopController
 router.get("/shop",auth.cartCountMiddleware,shopController.shoppage)
 router.get("/details",auth.cartCountMiddleware,shopController.details)
+// filteringbased the category
+router.get("/filtering",auth.cartCountMiddleware,shopController.filterCategory)
 
 
 //details

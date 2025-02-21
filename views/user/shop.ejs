@@ -566,9 +566,20 @@
                                                         <option value="newArrival">newArrival</option>
 
                                                     </select>
+                                                    <div class="d-flex align-items-center gap-3 w-100">
+                                                        <select class="form-select" id="categoryFilter">
+                                                            <option value="">Select Category</option>
+                                                            <%category.forEach((category)=>{ %>
 
+                                                           
+                                                            <option value="<%=category.name%>"><%=category.name%></option>
+                                                            <%})%>
+                                                        </select>
+                                                    </div>
                                                  
                                                 </div>
+                                               
+                                                
 
 
                                                 <div class="collection-grid-view ms-auto">
@@ -749,27 +760,13 @@
                 </div>
                 <div class="modal-body">
                     <div class="search-input-box">
-                        <input type="text" class="form-control" placeholder="Search with brands and categories...">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search with Product Here!!">
                         <i class="ri-search-2-line"></i>
                     </div>
 
-                    <ul class="search-category">
-                        <li class="category-title">Top search:</li>
-                        <li>
-                            <a href="category-page.html">Baby Essentials</a>
-                        </li>
-                        <li>
-                            <a href="category-page.html">Bag Emporium</a>
-                        </li>
-                        <li>
-                            <a href="category-page.html">Bags</a>
-                        </li>
-                        <li>
-                            <a href="category-page.html">Books</a>
-                        </li>
-                    </ul>
+                    
 
-                    <div class="search-product-box mt-sm-4 mt-3">
+                    <!-- <div class="search-product-box mt-sm-4 mt-3">
                         <h3 class="search-title">Most Searched</h3>
 
                         <div class="row row-cols-xl-4 row-cols-md-3 row-cols-2 g-sm-4 g-3">
@@ -1000,9 +997,9 @@
                                             </ul>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
+                                </div> -->
+                            <!-- </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -1170,6 +1167,82 @@
     // Clear and reinsert sorted items
     container.innerHTML = "";
     products.forEach(product => container.appendChild(product));
+});
+
+
+// document.getElementById("categoryFilter").addEventListener("change", function () {
+//     const categoryName = this.value; 
+
+//     if (categoryName) { 
+//         fetch(`/filtering?id=${categoryName}`) // Send category ID as a query parameter
+//             .then(response => response.json()) // Handle response (if needed)
+//             .then(data => console.log(data)) 
+//             .catch(error => console.error("Error:", error));
+//     }
+// });
+
+
+
+
+
+
+
+// Filter products by category name
+function filterByCategory(categoryName) {
+    // Get all product items
+    const productItems = document.querySelectorAll(".product-item");
+   
+    // If no category specified, show all products
+    if (!categoryName || categoryName === "Select Category" || categoryName === "") {
+        productItems.forEach(item => {
+            item.style.display = "block";
+        });
+        return;
+    }
+   
+    // Loop through each product
+    productItems.forEach(item => {
+        // Get the category name text from h4 tag inside product-detail
+        const productCategory = item.querySelector(".product-detail h4").textContent.trim();
+       
+        // Show or hide based on category match (case insensitive)
+        if (productCategory.toLowerCase() === categoryName.toLowerCase()) {
+            item.style.display = "block";
+        } else {
+            item.style.display = "none";
+        }
+    });
+}
+
+// Add event listener to the CATEGORY dropdown (not sortOption)
+document.getElementById("categoryFilter").addEventListener("change", function() {
+    filterByCategory(this.value);
+});
+
+document.getElementById("searchInput").addEventListener("input", function () {
+        let searchTerm = this.value.toLowerCase();
+        let products = document.querySelectorAll(".product-item"); // Select all product items
+
+        products.forEach(product => {
+            let productName = product.querySelector(".product-title").textContent.toLowerCase();
+            let category = product.querySelector("h4").textContent.toLowerCase();
+            let description = product.querySelector("p").textContent.toLowerCase();
+
+            if (productName.includes(searchTerm) || category.includes(searchTerm) || description.includes(searchTerm)) {
+                product.style.display = "block"; // Show the product
+            } else {
+                product.style.display = "none"; // Hide the product
+            }
+        });
+    });
+
+    document.getElementById("searchModal").addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {  
+        let modal = bootstrap.Modal.getInstance(document.getElementById("searchModal"));
+        if (modal) {
+            modal.hide(); // Properly close the Bootstrap modal
+        }
+    }
 });
 
 

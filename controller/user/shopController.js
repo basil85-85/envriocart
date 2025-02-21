@@ -4,12 +4,13 @@ import Category from '../../models/categorySchema.js'
 
 
 
+
 //shoping pages
 const shoppage = async (req, res) => {
       try {
             const userId = req.session.userId
             let page = parseInt(req.query.page) || 1
-            let limit = parseInt(req.query.limit) || 10
+            let limit = parseInt(req.query.limit) || 20
             const countCart =res.locals.cartCount
             let skip = (page - 1) * limit
             const products = await Product.find({
@@ -86,9 +87,73 @@ const details = async (req, res) => {
     }
 };
 
+const filterCategory = async (req, res) => {
+      try {
+        const categoryName = req.query.name; // Get category name from query
+        const sortOption = req.query.sort;
+        
+        console.log(`Filtering by category name: ${categoryName}, Sort: ${sortOption}`);
+
+        const category = await mongoose.model('Category').findOne({
+          name: { $regex: categoryName, $options: 'i' } 
+        });
+        
+        if (!category) {
+          return res.json({ 
+            success: true, 
+            products: [], 
+            message: "Category not found" 
+          });
+        }
+        
+
+        let productsQuery = Product.find({
+          categoryName: category._id,
+          isBlocked: false
+        });
+        
+ 
+        switch(sortOption) {
+          case 'ascending':
+            productsQuery = productsQuery.sort({ productName: 1 });
+            break;
+          case 'descending':
+            productsQuery = productsQuery.sort({ productName: -1 });
+            break;
+          case 'lowToHigh':
+            productsQuery = productsQuery.sort({ salePrice: 1 });
+            break;
+          case 'highToLow':
+            productsQuery = productsQuery.sort({ salePrice: -1 });
+            break;
+          case 'offerprice':
+            productsQuery = productsQuery.sort({ productOffer: -1 });
+            break;
+          case 'newArrival':
+            productsQuery = productsQuery.sort({ dateAdded: -1 });
+            break;
+          default:
+            productsQuery = productsQuery.sort({ dateAdded: -1 });
+        }
+        
+        const products = await productsQuery.populate('variants');
+        
+        return res.json({ 
+          success: true, 
+          products,
+          count: products.length,
+          categoryId: category._id
+        });
+        
+      } catch (error) {
+        console.log(`Error filtering by category name: ${error}`);
+        return res.status(500).json({ success: false, message: "Server error" });
+      }
+    };
 
 
 export default {
       shoppage,
-      details
+      details,
+      filterCategory
 }
