@@ -1,6 +1,8 @@
 import Razorpay from "razorpay";
 import crypto from 'crypto';
 import Order from "../../models/orderSchema.js";
+import Cart from "../../models/cartSchema.js";
+import Verient from "../../models/verientSchema.js";
 
 const razorpay = new Razorpay({
     key_id: process.env.key_id,
@@ -45,7 +47,7 @@ const createOrder = async (req, res) => {
             payment: {
                 method: "RAZOR PAY",
                 id: razorpayOrder.id,
-                status: 'unpaid'  
+                status: 'Failed'  
             },
             cartItems: cartItems.map(item => ({
                 name: item.name,
@@ -98,7 +100,7 @@ const verifyPayment = async (req, res) => {
             .digest("hex");
 
         const isAuthentic = expectedSignature === razorpay_signature;
-
+       
         if (isAuthentic) {
             await Order.findOneAndUpdate(
                 { "payment.id": razorpay_order_id },
@@ -109,7 +111,28 @@ const verifyPayment = async (req, res) => {
                     }
                 }
             );
+             const order = await Order.findById(req.session.orderID)
+             if(!order){
+                return res.status(401).json({success:false,message:"order Id is not definded"})
+             }
+             for (let item of order.cartItems) {
 
+                const variant = await Verient.findOne({ _id: item.verientId });
+    
+                if (!variant) {
+                    return res.status(404).json({ success: false, message: `Variant for ${item.name} not found.` });
+                }
+    
+    
+                if (variant.size[item.size] < item.quantity) {
+                    return res.status(400).json({ success: false, message: `${item.name} (Size: ${item.size}) is out of stock!` });
+                }
+    
+     
+                variant.size[item.size] -= item.quantity;
+                await variant.save();
+            }
+            await Cart.deleteOne({ userId });
             res.json({
                 success: true,
                 message: "Payment verified successfully"

@@ -29,7 +29,7 @@ createdAt: {
     default: Date.now
 },
   password: {
-    type: String    // Required false is default, no need to specify
+    type: String    
   },
  isBlocked : {
     type: Boolean,

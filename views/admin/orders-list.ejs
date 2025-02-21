@@ -684,6 +684,8 @@
                                                 order.orderStatus === 'Pending' ? 'bg-warning text-dark' :
                                                 order.orderStatus === 'Processing' ? 'bg-info text-dark' :
                                                 order.orderStatus === 'Cancelled' ? 'bg-danger text-white' :
+                                                order.orderStatus === 'approved' ? 'bg-success text-white' :
+                                                order.orderStatus === 'rejected' ? 'bg-red text-white' :
                                                 'bg-secondary text-white' %> px-2 py-1 fs-13">
                                              <%= order.orderStatus %>
                                          </span>

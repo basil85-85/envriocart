@@ -8,8 +8,10 @@ import userDetails from '../controller/user/userDetails.js'
 import cartMangement from '../controller/user/cartMangement.js'
 import razorpay from "../controller/user/rozarpay.js"
 import auth from '../MiddleWare/auth.js'
-
+import cancelresaon from "../controller/user/orderReasonmangement.js"
 import CheckOutmangement from '../controller/user/checkOutmangement.js'
+
+import walletController from '../controller/user/walletController.js'
 
 
 
@@ -43,6 +45,7 @@ router.post("/address",auth.userAuth,userDetails.Addaddress)
 router.delete("/deleteAddress",auth.userAuth,userDetails.deleteAddress)
 router.put("/editAddress",auth.userAuth,userDetails.editAddress)
 
+
 //cartMangement
 router.post("/addCart",auth.userAuth,cartMangement.AddCart)
 router.get("/cart",auth.cartCountMiddleware,auth.userAuth,cartMangement.getCart)
@@ -58,7 +61,12 @@ router.get("/viewsorders",auth.cartCountMiddleware,auth.userAuth,CheckOutmangeme
 router.put("/cancelorder",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.cancelOrder)
 router.put("/reorder",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.ReOrder)
 
-router.post("/create-order",razorpay.createOrder)
-router.post('/verify-payment',razorpay.verifyPayment);
+
+router.post("/create-order",auth.userAuth,razorpay.createOrder)
+router.post('/verify-payment',auth.userAuth,razorpay.verifyPayment);
+router.post("/wallet",auth.cartCountMiddleware,auth.userAuth,walletController.createOrderWallet)    
+
+// cancel order the reson
+router.post("/profile/requestreturn",auth.userAuth,cancelresaon.reasonCancel)
 export default router
             

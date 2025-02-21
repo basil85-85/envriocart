@@ -236,6 +236,6 @@ const quantityCart = async (req, res) => {
 export default {
       AddCart,
       getCart,
-      deleteCart,
+      deleteCart,   
       quantityCart,
 }

@@ -99,7 +99,6 @@ async function placeOrder(e, userId) {
                 description: "Order Payment",
                 order_id: orderData.orderId,
                 handler: async function (response) {
-                    // Verify payment on your server
                     const verifyResponse = await fetch(`/verify-payment?id=${userId}`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },

@@ -81,6 +81,8 @@ router.get("/order",auth.adminAuth,orderController.getOrders)
 router.get("/order/view",auth.adminAuth,orderController.ViewOrders)
 router.put("/order/changestatus",auth.adminAuth,orderController.changeStatus)
 router.put("/order/cancel",auth.adminAuth,orderController.cancelOrder)
+router.post("/order/requestreturn",auth.adminAuth,orderController.reasonCancel)
+router.put("/order/approvel",auth.adminAuth,orderController.approvel)
 
 
 //offer mangement controller

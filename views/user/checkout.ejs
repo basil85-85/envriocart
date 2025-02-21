@@ -172,6 +172,15 @@
                                                                 </label>
                                                             </div>
                                                         </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="delivery-address-box">
+                                                                <input class="form-check-input" type="radio"
+                                                                       name="payment_method" id="wallet">
+                                                                <label class="form-check-label" for="wallet">
+                                                                   Wallet
+                                                                </label>
+                                                            </div>
+                                                        </div>
 
                                                       
                                                       
@@ -2255,9 +2264,11 @@ async function placeOrder(e, userId) {
                     contact: Address.phone
                 },
                 theme: {
-                    color: "#3399cc"
+                    color: "#ff6600", 
+                    backdrop_color: "#f0f0f0", 
+                    hide_topbar: false 
                 }
-            };
+}
 
             const rzp = new Razorpay(options);
             rzp.open();
@@ -2266,7 +2277,37 @@ async function placeOrder(e, userId) {
             console.error("Error:", error);
             showErrorNotification("Payment initialization failed. Please try again.");
         }
-    } else {
+     } else if(paymentDetails.method==="Wallet"){
+            try {
+                const response= await fetch(`/wallet?id=${userId}`,{
+                    method:"POST",
+                    headers:{"content-Type":"application/json"},
+                    body:JSON.stringify({
+                        address: Address,
+                        payment: paymentDetails,
+                        cartItems: cartItems
+                    })
+                    
+                })
+                const data = await response.json()
+                if(response.ok){
+                    if(data.success){
+                        showSuccessNotification(data.message)
+                        setTimeout(()=>{
+                            window.location.href="/order-success"
+                        },1500)
+                    }else{
+                        showErrorNotification(data.message)
+                    }
+                }
+                else{
+                    showErrorNotification("error reponce is not founded")
+                }
+            } catch (error) {
+                showErrorNotification(error)
+            }
+        }
+     else {
         // Original COD flow
         fetch(`/placeOrder?id=${userId}`, {
             method: "POST",

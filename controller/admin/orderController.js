@@ -1,5 +1,6 @@
 import Order from '../../models/orderSchema.js'
 import moment from 'moment'
+import Wallet from '../../models/walletSchema.js'
 
 const getOrders = async (req, res) => {
       try {
@@ -147,9 +148,104 @@ const cancelOrder = async (req, res) => {
             )
       }
 }
+
+
+const reasonCancel = async (req,res) => {
+      try {
+          const orderId = req.query.id
+          console.log(orderId)
+          const {reason }= req.body
+          const order = await Order.findById(orderId)
+          if(!order){
+              return res.status(401).json({success:false,message:"order is not founding"})
+          }
+          const updated = await Order.findByIdAndUpdate(
+              orderId, 
+              { 
+                  cancelReason: reason, 
+                  orderStatus: 'rejected'
+              }, 
+              { new: true }
+          );
+          
+          if(!updated){
+              return res.status(401).json({success:false,message:"order is not update something error on updating"})
+          }
+          return res.status(200).json({success:true,message:"sucessfully updated"})
+  
+      } catch (error) {
+          console.log(`error occur on the cancel reason for due to :${error}`)
+          return res.status(500).json({success:false,message:"server error occur"})
+      }
+  }
+  const approvel = async (req, res) => {
+      try {
+          const orderId = req.query.id;
+          const order = await Order.findById(orderId);
+  
+          if (!order) {
+              return res.status(401).json({ success: false, message: "Order not found" });
+          }
+  
+          // Update order status to 'approved'
+          const updatedOrder = await Order.findByIdAndUpdate(
+              orderId,
+              { orderStatus: 'approved' },
+              { new: true }
+          );
+  
+          if (!updatedOrder) {
+              return res.status(401).json({ success: false, message: "Error updating order" });
+          }
+  
+          const wallet = await Wallet.findOneAndUpdate(
+              { userId: order.userId },
+              {
+                  $inc: { wallet: order.totalAmount },
+                  $push: {
+                      transactions: {
+                          transactionType: 'credit',
+                          amount: order.totalAmount,
+                          description: `Refund for Order ID: ${order.orderId}`
+                      }
+                  }
+              },
+              { new: true }
+          );
+  
+          
+            if (!wallet) {
+                  const newWallet = new Wallet({
+                      userId: order.userId,
+                      wallet: order.totalAmount,  // Initial wallet balance
+                      transactions: [
+                          {
+                              transactionType: 'credit',
+                              amount: order.totalAmount,
+                              description: `Refund for Order ID: ${order.orderId}`
+                          }
+                      ]
+                  });
+              
+                  await newWallet.save();
+              }
+        
+  
+          return res.status(200).json({ success: true, message: "Successfully updated & amount credited to wallet" });
+  
+      } catch (error) {
+          console.log(`Error in approval process: ${error}`);
+          return res.status(500).json({ success: false, message: "Server error occurred" });
+      }
+  };
+  
+  
+
 export default {
       getOrders,
       ViewOrders,
       changeStatus,
       cancelOrder,
+      reasonCancel,
+      approvel
 }

@@ -27,7 +27,8 @@ const orderSchema = new Schema(
                         type: String,
                         enum: [
                               'CASH ON DELIVERY',
-                              "RAZOR PAY"
+                              "RAZOR PAY",
+                              "Wallet"
                         ],
                         required: true,
                   },
@@ -59,6 +60,8 @@ const orderSchema = new Schema(
             totalAmount: { type: Number, required: true },
             grandTotal: { type: Number, required: true },
             couponApplied: { type: Boolean, default: false },
+            returnReason:{type:String,required:false},
+            cancelReason:{type:String,required:false},
             orderStatus: {
                   type: String,
                   enum: [
@@ -66,6 +69,9 @@ const orderSchema = new Schema(
                         'Processing',
                         'Shipped',
                         'Delivered',
+                        'requesed',
+                        'approved',
+                        'rejected',
                         'Cancelled',
                   ],
                   default: 'Pending',

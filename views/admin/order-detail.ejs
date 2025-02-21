@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Premium Order Details</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/3.5.0/remixicon.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
     <style>
         body {
             font-family: 'Playfair Display', 'Times New Roman', serif;
@@ -239,6 +245,35 @@
     .back-button:hover {
         background: #e0e0e0;
     }
+    .btn-approve {
+    background-color: #28a745;
+    border: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-approve:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+.btn-approve:active {
+    background-color: #1e7e34;
+}
+
+.btn-cancel {
+    background-color: #dc3545;
+    border: none;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-cancel:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+}
+
+.btn-cancel:active {
+    background-color: #bd2130;
+}
 
     </style>
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -260,7 +295,84 @@
                 <div class="order-statusf"><%=order.orderStatus%></div>
                 <% } %>
         </div>
+        <% if (order.orderStatus === "requested") { %>
+            <div class="alert alert-warning border border-primary text-dark p-3 rounded">
+                <h4 class="fw-bold text-danger">
+                    <i class="ri-error-warning-line"></i> Return Requested
+                </h4>
+                <p class="fw-semibold text-primary">
+                    Reason: <span class="fw-bold text-uppercase " style="color: #c82333;"><%= order.returnReason %></span>
+                </p>
+                <div class="mt-3">
+                    <button type="button"  onclick="approvel('<%=order._id%>')" class="btn btn-success fw-semibold px-4 py-2 me-2 btn-approve">
+                        <i class="ri-check-line"></i> Approve
+                    </button>
+                    <button type="button" onclick="canceled()" class="btn btn-danger fw-semibold px-4 py-2 btn-cancel">
+                        <i class="ri-close-line"></i> Cancel
+                    </button>
+                </div>
+            </div>
+        <% }else if (order.orderStatus === 'rejected') { %> 
+            <div class="alert alert-warning border border-primary text-dark p-3 rounded">
+                <h4 class="fw-bold text-danger">
+                    <i class="ri-error-warning-line"></i> Rejected
+                </h4>
+                <p class="fw-semibold text-primary">
+                    Reason: <span class="fw-bold text-uppercase " style="color: #c82333;"><%= order.cancelReason %></span>
+                </p>
+                
+            </div>
 
+            <% } %>
+        
+        <div id="returnModal" style="
+        display: none;
+        position: fixed;
+        top: 10%;
+        left: 50%;
+        transform: translate(-50%, 0);
+        background: white;
+        padding: 20px;
+        width: 90%;
+        max-width: 400px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+        z-index: 1000;">
+        
+        <h2>Return Request</h2>
+        <p>Select a reason for return:</p>
+        
+        <!-- Reason Selection -->
+        <select id="returnReason" style="width: 100%; padding: 8px; margin-bottom: 10px;">
+            <option value="">-- Select Reason --</option>
+            <option value="we have open the covered">we have open the covered</option>
+            <option value="time delayed">time delayed</option>
+            <option value="Not Satisfied with ur request messgae">Not Satisfied with ur request messgae</option>
+            <option value="Others">Others</option>
+        </select>
+    
+        <!-- Custom Reason Input (Only if "Others" is selected) -->
+        <input type="text" id="customReason" placeholder="Enter your reason..." 
+               style="width: 100%; padding: 8px; margin-bottom: 10px; display: none;">
+    
+        <!-- Buttons -->
+        <button onclick="closeModal()" style="background: gray; color: white; padding: 8px 15px; border: none;">Cancel</button>
+        <button onclick="submitReturn('<%=order._id%>')" style="background: red; color: white; padding: 8px 15px; border: none;">Confirm</button>
+    </div>
+    
+    <!-- Overlay to Disable Background Clicks -->
+    <div id="overlay" style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 999;">
+    </div>
+        
+        
         <!-- <div class="tracking-info">
             <h3 style="margin: 0 0 15px 0; color: #d4af37;">Delivery Status</h3>
             <p style="margin: 0; font-size: 1.1em;">Your premium package is being prepared with utmost care</p>
@@ -283,7 +395,7 @@
                 <h3>Order Information</h3>
                 <p style="line-height: 1.8; margin: 0;">
                     <strong>Order Date:</strong><%= moment(order.createdAt).format("DD MMM YYYY hh:mm A") %><br>
-                    <strong>Payment Method:</strong> <%=order. payment.method%><br>
+                    <strong>Payment Method:</strong> <%=order.payment.method%><br>
                    
                 </p>
             </div>
@@ -349,5 +461,165 @@
             <button class="btn btn-secondary">Download Invoice</button>
         </div>
     </div>
+    <script>
+     function canceled() {
+        document.getElementById("returnModal").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
+    }
+
+    function closeModal() {
+        document.getElementById("returnModal").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
+    }
+
+    document.getElementById("returnReason").addEventListener("change", function() {
+        if (this.value === "Others") {
+            document.getElementById("customReason").style.display = "block";
+        } else {
+            document.getElementById("customReason").style.display = "none";
+        }
+    });
+
+
+
+    
+    async function submitReturn(orderID) {
+    try {
+        let isValid = true;
+        const reasonElement = document.getElementById("returnReason");
+        const reason = reasonElement.value;
+        const customReasonElement = document.getElementById("customReason");
+        const customReason = customReasonElement.value.trim();
+
+        if (reason === "" || (reason === "Others" && customReason === "")) {
+            isValid = false;
+            showErrorNotification("Please select a reason or enter a custom reason.");
+        }
+
+        if (!isValid) return;
+
+        const finalReason = reason === "Others" ? customReason : reason;
+
+        const response = await fetch(`/admin/order/requestreturn?id=${orderID}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ reason: finalReason }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            if(data.success){
+                showSuccessNotification(data.message);
+                setTimeout(()=>{
+                    location.reload()
+                },1500)
+            closeModal();
+            }else{
+                showErrorNotification(data.message)
+            }
+            
+        } else {
+            showErrorNotification(data.message || "Something went wrong!");
+        }
+    } catch (error) {
+        showErrorNotification("An error occurred while submitting return request.");
+        console.error(error);
+    }
+}
+
+
+
+function showSuccessNotification(message) {
+            Swal.fire({
+                title: 'Success',
+                text: message,
+                icon: 'success',
+                position: 'top',
+                toast: true,
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true,
+                showClass: {
+                    popup: 'animate__animated animate__fadeInDown'
+                },
+                hideClass: {
+                    popup: 'animate__animated animate__fadeOutUp'
+                },
+                background: '#fff',
+                color: '#1a1a1a',
+                iconColor: '#4CAF50',
+                customClass: {
+                    popup: 'premium-toast',
+                    title: 'premium-title',
+                    timerProgressBar: 'premium-progress'
+                }
+    })
+}
+
+
+// Error notification function
+function showErrorNotification(message) {
+
+Swal.fire({
+    title: 'Error',
+    text: message || 'Verification failed',
+    icon: 'error',
+    position: 'top',
+    toast: true,
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    showClass: {
+        popup: 'animate__animated animate__shakeX'
+    },
+    hideClass: {
+        popup: 'animate__animated animate__fadeOutUp'
+    },
+    background: '#fff',
+    color: '#1a1a1a',
+    iconColor: '#FF3B30',
+    customClass: {
+        popup: 'premium-error-toast',
+        title: 'premium-error-title',
+        timerProgressBar: 'premium-error-progress'
+    }
+});
+}
+
+
+                    async function  approvel(orderId) {
+                        try{
+                       const result = await Swal.fire({
+                              title: "Are you sure?",
+                              text: "Do you needed to delect it",
+                              icon: "warning",
+                              showCancelButton: true,
+                              confirmButtonColor: "#3085d6",
+                              cancelButtonColor: "#d33",
+                              confirmButtonText: "Yes, proceed!"
+                         });
+
+                         if (result.isConfirmed) {
+                              const response = await fetch(`/admin/order/approvel?id=${orderId}`, {
+                                   method: "PUT", 
+                                   headers: { "Content-Type": "application/json" }
+                              });
+                              const data= await response.json()
+                              if(data.success){
+                                showSuccessNotification(data.message)
+                                setTimeout(()=>{
+                                    location.reload()
+                                },1500)
+                              }
+                              else{
+                                showErrorNotification(data.message)
+                              }
+                            }
+                        }catch(error){
+                            showErrorNotification(error)
+                        }
+                        }
+    </script>
 </body>
 </html>
