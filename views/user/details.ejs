@@ -143,10 +143,35 @@
         cursor: zoom-in;
     }
 }
-    
+.wishlist-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: none;
+    color: #374151;
+    font-family: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.wishlist-btn i {
+    font-size: 20px;
+}
+
+.wishlist-btn:hover {
+    color: #ef4444;
+    border-color: #fecaca;
+}
+
+/* Make sure you include the Remix Icon CSS in your HTML */
+
 
 </style>
-
+ <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
 
 
     <!-- breadcrumb start -->
@@ -370,10 +395,10 @@
                                 </div>
                             </div>
                             <div class="buy-box">
-                                <a href="">
+                                <button type="button" onclick=" addWishlist() " class="wishlist-btn">
                                     <i class="ri-heart-line"></i>
-                                    <span>Add To Wishlist</span>
-                                </a>
+                                    <span>Add to Wishlist</span>
+                                </button>
                             </div>
 
                         
@@ -430,9 +455,7 @@
                                                                 <span class="color-dot" style="background-color: <%= variant.productcolor %>; width: 15px; height: 15px; display: inline-block; border-radius: 50%; margin-right: 5px;"></span>
                                                             <% }) %>
                                                         </div>
-                                                       
                                                     </div>
-                                                   
                                                 </div>
                                             </div>
                                         <% }) %>
@@ -1586,7 +1609,7 @@ function showSuccessNotification(message) {
     })
 }
 
-// Error notification function
+
    function showErrorNotification(message) {
 
     Swal.fire({
@@ -1612,6 +1635,77 @@ function showSuccessNotification(message) {
             title: 'premium-error-title',
             timerProgressBar: 'premium-error-progress'
         }
+    });
+}
+
+
+
+
+let wishlist = [];
+
+function addWishlist() {
+    const activeVariantButton = document.querySelector('.color-variant .active button');
+    
+    if (!activeVariantButton) {
+        showErrorNotification('Please select a variant.');
+        return;
+    }
+
+    const activeVariantIndex = activeVariantButton.getAttribute('onclick')?.match(/'(\d+)'/)[1];
+
+    const variantIdInput = document.getElementById(`variant-id-${activeVariantIndex}`);
+    if (!variantIdInput) {
+        showErrorNotification('Variant ID not found.');
+        return;
+    }
+    const variantId = variantIdInput.value;
+
+    // Find size selector if it exists
+    const sizeSelector = document.querySelector(`#product-size-cont${activeVariantIndex} .size-selector`);
+    const selectedSize = sizeSelector ? sizeSelector.value : null; // If no size is selected, it remains null
+
+    const wishlistItem = {
+        variantId,
+        productName: document.querySelector('.main-title').innerText,
+        size: selectedSize,
+        color: activeVariantButton.getAttribute('data-color'),
+        price: parseFloat(document.querySelector('.price-text h3').innerText.replace('Rs:', '').trim()),
+        image: document.querySelector(`#main-image${activeVariantIndex}`).src
+    };
+
+    // Check if the item already exists in the wishlist
+    const existingItem = wishlist.find(item => 
+        item.variantId === wishlistItem.variantId && 
+        item.size === wishlistItem.size
+    );
+
+    if (existingItem) {
+        showErrorNotification("Item already exists in wishlist.");
+        return;
+    }
+
+    wishlist.push(wishlistItem);
+
+    // Send data to the backend
+    fetch('/addWishlist', {  // 🔥 Corrected API route name
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(wishlistItem)
+    })
+    .then(response => response.json())  
+    .then(data => {
+        if (data && data.success) {  
+            showSuccessNotification(data.message);
+        } else {
+            showErrorNotification(data.message || "Something went wrong");
+        }
+    })
+    .catch(error => {
+        console.error("Fetch Error:", error);
+        showErrorNotification("You are not logged in, please login.");
+        setTimeout(() => {
+            window.location.href = '/login';
+        }, 1500);
     });
 }
 

@@ -5,30 +5,48 @@ const { Schema } = mongoose;
 const wishlistSchema = new Schema(
     {
         userId: {
-            type: Schema.Types.ObjectId,
-            ref: "User", // Reference to the User model
+            type: Schema.Types.ObjectId, 
+            ref: "User",
             required: true,
         },
         products: [
             {
-                productId: {
-                    type: Schema.Types.ObjectId,
-                    ref: "Product", // Reference to the Product model
+              verientId: {
+                        type: Schema.Types.ObjectId,
+                        ref: "Verient", 
+                        required: true,
+                    },
+                productName:{
+                    type: String,
+                    required: false,
+                },
+                size: {
+                    type: String,
+                    required: false, 
+                },
+                price: {
+                    type: Number,
                     required: true,
                 },
-                addedAt: {
-                    type: Date,
-                    default: Date.now, // Tracks when the product was added to the wishlist
+                color: {
+                    type: String,
+                    required: false, 
                 },
+                image: {
+                    type: String,
+                    required: false,
+                },
+                
+                
+              
             },
         ],
     },
     {
-        timestamps: true, // Automatically adds `createdAt` and `updatedAt` fields
+        timestamps: true, 
     }
 );
 
-// Creating the model
 const Wishlist = mongoose.model("Wishlist", wishlistSchema);
 
 export default Wishlist;

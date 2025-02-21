@@ -10,7 +10,7 @@ import razorpay from "../controller/user/rozarpay.js"
 import auth from '../MiddleWare/auth.js'
 import cancelresaon from "../controller/user/orderReasonmangement.js"
 import CheckOutmangement from '../controller/user/checkOutmangement.js'
-
+import wislistMangement from '../controller/user/wislistMangement.js'
 import walletController from '../controller/user/walletController.js'
 
 
@@ -68,5 +68,10 @@ router.post("/wallet",auth.cartCountMiddleware,auth.userAuth,walletController.cr
 
 // cancel order the reson
 router.post("/profile/requestreturn",auth.userAuth,cancelresaon.reasonCancel)
+
+//wislist 
+router.post("/addWishlist",auth.userAuth,wislistMangement.addWishlist)
+router.get("/wishlist",auth.userAuth,wislistMangement.getWishlist)
+router.delete("/deleteWishlist",auth.userAuth,wislistMangement.deleteWishlist)
 export default router
             
