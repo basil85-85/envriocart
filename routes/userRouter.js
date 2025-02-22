@@ -3,7 +3,6 @@ import userController from '../controller/user/userController.js'
 const router = express.Router()
 import passport from 'passport'
 import shopController from '../controller/user/shopController.js'
-
 import userDetails from '../controller/user/userDetails.js'
 import cartMangement from '../controller/user/cartMangement.js'
 import razorpay from "../controller/user/rozarpay.js"
@@ -12,6 +11,7 @@ import cancelresaon from "../controller/user/orderReasonmangement.js"
 import CheckOutmangement from '../controller/user/checkOutmangement.js'
 import wislistMangement from '../controller/user/wislistMangement.js'
 import walletController from '../controller/user/walletController.js'
+import couponController from '../controller/user/couponController.js'
 
 
 
@@ -62,6 +62,10 @@ router.get("/order-success",auth.cartCountMiddleware,auth.userAuth,CheckOutmange
 router.get("/viewsorders",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.ViewOrder)
 router.put("/cancelorder",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.cancelOrder)
 router.put("/reorder",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.ReOrder)
+
+//applied coupon
+router.post("/checkout/applyCoupon",auth.cartCountMiddleware,auth.userAuth,couponController.applyedCoupon) 
+router.delete("/checkout/removeCoupon",auth.cartCountMiddleware,auth.userAuth,couponController.removeCoupon) 
 
 
 router.post("/create-order",auth.userAuth,razorpay.createOrder)

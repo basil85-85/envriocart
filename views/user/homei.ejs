@@ -1,35 +1,70 @@
 
 <%- include('../partial/user/header') %>
+<link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+
     <!-- Home slider -->
-    <section class="small-slider pt-0 home-fashion mt-0">
-        <div class="container container-lg">
-            <a href="category-page.html" class="home">
-                <img src="../assets copy/images/fashion-4/full-banner/1.png" alt="" class="img-fluid blur-up lazyload">
-            </a>
-        </div>
-    </section>
+    <% if (products.length > 0) { %>  
+        <% products.slice(0,1).forEach((offer) => { %>
+            <section class="small-slider pt-0 home-fashion mt-0">
+                <div class="container container-lg">
+                    <div class="position-relative overflow-hidden rounded-3">
+                        <a href="/offers/<%= offer._id %>" class="home d-block">
+                            <img src="<%= offer.image ? offer.image : '/images/default.jpg' %>" 
+                                alt="Offer Image" 
+                                class="img-fluid blur-up lazyload w-100"
+                                style="object-fit: cover; height: 400px;">
+                        </a>
+                        <!-- Overlay offer details -->
+                        <div class="position-absolute top-50 start-50 translate-middle text-center w-75 p-3 rounded-3" style="background: #000000; color: white;">
+                            <h4 class="mb-2 fw-bold"><%= offer.offerName || "Special Offer" %></h4>
+                            <p class="mb-2"><%= offer.description || "Don't miss out on this great deal!" %></p>
+                            <div class="offer-badge bg-danger d-inline-block px-3 py-2 rounded-pill">
+                                <% if (offer.discountType === 'percentage') { %>
+                                    <span class="h5 mb-0"><%= offer.discountValue %>% OFF</span>
+                                <% } else { %>
+                                    <span class="h5 mb-0">₹<%= offer.discountValue %> OFF</span>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        <% }) %>
+    <% } %>
+    
+    
     <!-- Home slider end -->
 
-
-    <!-- banner section start -->
-    <section class="banner-goggles banner-padding ratio2_1  banner-section">
+    <section class="banner-goggles banner-padding ratio2_1 banner-section my-5">
         <div class="container container-lg">
             <div class="row g-4">
-                <div class="col-md-4">
-                    <a href="category-page.html" class="collection-banner">
-                        <img src="../assets copy/images/fashion-4/banner/1.png" class="img-fluid blur-up lazyload" alt="">
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="category-page.html" class="collection-banner">
-                        <img src="../assets copy/images/fashion-4/banner/2.png" class="img-fluid blur-up lazyload" alt="">
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="category-page.html" class="collection-banner">
-                        <img src="../assets copy/images/fashion-4/banner/3.png" class="img-fluid blur-up lazyload" alt="">
-                    </a>
-                </div>
+                <% products.slice(1, 4).forEach(offer => { %>
+                    
+                    <div class="col-md-4">
+                        <div class="offer-banner position-relative rounded-3 overflow-hidden">
+                            <a href="/offers/<%= offer._id %>" class="collection-banner d-block">
+                                <img 
+                                    src="<%= offer.image %>" 
+                                    class="img-fluid blur-up lazyload w-100"
+                                    alt="<%= offer.offerName %>"
+                                    style="height: 300px; object-fit: cover;"
+                                >
+                                <!-- Offer Details Overlay -->
+                                <div class="offer-details position-absolute bottom-0 start-0 w-100 p-3 text-white">
+                                    <h4 class="mb-2"><%= offer.offerName %></h4>
+                                    <p class="mb-2" style="color: rgb(255, 0, 0);"><%= offer.description %></p>
+                                    <div class="offer-badge bg-danger d-inline-block px-3 py-2 rounded-pill">
+                                        <% if(offer.discountType === 'percentage') { %>
+                                            <span class="h5 mb-0"><%= offer.discountValue %> % OFF</span>
+                                        <% } else { %>
+                                            <span class="h5 mb-0">₹<%= offer.discountValue %> OFF</span>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                <% }); %>
             </div>
         </div>
     </section>
@@ -42,25 +77,25 @@
             <div class="col-12">
                 <div class="title1 wo-border">
                     <h4>recent story</h4>
-                    <h2 class="title-inner1 font-cormorant">trending products</h2>
+                    <h2 class="title-inner1 font-cormorant">OFFERS products</h2>
                 </div>
-            </div>
-            <div class="col-xl-2">
-                <!-- category start -->
-                <header class="left-header left-header-relative">
+             </div>
+          <!--  <div class="col-xl-2">
+                category start
+                < <header class="left-header left-header-relative">
                     <div class="metro">
                         <div class="main-menu">
                             <div class="menu-left">
-                                <!-- <div id="mySidenav" class="sidenav">
+                                 <div id="mySidenav" class="sidenav">
                                     <a href="javascript:void(0)" class="sidebar-overlay" onclick="closeNav()"></a>
                                     <nav class="sidebar-unset">
                                         <div class="d-xl-none d-block" onclick="closeNav()">
                                             <div class="sidebar-back text-start">
                                                 <i class="fa fa-angle-left pe-2"></i> Back
                                             </div>
-                                        </div> -->
-                                        <!-- <div class="left-sidebar_center"> -->
-                                            <!-- <ul id="sub-menu" class="sm pixelstrap  sm-vertical ">
+                                        </div>
+                                        <div class="left-sidebar_center">
+                                            <ul id="sub-menu" class="sm pixelstrap  sm-vertical ">
                                                 <li><a href="#!">What's New</a></li>
                                                 <li><a href="#!">Trending now</a></li>
                                                 <li><a href="#!">On sale</a></li>
@@ -73,50 +108,54 @@
                                                 <li><a href="#!">beauty</a></li>
                                                 <li><a href="#!">Home Decor</a></li>
                                             </ul>
-                                        </div> -->
-                                    <!-- </nav>
-                                </div> -->
+                                        </div> 
+                                    </nav>
+                                </div> 
                             </div>
                         </div>
                     </div>
-                </header>
+                </header> -->
                 <!-- category end -->
-            </div>
-            <div class="col-xl-10">
+             </div>  
+            <div class="col-xl-12">
                 <!-- Product Section -->
                 <div class="ratio_asos">
                     <div class="container p-0">
                         <div class="g-3 g-md-4 row row-cols-2 row-cols-md-3 row-cols-xl-4">
-                            <% products.slice(0, 3).forEach((product) => { %>
+                            <% products.forEach((offer) => { %>
+                                <%offer.productIds.forEach((product)=>{ %>
                                 <div>
                                     <div class="basic-product theme-product-1">
                                         <% if (product.variants && product.variants.length > 0 && !product.isBlocked) { %>
                                           
                                                 <div class="overflow-hidden">
-                                                    <div class="img-wrapper">
-                                                        
-                                  
+                                                    <div class="img-wrapper position-relative">
                                                         <a href="/details?id=<%=product._id%>">
                                                             <img src="/<%= product.variants[0].productImg[0]%>" 
                                                                  class="img-fluid blur-up lazyload" alt="Product Image">
                                                         </a>
-                                                        
-                                                        <div class="rating-label">
-                                                            <i class="ri-star-fill"></i><span>4.5</span>
+                                                    
+                                                       <% if(offer.discountType==='percentage'){ %>
+                                                        <div class="offer-icon position-absolute top-0 start-0 m-2 bg-danger text-white px-2 py-1 rounded">
+                                                            <i class="ri-price-tag-3-fill"></i>  <%=offer. discountValue%>% Offer
                                                         </div>
-                                                        <div class="cart-info">
-                                                            <a href="#!" title="Add to Wishlist" class="wishlist-icon">
-                                                                <i class="ri-heart-line"></i>
-                                                            </a>
-                                                            <button data-bs-toggle="modal" data-bs-target="#addtocart"
-                                                                title="Add to cart">
-                                                                <i class="ri-shopping-cart-line"></i>
-                                                            </button>
-                                                            <a href="/details?id=<%=product._id%>" data-bs-toggle="" title="Quick View">
+                                                     <% } else {%>
+                                                        <div class="offer-icon position-absolute top-0 start-0 m-2 bg-danger text-white px-2 py-1 rounded">
+                                                            <i class="ri-price-tag-3-fill"></i> Rs: <%=offer. discountValue%>  Offer
+                                                        </div>
+                                                       <%} %>
+                                                    
+                                                       
+                                                        <div class="cart-info position-absolute bottom-0 end-0 m-2">
+                                                            <a href="/details?id=<%=product._id%>" title="Quick View" class="text-dark bg-white p-2 rounded-circle">
                                                                 <i class="ri-eye-line"></i>
                                                             </a>
                                                         </div>
+                                                        <div class="rating-label">
+                                                            <i class="ri-star-fill"></i><span>4.5</span>
+                                                        </div>
                                                     </div>
+                                                    
                                                     <div class="product-detail">
                                                         <div>
                                                             <div class="brand-w-color">
@@ -155,6 +194,7 @@
                                         <% } %>
                                     </div>
                                 </div>
+                                <%})%>
                             <% }) %>
                         </div>
                     </div>

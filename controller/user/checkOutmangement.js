@@ -4,6 +4,7 @@ import Order from '../../models/orderSchema.js'
 import moment from 'moment'
 import Verient from '../../models/verientSchema.js'
 import Wallet from '../../models/walletSchema.js'
+import Coupon from '../../models/couponSchema.js'
 
 const getCheckout = async (req, res) => {
       try {
@@ -11,12 +12,15 @@ const getCheckout = async (req, res) => {
             const countCart = res.locals.cartCount
 
             const userID = req.session.userId
+            const coupon = await Coupon.find({ status:'active', usageLimit : { $gt:0  } })
+            console.log(coupon)
             const cart = await Cart.findOne({ userId: userID })
             const details = await Address.find({ userId: userID })
             if (cart) {
                   return res.render('checkout', {
                         isLoggedIn,
                         countCart,
+                        coupon,
                         cart,
                         details,
                   })
@@ -29,11 +33,10 @@ const getCheckout = async (req, res) => {
       }
 }
 
-//post method for oder the page of the in there check out page
 const placeOrder = async (req, res) => {
       try {
             let userId = req.query.id
-            const {
+            let {
                   address,
                   payment,
                   cartItems,
@@ -55,14 +58,30 @@ const placeOrder = async (req, res) => {
                               message: 'Missing required fields',
                         })
             }
+            
+          
+            if (req.session.couponID) {
+                const coupon = await Coupon.findById(req.session.couponID);
+
+                if (!coupon || coupon.status !== "active") {
+                      return res.status(401).json({
+                            success: false,
+                            message: "Invalid coupon, try another coupon",
+                      });
+                }
+
+                coupon.usedBy.push(userId);
+                coupon.usageLimit -= 1;
+                await coupon.save();
+          }
 
             let totalAmount = cartItems.reduce(
                   (sum, item) => sum + item.total,
                   0
             )
-            let grandTotal =
-                  totalAmount + (deliveryCharge || 0) - (discount || 0)
-
+            discount=req.session.discountAmount
+            let grandTotal =  totalAmount + (deliveryCharge || 0) - (discount || 0)
+                
             for (let item of cartItems) {
                   const variant = await Verient.findOne({ _id: item.verientId })
 
@@ -87,12 +106,14 @@ const placeOrder = async (req, res) => {
                   variant.size[item.size] -= item.quantity
                   await variant.save()
             }
-
+              delete req.session.discountAmount
+                
             const newOrder = new Order({
                   userId,
                   address,
                   payment,
                   cartItems,
+                  couponApplied:req.session.couponApplied ||false ,
                   discount: discount || 0,
                   deliveryCharge: deliveryCharge || 0,
                   totalAmount,

@@ -3,6 +3,8 @@ import crypto from 'crypto';
 import Order from "../../models/orderSchema.js";
 import Cart from "../../models/cartSchema.js";
 import Verient from "../../models/verientSchema.js";
+import Coupon from "../../models/couponSchema.js";
+
 
 const razorpay = new Razorpay({
     key_id: process.env.key_id,
@@ -12,7 +14,7 @@ const razorpay = new Razorpay({
 const createOrder = async (req, res) => {
     try {
         console.log(req.body)
-        const { payment ,address, cartItems, discount, deliveryCharge } = req.body;
+        let { payment ,address, cartItems, discount, deliveryCharge } = req.body;
         const userId = req.query.id;
 
         if ( !address || !cartItems) {
@@ -21,6 +23,7 @@ const createOrder = async (req, res) => {
                 message: "Missing required fields"
             });
         }
+        discount=req.session.discountAmount
         const totalAmount = cartItems.reduce((acc, item) => acc + item.total, 0);
         const grandTotal = totalAmount + (deliveryCharge || 0) - (discount || 0);
 
@@ -61,7 +64,8 @@ const createOrder = async (req, res) => {
             })),
             discount: discount || 0,
             deliveryCharge: deliveryCharge || 0,
-            totalAmount: totalAmount,    
+            totalAmount: totalAmount, 
+            couponApplied:req.session.couponApplied ||false ,   
             grandTotal: grandTotal,   
             orderStatus: 'Pending'
         });
@@ -73,7 +77,7 @@ const createOrder = async (req, res) => {
             amount: razorpayOrder.amount,
             message: "Order created successfully"
         });
-
+        delete req.session.discountAmount
     } catch (error) {
         console.error("Error in createOrder:", error);
         res.status(500).json({
@@ -111,6 +115,21 @@ const verifyPayment = async (req, res) => {
                     }
                 }
             );
+            if (req.session.couponID) {
+                const coupon = await Coupon.findById(req.session.couponID);
+
+                if (!coupon || coupon.status !== "active") {
+                      return res.status(401).json({
+                            success: false,
+                            message: "Invalid coupon, try another coupon",
+                      });
+                }
+
+                coupon.usedBy.push(userId);
+                coupon.usageLimit -= 1;
+                await coupon.save();
+          }
+
              const order = await Order.findById(req.session.orderID)
              if(!order){
                 return res.status(401).json({success:false,message:"order Id is not definded"})

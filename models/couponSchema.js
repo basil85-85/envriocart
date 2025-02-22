@@ -11,11 +11,11 @@ const couponSchema = new Schema(
             },
             status: {
                   type: String,
-                  enum: ['active', 'inactive'],  // Matches your object format
+                  enum: ['active', 'inactive','expired','upcoming'], 
                   default: 'active',
             },
             startDate: {
-                  type: Date,
+                  type: Date, 
                   required: true,
             },
             endDate: {
@@ -23,20 +23,20 @@ const couponSchema = new Schema(
                   required: true,
             },
             minCartValue: {
-                  type: Number,  // Matches `minCartValue` in object
+                  type: Number,  
                   default: 0,
             },
             couponLimits: {
-                  type: Number,  // Matches `couponLimits` in object
+                  type: Number,  
                   required: true,
             },
             discountType: {
                   type: String,
-                  enum: ['percentage', 'fixed'],  // Matches your object format
+                  enum: ['percentage', 'fixed'],
                   required: true,
             },
             discountValue: {
-                  type: Number,  // Matches `discountValue` in object
+                  type: Number,  
                   required: true,
             },
             maxDiscount: {

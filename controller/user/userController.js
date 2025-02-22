@@ -9,8 +9,9 @@ import nodemailer from 'nodemailer'
 import crypto from 'crypto'
 
 import Product from '../../models/productSchema.js'
-
+import Verient from '../../models/verientSchema.js'
 import Category from '../../models/categorySchema.js'
+import Offer from '../../models/offerSchema.js' 
 
 
 // Create transporter
@@ -54,12 +55,24 @@ const loadLogHomepage = async (req, res) => {
             req.session.userId=req.session.passport.user;
           } 
           userId=req.session.userId;
+          const offerProducts = await Offer.find({ status: "active" })
+                  .sort({ discountValue: -1 }) 
+                  .populate({
+                  path: "productIds",
+                  model: "Product",
+                  populate: {
+                        path: "variants",
+                        model: "Verient",
+                  },
+                  })
+                  .populate("categoryId");
+           console.log(offerProducts)
           let products = await Product.find({ isBlocked: false }).populate("variants");
           products = products.filter(product => product.variants.length > 0);
   
           const category = await Category.find({ isListed: true });
           const countCart =res.locals.cartCount
-  
+        
           let isLoggedIn = false;
           if (userId) {
               const userData = await User.findOne({ _id: userId, isBlocked: false });
@@ -68,7 +81,7 @@ const loadLogHomepage = async (req, res) => {
                   isLoggedIn = true;
               }
           }
-          return res.render('homei', { isLoggedIn, products, category ,countCart});
+          return res.render('homei', { isLoggedIn, products:offerProducts, category ,countCart});
   
       } catch (error) {
           console.error('Error rendering home page:', error);

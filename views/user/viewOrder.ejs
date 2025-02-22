@@ -379,19 +379,20 @@
 
         <div class="price-summary">
             <h2>Price Summary</h2>
-            <!-- <div class="summary-row">
+            <div class="summary-row">
                 <span>Subtotal</span>
-                <span>$349.97</span>
+                <span><%=formattedOrder.summary.subtotal%></span>
             </div>
             <div class="summary-row">
                 <span>Shipping</span>
-                <span>$15.00</span>
+                <span><%=formattedOrder.summary.deliveryCharge%></span>
             </div>
             <div class="summary-row">
-                <span>Tax</span>
-                <span>$35.00</span>
-            </div> -->
+                <span>discount</span>
+                <span><%=formattedOrder.summary.discount%></span>
+            </div>
             <div class="summary-row total">
+               
                 <span>Total</span>
                 <span><%=formattedOrder.summary.grandTotal%></span>
             </div>

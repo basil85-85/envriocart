@@ -279,7 +279,7 @@ const photo = async (req, res) => {
           
 
           await sharp(req.file.path)
-              .resize({ width: 440, height: 400, fit: 'cover' })
+              .resize({ width:1700, height: 500, fit: 'cover' })
               .toFile(imagePath);
   
 

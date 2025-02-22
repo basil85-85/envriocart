@@ -59,7 +59,7 @@ const orderSchema = new Schema(
             deliveryCharge: { type: Number, default: 0 },
             totalAmount: { type: Number, required: true },
             grandTotal: { type: Number, required: true },
-            couponApplied: { type: Boolean, default: false },
+            couponApplied:{ type: Boolean, default: false },
             returnReason:{type:String,required:false},
             cancelReason:{type:String,required:false},
             orderStatus: {

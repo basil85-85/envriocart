@@ -529,14 +529,20 @@
                                                                  <div class="d-flex flex-wrap gap-2" role="group" aria-label="Basic checkbox toggle button group">
                                                                       
 
+                                                                      <% 
+                                                                      let inStock = Object.values(val.size).some(quality => quality > 0); 
+                                                                      if (inStock) { 
+                                                                  %>
                                                                       <% for (let [size, quality] of Object.entries(val.size)) { %>
-                                                                           <% if (quality > 0) { %>
-                                                                               <h4 class="fw-bold text-primary"><%= size %></h4>
-                                                                               <h4 class="text-success fw-medium">: <%= quality %></h4>
-                                                                           <% } %>
-                                                                       <% } %>
-                                                                       
-
+                                                                          <% if (quality > 0) { %>
+                                                                              <h4 class="fw-bold text-primary"><%= size %></h4>
+                                                                              <h4 class="text-success fw-medium">: <%= quality %></h4>
+                                                                          <% } %>
+                                                                      <% } %>
+                                                                  <% } else { %>
+                                                                      <p class="text-danger fw-bold fs-5">❌ OUT OF STOCK</p>
+                                                                  <% } %>
+                                                                  
                                                                  </div>
                                                            
                                                              

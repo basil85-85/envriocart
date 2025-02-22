@@ -76,11 +76,7 @@ const cartCountMiddleware = async (req, res, next) => {
         if (req.session.userId) {
             const userID = req.session.userId;
             const cart = await Cart.findOne({ userId: userID });
-
-            // Count total number of items in the cart
             const cartItemCount = cart ? cart.items.length : 0;
-
-            // Store it in res.locals to access in views
             res.locals.cartCount = cartItemCount;
         } else {
             res.locals.cartCount = 0;

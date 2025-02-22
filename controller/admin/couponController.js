@@ -1,5 +1,4 @@
 import Coupon from '../../models/couponSchema.js'
-
 const getCoupon = async (req, res) => {
       try {
             // Validate and parse pagination parameters
@@ -14,7 +13,7 @@ const getCoupon = async (req, res) => {
                   return res.redirect(`/product?page=${totalPages}`)
             }
 
-            const coupons = await Coupon.find({})
+            const coupons = await Coupon.find({})    
                   .sort({ createdAt: -1 })
                   .skip(skip)
                   .limit(limit)
@@ -63,7 +62,8 @@ const addingCoupon = async (req, res) => {
                   discountType,
                   discountValue,
             } = req.body
-
+             const today = new Date()
+             
             const formattedStartDate = new Date(
                   startDate
                         .split('-')
@@ -76,12 +76,15 @@ const addingCoupon = async (req, res) => {
                         .reverse()
                         .join('-')
             )
+            console.log(formattedStartDate)
             if (formattedStartDate > formattedEndDate) {
                   return res.status(400).json({
                         success: false,
                         message: 'start date greater than end date ',
                   })
             }
+
+
 
             if (
                   isNaN(formattedStartDate.getTime()) ||
@@ -96,16 +99,23 @@ const addingCoupon = async (req, res) => {
             const existingCoupon = await Coupon.findOne({
                   code: { $regex: new RegExp(`^${code}$`, 'i') },
             })
-
+            
+    
             if (existingCoupon) {
                   return res.status(400).json({
                         success: false,
                         message: 'Coupon code already exists',
                   })
             }
+            let updateSt = 'active'
+            if(today < formattedStartDate){
+                  updateSt= "upcoming"
+            }else if(today>formattedEndDate){ 
+                  updateSt = "expired"
+               }
 
             const newCoupon = new Coupon({
-                  status,
+                  status:updateSt,
                   startDate: formattedStartDate,
                   endDate: formattedEndDate,
                   code,
@@ -116,7 +126,7 @@ const addingCoupon = async (req, res) => {
             })
 
             const saved = await newCoupon.save()
-
+              
             if (saved) {
                   return res.status(201).json({
                         success: true,
@@ -142,15 +152,15 @@ const changeSate = async (req,res) => {
             return res.status(401).json({success:true,message:"coupon is not founding"})
         }
         let newSate =""
-        if(coupon.status==="active"){
+        if(coupon.status==="active"){         
             newSate="inactive"
         }
         else if(coupon.status==="inactive"){
             newSate="active"
         }
         else{
-            return res.status(401).json({success:false,message:"U can't chaneg the state"})
-        }
+            return res.status(401).json({success:false,message:"U can't change the state"})
+        }       
         const updateState = await Coupon.findByIdAndUpdate(couponId,{status:newSate},{new:true})
         if(!updateState){
             return res.status(401).json({success:false,messgae:"not updated the state"})

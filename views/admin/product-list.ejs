@@ -425,10 +425,12 @@
                                                                                    </p>
 
                                                                                    <p class="mb-0 text-muted">
-                                                                                     <%= product.variants && product.variants.length > 0 
-                                                                                         ? product.variants.reduce((acc, variant) => 
-                                                                                             acc + Object.values(variant.size).reduce((sum, qty) => sum + qty, 0), 0) 
-                                                                                         : 0 %> Sold 
+                                                                                     <% if (product.variants && product.variants.length > 0) { %>
+                                                                                          <%= product.variants.reduce((acc, variant) => 
+                                                                                              acc + Object.values(variant.size).reduce((sum, qty) => sum + qty, 0), 0) %> Stock
+                                                                                      <% } else  { %>
+                                                                                          <p class="text-danger fw-bold fs-5">❌ OUT OF STOCK</p>
+                                                                                      <% } %>
                                                                                    </p>
                                                                                </td>
                                                                                <td>

@@ -201,11 +201,11 @@ const reasonCancel = async (req,res) => {
           const wallet = await Wallet.findOneAndUpdate(
               { userId: order.userId },
               {
-                  $inc: { wallet: order.totalAmount },
+                  $inc: { wallet: order.grandTotal },
                   $push: {
                       transactions: {
                           transactionType: 'credit',
-                          amount: order.totalAmount,
+                          amount: order.grandTotal,
                           description: `Refund for Order ID: ${order.orderId}`
                       }
                   }
@@ -217,11 +217,11 @@ const reasonCancel = async (req,res) => {
             if (!wallet) {
                   const newWallet = new Wallet({
                       userId: order.userId,
-                      wallet: order.totalAmount,  // Initial wallet balance
+                      wallet: order.grandTotal,  
                       transactions: [
                           {
                               transactionType: 'credit',
-                              amount: order.totalAmount,
+                              amount: order.grandTotal,
                               description: `Refund for Order ID: ${order.orderId}`
                           }
                       ]

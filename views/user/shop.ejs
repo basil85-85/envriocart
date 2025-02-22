@@ -1125,46 +1125,36 @@
     products.sort((a, b) => {
         let priceA = parseFloat(a.getAttribute("data-price") || "0");
         let priceB = parseFloat(b.getAttribute("data-price") || "0");
-
         let titleElemA = a.querySelector(".product-title");
         let titleElemB = b.querySelector(".product-title");
         let nameA = titleElemA ? titleElemA.textContent.trim().toLowerCase() : "";
         let nameB = titleElemB ? titleElemB.textContent.trim().toLowerCase() : "";
-
         let regularPriceA = parseFloat(a.getAttribute("data-regularprice") || "0");
         let regularPriceB = parseFloat(b.getAttribute("data-regularprice") || "0");
-
         let dateStrA = a.getAttribute("data-date");
         let dateStrB = b.getAttribute("data-date");
-
         console.log("Raw Date A:", dateStrA);
         console.log("Raw Date B:", dateStrB);
-
         let dateA = moment(dateStrA).isValid() ? moment(dateStrA) : null;
         let dateB = moment(dateStrB).isValid() ? moment(dateStrB) : null;
-
         let offerA = regularPriceA - priceA;
         let offerB = regularPriceB - priceB;
-
         if (sortType === "lowToHigh") return priceA - priceB;
         if (sortType === "highToLow") return priceB - priceA;
         if (sortType === "ascending") return nameA.localeCompare(nameB);
         if (sortType === "descending") return nameB.localeCompare(nameA);
         if (sortType === "offerprice") return offerB - offerA;
-
         console.log(`Parsed Date A: ${dateA ? dateA.format() : "Invalid"}`);
         console.log(`Parsed Date B: ${dateB ? dateB.format() : "Invalid"}`);
-
         if (sortType === "newArrival") {
             if (!dateA) return 1;
             if (!dateB) return -1;
             return dateB.valueOf() - dateA.valueOf();
         }
-
         return 0;
     });
 
-    // Clear and reinsert sorted items
+    
     container.innerHTML = "";
     products.forEach(product => container.appendChild(product));
 });
@@ -1199,13 +1189,8 @@ function filterByCategory(categoryName) {
         });
         return;
     }
-   
-    // Loop through each product
     productItems.forEach(item => {
-        // Get the category name text from h4 tag inside product-detail
         const productCategory = item.querySelector(".product-detail h4").textContent.trim();
-       
-        // Show or hide based on category match (case insensitive)
         if (productCategory.toLowerCase() === categoryName.toLowerCase()) {
             item.style.display = "block";
         } else {
@@ -1214,14 +1199,14 @@ function filterByCategory(categoryName) {
     });
 }
 
-// Add event listener to the CATEGORY dropdown (not sortOption)
+
 document.getElementById("categoryFilter").addEventListener("change", function() {
     filterByCategory(this.value);
 });
 
 document.getElementById("searchInput").addEventListener("input", function () {
         let searchTerm = this.value.toLowerCase();
-        let products = document.querySelectorAll(".product-item"); // Select all product items
+        let products = document.querySelectorAll(".product-item"); 
 
         products.forEach(product => {
             let productName = product.querySelector(".product-title").textContent.toLowerCase();
@@ -1229,9 +1214,9 @@ document.getElementById("searchInput").addEventListener("input", function () {
             let description = product.querySelector("p").textContent.toLowerCase();
 
             if (productName.includes(searchTerm) || category.includes(searchTerm) || description.includes(searchTerm)) {
-                product.style.display = "block"; // Show the product
+                product.style.display = "block"; 
             } else {
-                product.style.display = "none"; // Hide the product
+                product.style.display = "none"; 
             }
         });
     });
@@ -1240,7 +1225,7 @@ document.getElementById("searchInput").addEventListener("input", function () {
     if (event.key === "Enter") {  
         let modal = bootstrap.Modal.getInstance(document.getElementById("searchModal"));
         if (modal) {
-            modal.hide(); // Properly close the Bootstrap modal
+            modal.hide(); 
         }
     }
 });
