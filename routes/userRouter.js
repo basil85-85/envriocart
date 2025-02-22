@@ -12,7 +12,7 @@ import CheckOutmangement from '../controller/user/checkOutmangement.js'
 import wislistMangement from '../controller/user/wislistMangement.js'
 import walletController from '../controller/user/walletController.js'
 import couponController from '../controller/user/couponController.js'
-
+import offerController from '../controller/user/offerController.js'
 
 
 router.get('/', auth.cartCountMiddleware,userController.loadLogHomepage)
@@ -79,5 +79,8 @@ router.post("/profile/requestreturn",auth.userAuth,cancelresaon.reasonCancel)
 router.post("/addWishlist",auth.userAuth,wislistMangement.addWishlist)
 router.get("/wishlist",auth.userAuth,wislistMangement.getWishlist)
 router.delete("/deleteWishlist",auth.userAuth,wislistMangement.deleteWishlist)
+
+//offer 
+router.get("/offers",offerController.getOffer)
 export default router
             

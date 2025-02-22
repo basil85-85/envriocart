@@ -5,6 +5,7 @@ import moment from 'moment'
 import fs from "fs" 
 import path from "path"
 import sharp from 'sharp'
+import cron from "node-cron"
 
 
 
@@ -62,7 +63,7 @@ const addOfferpage = async (req, res) => {
 const createOffer = async (req, res) => {
       try {
             console.log(req.body)
-            const {
+            let {
                   status,
                   startDate,
                   endDate,
@@ -84,15 +85,22 @@ const createOffer = async (req, res) => {
             const start = new Date(startYear, startMonth - 1, startDay)
             const end = new Date(endYear, endMonth - 1, endDay)
             const currentDate = new Date()
-            console.log(start)
-            console.log(end)
-            console.log(currentDate)
+            // console.log(start)
+            // console.log(end)
+            // console.log(currentDate)
             if (isNaN(start.getTime()) || isNaN(end.getTime())) {
                   return res
                         .status(400)
                         .json({ message: 'Invalid date format' })
             }
-
+            
+            if (start > currentDate) {
+                  status = "upcoming"; 
+              } else if (end < currentDate) {
+                  status = "expired"; 
+              } else {
+                  status = "active"; 
+              }
             if (end <= start) {
                   return res.status(400).json({
                         message: 'End date must be after the start date',
@@ -142,7 +150,40 @@ const createOffer = async (req, res) => {
                               message: 'Percentage discount cannot exceed 100%',
                         })
             }
+            const existingName = await Offer.findOne({offerName:{ $regex: new RegExp(`^${offerName}$`, 'i')} })
+             if(existingName){
+                  return res.status(400).json({success:false,message:"name already added in it"})
+             }
+            
+            if (offerType === 'product') {
+                  const existingOffers = await Offer.find({
+                      status: "active",
+                      productIds: { $in: productIds }, // Check if any product is already in an active offer
+                      endDate: { $gte: currentDate } // Check if the offer is still active
+                  });
+      
+                  if (existingOffers.length > 0) {
+                      return res.status(400).json({
+                          message: 'One or more selected products are already in an active offer',
+                      });
+                  }
+              }
+      
 
+              if (offerType === 'category') {
+                  const existingCategoryOffer = await Offer.findOne({
+                      status: "active",
+                      categoryId: categoryId,
+                      endDate: { $gte: currentDate }
+                  });
+      
+                  if (existingCategoryOffer) {
+                      return res.status(400).json({
+                          message: 'An active offer already exists for this category',
+                      });
+                  }
+              }
+      
             const newOffer = new Offer({
                   status,
                   offerName,
@@ -333,6 +374,34 @@ const photo = async (req, res) => {
           });
       }
   };
+
+
+  const updateExpiredCoupon = async () => {
+      try {
+          const today = new Date();
+          today.setHours(0, 0, 0, 0); 
+  
+          await Offer.updateMany(
+              { endDate: { $lte: today }, status: "active" },
+              { $set: { status: "expired" } }
+          );
+  
+  
+          await Offer.updateMany(      
+              { startDate: { $lte: today }, status: "upcoming" },
+              { $set: { status: "active" } }
+          );
+       
+        
+      } catch (error) {
+          console.error(` Error updating coupon statuses: ${error.message}`);
+      }
+  };
+                    
+  
+  cron.schedule("0 0 * * *", updateExpiredCoupon);
+      
+  updateExpiredCoupon();
 
 export default {
       getOffer,

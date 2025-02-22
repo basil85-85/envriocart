@@ -56,7 +56,8 @@ const loadLogHomepage = async (req, res) => {
           } 
           userId=req.session.userId;
           const offerProducts = await Offer.find({ status: "active" })
-                  .sort({ discountValue: -1 }) 
+                  .sort({discountType: -1,      
+                        discountValue: -1    }) 
                   .populate({
                   path: "productIds",
                   model: "Product",
@@ -64,9 +65,9 @@ const loadLogHomepage = async (req, res) => {
                         path: "variants",
                         model: "Verient",
                   },
-                  })
-                  .populate("categoryId");
-           console.log(offerProducts)
+                  }).populate("categoryId")
+                 
+      //      console.log(offerProducts)
           let products = await Product.find({ isBlocked: false }).populate("variants");
           products = products.filter(product => product.variants.length > 0);
   

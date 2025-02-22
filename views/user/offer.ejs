@@ -1,366 +1,122 @@
-
 <%- include('../partial/user/header') %>
-<link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
-<style>
- 
-.sidebar-link {
-    padding-left: 70px !important;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    min-height: 60px;
-    background: #efef62;
-    border-radius: 10%;
-}
+    <!-- header end -->
 
-.sidebar-link:hover {
-    background-color: #f8f9fa;
-}
+    <% if(offer.image){ %>
 
-.offer-icon {
-    z-index: 1;
-    font-size: 0.85rem;
-}
-
-.offer-icon i {
-    margin-right: 4px;
-}
-  
-    </style>
     <!-- Home slider -->
-    <% if (products.length > 0) { %>  
-        <% products.slice(0,1).forEach((offer) => { %>
-            <section class="small-slider pt-0 home-fashion mt-0">
-                <div class="container container-lg">
-                    <div class="position-relative overflow-hidden rounded-3">
-                        <a href="/offers?id=<%= offer._id %>" class="home d-block">
-                            <img src="<%= offer.image ? offer.image : '/images/default.jpg' %>" 
-                                alt="Offer Image" 
-                                class="img-fluid blur-up lazyload w-100"
-                                style="object-fit: cover; height: 400px;">
-                        </a>
-                        <!-- Overlay offer details -->
-                        <div class="position-absolute top-50 start-50 translate-middle text-center w-75 p-3 rounded-3" style="background: #000000; color: white;">
-                            <h4 class="mb-2 fw-bold"><%= offer.offerName || "Special Offer" %></h4>
-                            <p class="mb-2"><%= offer.description || "Don't miss out on this great deal!" %></p>
-                            <div class="offer-badge bg-danger d-inline-block px-3 py-2 rounded-pill">
-                                <% if (offer.discountType === 'percentage') { %>
-                                    <span class="h5 mb-0"><%= offer.discountValue %>% OFF</span>
-                                <% } else { %>
-                                    <span class="h5 mb-0">₹<%= offer.discountValue %> OFF</span>
-                                <% } %>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        <% }) %>
-    <% } %>
-    
-    
-    <!-- Home slider end -->
-    <section class="banner-goggles banner-padding ratio2_1 banner-section my-5">
-        <div class="container container-lg">
-            <div class="row g-4">
-                <% products.slice(1, 4).forEach(offer => { %> <!-- Only showing 3 offers -->
-                    <% if (offer.image) { %>  
-                        <div class="col-md-4"> <!-- 3 columns per row -->
-                            <div class="offer-banner position-relative rounded-3 overflow-hidden shadow-lg">
-                                <a href="/offers?id=<%= offer._id %>" class="collection-banner d-block">
-                                    <img 
-                                        src="<%= offer.image %>" 
-                                        class="img-fluid blur-up lazyload w-100 rounded-3"
-                                        alt="<%= offer.offerName %>"
-                                        style="height: 300px; object-fit: cover;"
-                                    >
-                                    <!-- Offer Details Overlay -->
-                                    <div class="offer-details position-absolute bottom-0 start-0 w-100 p-3 text-white bg-dark bg-opacity-50">
-                                        <h4 class="mb-2 fw-bold"><%= offer.offerName %></h4>
-                                        <p class="mb-2 text-warning"><%= offer.description %></p>
-                                        <div class="offer-badge bg-danger d-inline-block px-3 py-2 rounded-pill">
-                                            <% if (offer.discountType === 'percentage') { %>
-                                                <span class="h5 mb-0"><%= offer.discountValue %>% OFF</span>
-                                            <% } else { %>
-                                                <span class="h5 mb-0">₹<%= offer.discountValue %> OFF</span>
-                                            <% } %>
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    <% } %>
-                <% }); %>
-            </div>
-        </div>
+    <section class="p-0 height-100">
+        <a href="category-page.html" class="home">
+            <img src="<%=offer.image%>" alt="" class="img-fluid blur-up lazyload">
+        </a>
     </section>
+    <%} %>
+
+    <div class="title1  section-t-space title5">
+        <h4>special offer</h4>
+        <h2 class="title-inner1">collections</h2>
+        <hr role="tournament6">
+    </div>
+  
+    <!-- Paragraph end -->
 
 
-
-    
-    
-    
-    <!-- banner section end -->
-
-   
-    <!-- slider and product -->
-    <section class="container container-lg">
-        <div class="row">
-            <div class="col-12">
-                <div class="title1 wo-border">
-                    <h4>recent story</h4>
-                    <h2 class="title-inner1 font-cormorant">OFFERS products</h2>
-                </div>
-             </div>
-           <div class="col-xl-2">
-                <!-- category start -->
-                <header class="top-header">
-                    <div class="sidebar-top-section">
-                        <div class="sidenav-menu">
-                            <nav class="sidebar-nav">
-                                <div class="sidebar-menu-wrapper">
-                                    <ul id="sub-menu" class="sm pixelstrap sm-vertical sidebar-menu">
-                                        <% products.slice(4).forEach(offer => { %>
-                                            <% if (offer.image) { %>
-                                                <li class="sidebar-menu-item position-relative">
-                                                    <div class="offer-icon position-absolute top-0 start-0 m-2 bg-danger text-white px-2 py-1 rounded">
-                                                        <i class="ri-price-tag-3-fill"></i> Offer
-                                                    </div>
-                                                    <a href="/offers?id=<%= offer._id %>" class="d-block p-2 ps-4 text-dark fw-bold sidebar-link">
-                                                        <%= offer.offerName %>
-                                                    </a>
-                                                </li>
-                                            <% } %>
-                                        <% }); %>
-                                    </ul>
-                                </div>
-                            </nav>
-                        </div>
-                    </div>
-                </header>
-                <!-- category end-->
-             </div>  
-            <div class="col-xl-10">
-                <!-- Product Section -->
-                <div class="ratio_asos">
-                    <div class="container p-0">
-                        <div class="g-3 g-md-4 row row-cols-2 row-cols-md-3 row-cols-xl-4">
-                            <% products.slice(0,5).forEach((offer) => { %>
-                                <% offer.productIds.forEach((product) => { %>
-                                    <% if (product.variants && product.variants.length > 0 && !product.isBlocked) { %>
-                                        <div>
-                                            <div class="basic-product theme-product-1">
-                                                <div class="overflow-hidden">
-                                                    <div class="img-wrapper position-relative">
-                                                        <a href="/details?id=<%= product._id %>">
-                                                            <img src="/<%= product.variants[0].productImg[0] %>" 
-                                                                 class="img-fluid blur-up lazyload" alt="Product Image">
-                                                        </a>
-                                                    
-                                                       <% if(offer.discountType === 'percentage') { %>
-                                                        <div class="offer-icon position-absolute top-0 start-0 m-2 bg-danger text-white px-2 py-1 rounded">
-                                                            <i class="ri-price-tag-3-fill"></i>  <%= offer.discountValue %>% Extra Offer
-                                                        </div>
-                                                       <% } else { %>
-                                                        <div class="offer-icon position-absolute top-0 start-0 m-2 bg-danger text-white px-2 py-1 rounded">
-                                                            <i class="ri-price-tag-3-fill"></i> Rs: <%= offer.discountValue %>  Offer
-                                                        </div>
-                                                       <% } %>
-                                                    
-                                                        <div class="cart-info position-absolute bottom-0 end-0 m-2">
-                                                            <a href="/details?id=<%= product._id %>" title="Quick View" class="text-dark bg-white p-2 rounded-circle">
-                                                                <i class="ri-eye-line"></i>
-                                                            </a>
-                                                        </div>
-                                                        <div class="rating-label">
-                                                            <i class="ri-star-fill"></i><span>4.5</span>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="product-detail">
-                                                        <div>
-                                                            <div class="brand-w-color">
-                                                                <a class="product-title" href="#">
-                                                                    <%= product.productName %>
-                                                                </a>
-                                                                <div class="color-panel">
-                                                                    <ul>
-                                                                        <% product.variants.forEach(function(variant) { %> 
-                                                                            <li style="background-color:<%= variant.productcolor %>"></li>
-                                                                        <% }); %>
-                                                                    </ul>
-                                                                </div>
-                                                            </div>
-                                                            <h6><%= product.description %></h6>
-                                                            <h4 class="price">
-                                                                Rs : <%= product.salePrice %>
-                                                                <del>Rs : <%= product.regularPrice %></del>
-                                                                <span class="discounted-price">
-                                                                    <%= ((product.regularPrice - product.salePrice) / product.regularPrice * 100).toFixed() %>% Off
-                                                                </span>
-                                                            </h4>
-                                                            
-                                                        </div>
-                                                        <ul class="offer-panel">
-                                                            <li><span class="offer-icon">
-                                                                <i class="ri-discount-percent-fill"></i></span>
-                                                                Limited Time Offer:  <%= ((product.regularPrice - product.salePrice) / product.regularPrice * 100).toFixed() %>% off
-                                                            </li>
-                                                        </ul>
-                                                    </div>
+    <!-- Product slider -->
+    <section class="section-b-space pt-0 j-box ratio_square">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                   
+                            <div class="tools-product-4 product-m no-arrow">
+                                <% if (products && products.length > 0) { %>
+                                    <% products.forEach((pro) => { %>
+                                <div>
+                                    <div class="basic-product theme-product-11">
+                                        <div class="img-wrapper">
+                                            <a href="/details?id=<%= pro._id %>">
+                                                <% if (pro.variants && pro.variants.length > 0 && pro.variants[0].productImg && pro.variants[0].productImg.length > 0) { %>
+                                                    <img src="<%= pro.variants[0].productImg[0] %>" class="img-fluid blur-up lazyload" alt="">
+                                                <% } else { %>
+                                                    <img src="/default-image.jpg" class="img-fluid blur-up lazyload" alt="No Image Available">
+                                                <% } %>
+                                            </a>
+                                            <div class="cart-info">
+                                                <a href="/details?id=<%= pro._id %>" data-bs-toggle="modal" title="Quick View">
+                                                    <i class="ri-eye-line"></i>
+                                                </a>
+                                            </div>
+                                            <%if(offer.discountType==='percentage'){ %>
+                                            <label class="trending-label-product11"> <%=offer.discountValue%>% OFFER</label>
+                                            <%} else {%>
+                                                <label class="trending-label-product11">Rs: <%=offer.discountValue%> OFFER</label>
+                                                <%} %>
+                                        </div>
+                                        <div class="product-detail">
+                                            <a class="product-title" href="/details?id=<%= pro._id %>">
+                                                <%= pro.productName %>
+                                            </a>
+                                            <h6> <%= pro.description %> </h6>
+                                            <h4 class="price">RS:  <%= pro.salePrice %> </h4>
+                                            <div class="rating-w-count mb-0 mt-2">
+                                                <div class="rating">
+                                                    <i class="ri-star-fill"></i> 
+                                                    <i class="ri-star-fill"></i>
+                                                    <i class="ri-star-fill"></i>
+                                                    <i class="ri-star-fill"></i> 
+                                                    <i class="ri-star-fill"></i>
                                                 </div>
+                                                <span>(10)</span>
                                             </div>
                                         </div>
-                                    <% } %>
+                                  
+                                    </div>
+                                </div>
                                 <% }) %>
-                            <% }) %>
-                        </div>
-                    </div>
+                                <% } else { %>
+                                    <p>There are no products available...</p>
+                                <% } %>
+                            </div>
+                    
+                    
                 </div>
-                
-    <!-- slider and product -->
-    
-    <!-- banner section -->
-    <section>
-        <div class="container-lg container ">
-            <a href="category-page.html" class="full-banner pt-0 pb-0 custom-space p-right text-end">
-                <img src="../assets copy/images/fashion-4/full-banner/2.png" alt="" class="img-fluid blur-up lazyload">
-            </a>
+            </div>
         </div>
     </section>
-    <!-- banner section end -->
+    <!-- Product slider end -->
 
-
-    <!-- newsletter section start -->
-    <div>
-        <div class="container">
-            <section class="">
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <div class="subscribe">
-                            <div>
-                                <h4>KNOW IT ALL FIRST!</h4>
-                                <p>Never Miss Anything From EnvrioCart By Signing Up To Our
-                                    Newsletter. </p>
-                            </div>
-                        </div>
-                        <form class="form-inline subscribe-form">
-                            <div class="form-group mx-sm-3">
-                                <input type="text" class="form-control" id="exampleFormControlInput1"
-                                    placeholder="Enter your email">
-                            </div>
-                            <button type="submit" class="btn btn-solid">subscribe</button>
-                        </form>
-                    </div>
-                </div>
-            </section>
-        </div>
-    </div>
-    <!-- newsletter section end -->
-<!-- foooter section -->
-    <%- include('../partial/user/footer') %>
-    <!-- cookie bar start -->
-    <!-- <div class="cookie-bar left-bottom">
-        <img src="https://themes.pixelstrap.com EnvrioCart/assets copy/svg/cookie.svg" class="img-fluid" alt="cookie">
-        <p>We use cookies to improve your shopping experience. please accept cookies for
-            optimal performance.</p>
-        <a href="javascript:void(0)" class="btn btn-solid btn-xs">accept and close</a>
-        <a href="javascript:void(0)" class="btn-close"><i class="fa fa-times"></i></a>
-    </div> -->
-    <!-- cookie bar end -->
-
-
-    <!--modal popup start-->
-    <div class="modal fade bd-example-modal-lg blackfriday-modal light-modal" id="cybermonday" tabindex="-1"
-        role="dialog">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="container-fluid p-0">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="modal-bg">
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                        <span>&times;</span>
-                                    </button>
-                                    <div class="content">
-                                        <h1 class="glitch" data-text="ENVRIO">ENVRIO</h1>
-                                        <h1 class="glitch" data-text="CART">CART</h1>
-                                        <h2>sale</h2>
-                                        <div class="discount">get
-                                            <span>30%</span>
-                                            off
-                                            <span class="plus">+</span>
-                                            <span>FREE SHIPPING</span>
-                                        </div>
-                                        
-                                        <div class="auth-buttons">
-                                            <a href="/signup" class="btn btn-signin">Sign Up</a>
-                                            <a href="/login" class="btn btn-login">Login</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--modal popup end-->
 
  
-    <!-- Quick-view modal popup start-->
-    <!-- <div class="modal fade bd-example-modal-lg theme-modal" id="quick-view" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content quick-view-modal">
-                <div class="modal-body">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                        aria-label="Close"><span>&times;</span></button>
+ 
+    <!-- instagram section end -->
+
+    <%- include('../partial/user/footer') %>
+    <div class="modal fade bd-example-modal-lg blackfriday-modal light-modal" id="cybermonday" tabindex="-1"
+    role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid p-0">
                     <div class="row">
-                        <div class="col-lg-6 col-xs-12">
-                            <div class="quick-view-img"><img src="../assets copy/images/pro3/1.jpg" alt=""
-                                    class="img-fluid blur-up lazyload"></div>
-                        </div>
-                        <div class="col-lg-6 rtl-text">
-                            <div class="product-right">
-                                <h2>Women Pink Shirt</h2>
-                                <h3>$32.96</h3>
-                                <ul class="color-variant">
-                                    <li class="bg-light0"></li>
-                                    <li class="bg-light1"></li>
-                                    <li class="bg-light2"></li>
-                                </ul>
-                                <div class="border-product">
-                                    <h6 class="product-title">product details</h6>
-                                    <p>Sed ut perspiciatis, unde omnis iste natus error sit
-                                        voluptatem accusantium
-                                        doloremque laudantium</p>
-                                </div>
-                                <div class="product-description border-product">
-                                    <div class="size-box">
-                                        <ul>
-                                            <li class="active"><a href="javascript:void(0)">s</a></li>
-                                            <li><a href="javascript:void(0)">m</a></li>
-                                            <li><a href="javascript:void(0)">l</a></li>
-                                            <li><a href="javascript:void(0)">xl</a></li>
-                                        </ul>
+                        <div class="col-12">
+                            <div class="modal-bg">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                    <span>&times;</span>
+                                </button>
+                                <div class="content">
+                                    <h1 class="glitch" data-text="ENVRIO">ENVRIO</h1>
+                                    <h1 class="glitch" data-text="CART">CART</h1>
+                                    <h2>sale</h2>
+                                    <div class="discount">get
+                                        <span>30%</span>
+                                        off
+                                        <span class="plus">+</span>
+                                        <span>FREE SHIPPING</span>
                                     </div>
-                                    <h6 class="product-title">quantity</h6>
-                                    <div class="qty-box">
-                                        <div class="input-group"><span class="input-group-prepend"><button type="button"
-                                                    class="btn quantity-left-minus" data-type="minus" data-field=""><i
-                                                        class="ri-arrow-left-s-line"></i></button>
-                                            </span>
-                                            <input type="text" name="quantity" class="form-control input-number"
-                                                value="1">
-                                            <span class="input-group-prepend"><button type="button"
-                                                    class="btn quantity-right-plus" data-type="plus" data-field=""><i
-                                                        class="ri-arrow-right-s-line"></i></button></span>
-                                        </div>
+                                    
+                                    <div class="auth-buttons">
+                                        <a href="/signup" class="btn btn-signin">Sign Up</a>
+                                        <a href="/login" class="btn btn-login">Login</a>
                                     </div>
                                 </div>
-                                <div class="product-buttons"><a href="#!" class="btn btn-solid">add to cart</a> <a
-                                        href="#!" class="btn btn-solid">view detail</a></div>
                             </div>
                         </div>
                     </div>
@@ -368,9 +124,7 @@
             </div>
         </div>
     </div>
-    -->
-
-
+</div>
     <!-- theme setting start -->
     <div class="theme-settings">
         <button onclick="openSetting()" class="setting-sidebar btn" id="setting-icon">
@@ -388,9 +142,6 @@
                     <i class="ri-close-large-line"></i>
                 </a>
             </div>
-
-            <div class="setting_box_body">
-               
                 <div class="setting-section">
                     <div class="setting-inner-title">
                         <h5>RTL Mode</h5>
@@ -419,6 +170,121 @@
         </div>
     </div>
     <!-- theme setting end -->
+
+
+    <!-- Add to cart modal popup start-->
+    <div class="modal fade bd-example-modal-lg theme-modal cart-modal" id="addtocart" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body modal1">
+                    <div class="container-fluid p-0">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="modal-bg addtocart">
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                        <span>&times;</span>
+                                    </button>
+                                    <div class="media">
+                                        <a href="#!">
+                                            <img class="img-fluid blur-up lazyload pro-img"
+                                                src="../assets copy/images/fashion/product/55.jpg" alt="">
+                                        </a>
+                                        <div class="media-body align-self-center text-center">
+                                            <a href="#!">
+                                                <h6>
+                                                    <i class="fa fa-check"></i>Item
+                                                    <span>men full sleeves</span>
+                                                    <span> successfully added to your Cart</span>
+                                                </h6>
+                                            </a>
+                                            <div class="buttons">
+                                                <a href="#!" class="view-cart btn btn-solid">Your cart</a>
+                                                <a href="#!" class="checkout btn btn-solid">Check out</a>
+                                                <a href="#!" class="continue btn btn-solid">Continue shopping</a>
+                                            </div>
+
+                                            <div class="upsell_payment">
+                                                <img src="../assets copy/images/payment_cart.png"
+                                                    class="img-fluid blur-up lazyload" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-section">
+                                        <div class="col-12 product-upsell text-center">
+                                            <h4>Customers who bought this item also.</h4>
+                                        </div>
+                                        <div class="row" id="upsell_product">
+                                            <div class="product-box col-sm-3 col-6">
+                                                <div class="img-wrapper">
+                                                    <div class="front">
+                                                        <a href="#!">
+                                                            <img src="../assets copy/images/fashion/product/1.jpg"
+                                                                class="img-fluid blur-up lazyload mb-1"
+                                                                alt="cotton top">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <h6><a href="#!"><span>cotton top</span></a></h6>
+                                                        <h4><span>$25</span></h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="product-box col-sm-3 col-6">
+                                                <div class="img-wrapper">
+                                                    <div class="front">
+                                                        <a href="#!">
+                                                            <img src="../assets copy/images/fashion/product/34.jpg"
+                                                                class="img-fluid blur-up lazyload mb-1"
+                                                                alt="cotton top">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <h6><a href="#!"><span>cotton top</span></a></h6>
+                                                        <h4><span>$25</span></h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="product-box col-sm-3 col-6">
+                                                <div class="img-wrapper">
+                                                    <div class="front">
+                                                        <a href="#!">
+                                                            <img src="../assets copy/images/fashion/product/13.jpg"
+                                                                class="img-fluid blur-up lazyload mb-1"
+                                                                alt="cotton top">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <h6><a href="#!"><span>cotton top</span></a></h6>
+                                                        <h4><span>$25</span></h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="product-box col-sm-3 col-6">
+                                                <div class="img-wrapper">
+                                                    <div class="front">
+                                                        <a href="#!">
+                                                            <img src="../assets copy/images/fashion/product/19.jpg"
+                                                                class="img-fluid blur-up lazyload mb-1"
+                                                                alt="cotton top">
+                                                        </a>
+                                                    </div>
+                                                    <div class="product-detail">
+                                                        <h6><a href="#!"><span>cotton top</span></a></h6>
+                                                        <h4><span>$25</span></h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Add to cart modal popup end-->
 
 
     <!-- Search Modal Start -->
@@ -633,7 +499,59 @@
                                 </div>
                             </div>
 
-                          
+                            <div class="col">
+                                <div class="basic-product theme-product-1">
+                                    <div class="overflow-hidden">
+                                        <div class="img-wrapper">
+                                            <a href="product-page(image-swatch).html">
+                                                <img src="../assets copy/images/fashion-1/product/16.jpg"
+                                                    class="img-fluid blur-up lazyloaded" alt="">
+                                            </a>
+                                            <div class="rating-label"><i class="fa fa-star"></i>
+                                                <span>8.7</span>
+                                            </div>
+                                            <div class="cart-info">
+                                                <a href="#!" title="Add to Wishlist" class="wishlist-icon">
+                                                    <i class="ri-heart-line"></i>
+                                                </a>
+                                                <button data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas"
+                                                    title="Add to cart">
+                                                    <i class="ri-shopping-cart-line"></i>
+                                                </button>
+                                                <a href="#quickView" data-bs-toggle="modal" title="Quick View">
+                                                    <i class="ri-eye-line"></i>
+                                                </a>
+                                                <a href="compare.html" title="Compare">
+                                                    <i class="ri-loop-left-line"></i>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="product-detail">
+                                            <div>
+                                                <div class="brand-w-color">
+                                                    <a class="product-title" href="product-page(accordian).html">
+                                                        Couture Edge
+                                                    </a>
+                                                </div>
+                                                <h6>Versatile Shacket</h6>
+                                                <h4 class="price"> $3.00
+                                                </h4>
+                                            </div>
+                                            <ul class="offer-panel">
+                                                <li><span class="offer-icon"><i
+                                                            class="ri-discount-percent-fill"></i></span>
+                                                    Limited Time Offer: 12% off</li>
+                                                <li><span class="offer-icon"><i
+                                                            class="ri-discount-percent-fill"></i></span>
+                                                    Limited Time Offer: 12% off</li>
+                                                <li><span class="offer-icon"><i
+                                                            class="ri-discount-percent-fill"></i></span>
+                                                    Limited Time Offer: 12% off</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -739,7 +657,39 @@
                             </div>
                         </div>
                     </li>
-                    
+                    <li>
+                        <div class="media">
+                            <a href="#!">
+                                <img src="../assets copy/images/fashion-1/product/12.jpg" class="img-fluid"
+                                    alt="Classic Jacket">
+                            </a>
+                            <div class="media-body">
+                                <a href="#!">
+                                    <h4>Urban Chic</h4>
+                                </a>
+                                <h4 class="quantity">
+                                    <span>2 x $3.84</span>
+                                </h4>
+                                <div class="qty-box">
+                                    <div class="input-group qty-container">
+                                        <button class="btn qty-btn-minus">
+                                            <i class="ri-subtract-line"></i>
+                                        </button>
+                                        <input type="number" readonly name="qty" class="form-control input-qty"
+                                            value="1">
+                                        <button class="btn qty-btn-plus">
+                                            <i class="ri-add-line"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="close-circle">
+                                    <button class="close_button delete-button" type="submit">
+                                        <i class="ri-delete-bin-line"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
                 </ul>
 
                 <ul class="cart_total">
@@ -813,6 +763,10 @@
             </div>
         </div>
     </div>
+    <!-- Cart Offcanvas End -->
+
+
+    <!-- tap to top -->
     <div class="tap-top">
         <div>
             <i class="ri-arrow-up-double-line"></i>
@@ -824,9 +778,11 @@
     <!-- latest jquery-->
     <script src="../assets copy/js/jquery-3.3.1.min.js"></script>
 
+    <!-- fly cart ui jquery-->
+    <script src="../assets copy/js/jquery-ui.min.js"></script>
+
     <!-- slick js-->
     <script src="../assets copy/js/slick.js"></script>
-    <script src="../assets copy/js/slick-animation.min.js"></script>
 
     <!-- menu js-->
     <script src="../assets copy/js/menu.js"></script>
@@ -843,19 +799,12 @@
     <!-- Theme js-->
     <script src="../assets copy/js/theme-setting.js"></script>
     <script src="../assets copy/js/script.js"></script>
-    <script src="../assets copy/js/custom-slick-animated.js"></script>
+
+
 
     <script>
-        let islogin =<%=isLoggedIn%>;
+       
 
-
-        if(islogin==false){
-        $(window).on('load', function () {
-            setTimeout(function () {
-                $('#cybermonday').modal('show');
-            }, 2000);
-        });
-    }
         function openSearch() {
             document.getElementById("search-overlay").style.display = "block";
         }
@@ -863,9 +812,20 @@
         function closeSearch() {
             document.getElementById("search-overlay").style.display = "none";
         }
+        let islogin =<%=isLoggedIn%>;
+
+
+            if(islogin==false){
+            $(window).on('load', function () {
+                setTimeout(function () {
+                    $('#cybermonday').modal('show');
+                }, 2000);
+            });
+            }
     </script>
+
 </body>
 
 
-<!-- Mirrored from themes.pixelstrap.com EnvrioCart/front-end/fashion-4.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 Jan 2025 02:39:30 GMT -->
+<!-- Mirrored from themes.pixelstrap.com/multikart/front-end/jewellery.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 16 Jan 2025 02:43:07 GMT -->
 </html>

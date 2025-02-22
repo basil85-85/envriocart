@@ -588,8 +588,15 @@
                                                                       
                                                                       <button type="button" id="btnstate" onclick="changeState(event, '<%= offer._id %>', this)"
                                                                            class="btn btn-sm 
-                                                                               <%= offer.status === 'active' ? 'btn-danger' : offer.status === 'inactive' ? 'btn-success' : 'btn-warning disabled' %>">
-                                                                       <%= offer.status === 'active' ? 'Inactive' : offer.status === 'inactive' ? 'Active' : 'Expired' %>
+                                                                           <%= offer.status === 'active' ? 'btn-danger' 
+                                                                           : offer.status === 'inactive' ? 'btn-success' 
+                                                                           : offer.status === 'upcoming' ? 'btn-primary' 
+                                                                           : 'btn-warning disabled' %>">
+                                                                       
+                                                                       <%= offer.status === 'active' ? 'Inactive' 
+                                                                           : offer.status === 'inactive' ? 'Active' 
+                                                                           : offer.status === 'upcoming' ? 'Upcoming' 
+                                                                           : 'Expired' %>
                                                                    </button>
                                                                   
                                                             
@@ -682,9 +689,13 @@
                     } else if (status === 'inactive') {
                         state.innerText = "Inactive";
                         state.className = 'badge text-warning bg-warning-subtle fs-12';
-                    } else {
-                        state.innerText = "Expired";
-                        state.className = 'badge text-danger bg-danger-subtle fs-12';
+                    } else if(status==="upcoming") {
+                        state.innerText = "upcoming";
+                        state.className = 'badge text-warning bg-warning-subtle fs-12';
+                    }
+                    else{
+                         state.innerText = "Expired";
+                         state.className = 'badge text-danger bg-danger-subtle fs-12';
                     }
                 }
                 

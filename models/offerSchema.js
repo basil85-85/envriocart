@@ -5,7 +5,7 @@ const OfferSchema = new Schema(
       {
             status: {
                   type: String,
-                  enum: ['active', 'inactive', 'expire'],
+                  enum: ['active', 'inactive', 'expire','upcoming'],
                   required: true,
                   default: 'active',
             },
