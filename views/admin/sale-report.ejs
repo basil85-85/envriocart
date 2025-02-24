@@ -217,6 +217,14 @@
                                             <h4 class="card-title">Recent Orders</h4>
                                     
                                             <!-- Date Filter Section -->
+                                            <div class="download-buttons">
+                                             <button onclick="downloadSalesReport('pdf')" class="btn btn-primary">
+                                                 <i class="fas fa-file-pdf"></i> Download PDF
+                                             </button>
+                                             <button onclick="downloadSalesReport('excel')" class="btn btn-success">
+                                                 <i class="fas fa-file-excel"></i> Download Excel
+                                             </button>
+                                         </div>
                                             <div class="d-flex align-items-center gap-2">
                                                 <!-- Start Date -->
                                                 <input type="date" id="startDate" class="form-control form-control-sm" placeholder="Start Date">
@@ -289,10 +297,12 @@
                                                                    <img src="<%= order.cartItems[0].image %>" alt="product" class="avatar-sm">
                                                                <% } %>
                                                            </td>
+                                                           
                                                            <td>
-                                                               <a href="#!" class="order-link"><%= order.userId.name %></a>
+                                                            <a href="#!" class="order-link"><%= order.userId?.name ? order.userId.name : order.user.name %>
+
                                                            </td>
-                                                           <td><%= order.userId.email %></td>
+                                                           <td><%= order.userId.email  ? order.userId.email : order.user.email %></td>
                                                            <td><%= order.address.phone %></td>
                                                            <td><%= order.payment.status %></td>
                                                            <td><%= order.payment.method %></td>
@@ -373,7 +383,7 @@
                </div>
                <!-- End Container Fluid -->
                 <script>
-          async function applyFilter() {
+      async function applyFilter() {
     try {
         // Get filter values
         const filter = document.getElementById("filterType").value;
@@ -470,6 +480,36 @@ function showErrorNotification(message) {
         }
     });
 } 
+
+// Frontend JavaScript
+const downloadSalesReport = async (format) => {
+    try {
+        const filter = document.getElementById('filterType').value;
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('endDate').value;
+
+        // Create query string
+        const params = new URLSearchParams({
+            format,
+            filter,
+            startDate,
+            endDate
+        });
+
+        // Create download link
+        const link = document.createElement('a');
+        link.href = `/admin/sale-report/download?${params}`;
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+    } catch (error) {
+        console.error('Download error:', error);
+        alert('Error downloading report');
+    }
+};
+
                 </script>
                <!-- ========== Footer Start ========== -->
                <%- include('../partial/admin/footer') %>

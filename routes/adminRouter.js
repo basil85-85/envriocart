@@ -104,6 +104,8 @@ router.delete("/coupon/delect",couponController.deleteCoupon)
 // sale report
 router.get("/sale-Report",saleController.getSalereport)
 router.post("/sale-report/filter",saleController.getSaleReportFiltering)
+router.get('/sale-report/download', saleController.downloadReport);
+
 
 
 
