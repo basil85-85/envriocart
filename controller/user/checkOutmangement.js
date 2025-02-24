@@ -6,6 +6,8 @@ import Verient from '../../models/verientSchema.js'
 import Wallet from '../../models/walletSchema.js'
 import Coupon from '../../models/couponSchema.js'
 
+
+
 const getCheckout = async (req, res) => {
       try {
             let isLoggedIn = true
@@ -325,6 +327,44 @@ const ReOrder = async (req, res) => {
       }
 }
 
+const OrderRefund = async (req, res) => {
+    try {
+        const orderID = req.query.id;
+        const order = await Order.findOne({ orderId: orderID})
+
+        if (!order) {
+            return res.status(404).json({ success: false, message: "Order not found" });
+        }
+
+       
+
+        // Update Wallet
+        const wallet = await Wallet.findOneAndUpdate(
+            { userId: order.userId },
+            {
+                $inc: { wallet: order.grandTotal },
+                $push: {
+                    transactions: {
+                        transactionType: 'credit',
+                        amount: order.grandTotal,
+                        description: `Refund for Order ID: ${order.orderId}`
+                    }
+                }
+            },
+            { new: true, upsert: true }
+        );
+      order.orderStatus='Cancelled'
+      order.payment.status='refunded'
+      await order.save()
+        
+
+        return res.status(200).json({ success: true, message: "Successfully refunded & amount credited to wallet" });
+
+    } catch (error) {
+        console.error(`Error in OrderRefund: ${error.message}`);
+        return res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+};
 
 
 
@@ -335,5 +375,6 @@ export default {
       ViewOrder,
       cancelOrder,
       ReOrder,
+      OrderRefund
       
 }

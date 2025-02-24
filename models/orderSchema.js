@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import { v4 as uuidv4 } from 'uuid'
 import AutoIncrement from 'mongoose-sequence'
 
+
 const { Schema } = mongoose
 
 const orderSchema = new Schema(
@@ -35,7 +36,7 @@ const orderSchema = new Schema(
                   id: { type: String, required: true },
                   status: {
                         type: String,
-                        enum: ['unpaid', 'Paid', 'Failed'],
+                        enum: ['unpaid', 'Paid', 'Failed','refunded'],
                         default: 'unpaid',
                   },
             },

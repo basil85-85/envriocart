@@ -78,12 +78,15 @@ const changeStatus = async (req, res) => {
             }
 
             let newStatus = ''
+            let newSate="Unpaid"
             if (order.orderStatus === 'Pending') {
                   newStatus = 'Processing'
             } else if (order.orderStatus === 'Processing') {
                   newStatus = 'Shipped'
             } else if (order.orderStatus === 'Shipped') {
                   newStatus = 'Delivered'
+                  newSate="Paid"
+
             } else {
                   return res
                         .status(400)
@@ -96,7 +99,7 @@ const changeStatus = async (req, res) => {
 
             const updatedOrder = await Order.findByIdAndUpdate(
                   orderId,
-                  { orderStatus: newStatus },
+                  { orderStatus: newStatus ,"payment.status":newSate},
                   { new: true }
             )
 
@@ -186,11 +189,11 @@ const reasonCancel = async (req,res) => {
           if (!order) {
               return res.status(401).json({ success: false, message: "Order not found" });
           }
-  
+          const paymentStatus = 'refunded';
           // Update order status to 'approved'
           const updatedOrder = await Order.findByIdAndUpdate(
               orderId,
-              { orderStatus: 'approved' },
+              { orderStatus: 'approved' ,'payment.status': paymentStatus},
               { new: true }
           );
   
@@ -230,7 +233,7 @@ const reasonCancel = async (req,res) => {
                   await newWallet.save();
               }
         
-  
+          
           return res.status(200).json({ success: true, message: "Successfully updated & amount credited to wallet" });
   
       } catch (error) {

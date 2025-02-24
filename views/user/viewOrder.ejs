@@ -251,15 +251,23 @@
             
             <h1>
                 OrderId: <%=formattedOrder.orderId%>
-                
+                <% if(formattedOrder?.status !== "Delivered" && formattedOrder.payment.status !=="Paid" && formattedOrder?.status!=='Cancelled'  && formattedOrder.payment.status !=="refunded" ){ %>
                 <button class="cancel-btn" onclick="OrderCancel('<%=formattedOrder.orderId%>')" title="Cancel the order">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10" stroke="red"></circle>
                         <path d="M15 9L9 15M9 9l6 6" stroke="red"></path>
                     </svg>
                 </button>
-                
-               
+                <% } else if(formattedOrder?.status !== "Delivered"  && formattedOrder?.payment?.status ==="Paid" ){ %>
+                    <button class="refund-btn" onclick="OrderRefund('<%=formattedOrder.orderId%>')" title="Process refund for this perfume order">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 6v0a3 3 0 0 1 6 0v0" stroke="green"></path>
+                        <path d="M6 8h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z" stroke="green"></path>
+                        <path d="M9 12c0 .6.4 1 1 1h4c.6 0 1-.4 1-1" stroke="green"></path>
+                      </svg>
+                      <span class="refund-text">Refund for Cancel</span>
+                    </button>
+                  <% } %>
                 <span class="order-status"> <%=formattedOrder.status%></span>
             </h1>
             
@@ -406,7 +414,7 @@
                     <i class="ri-printer-line"></i>
                     Print Order
                 </button>           
-                    <% if (formattedOrder?.payment?.status === "Paid" && formattedOrder.status!=="requested"  || formattedOrder?.status === "Delivered" ) { %>
+                    <% if (formattedOrder?.status === "Delivered" ) { %>
                         <button type="button" onclick="openModel()" class="btn btn-return" 
                             style="background-color: #f8f9fa; color: #dc3545; border: 1px solid #dc3545; font-weight: 500; transition: all 0.2s ease-in-out; padding: 8px 16px;">
                             <i class="ri-restart-line"></i> Request Return
@@ -563,6 +571,46 @@ function openModel() {
 
     
 
+function OrderRefund(orderId) {
+        Swal.fire({
+            title: "Are you sure?",
+            text: "Do you really want to cancel this order?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#d33",
+            cancelButtonColor: "#3085d6",
+            confirmButtonText: "Yes, cancel it!",
+            cancelButtonText: "No, keep it"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Proceed with cancellation (You can send an API request here)
+                fetch(`/order/OrderRefund?id=${orderId}`, {
+                    method: "PUT",
+                })
+                .then(response => response.json())
+                .then(data => {
+                    Swal.fire(
+                        "Cancelled!",
+                        "Your order has been cancelled.",
+                        "success"
+                        
+                    )
+                    .then(()=>{
+                        location.reload()
+                    })
+
+                    
+                })
+                .catch(error => {
+                    Swal.fire(
+                        "Error!",
+                        "Something went wrong. Try again.",
+                        "error"
+                    );
+                });
+            }
+        });
+    }
 
 
 

@@ -456,7 +456,7 @@ const generatePDF = async (res, orders) => {
         const statusColor = {
             'Delivered': '#4CAF50', 
             'pending': '#FF9800',    
-            'cancelled': '#DC3545'   
+            'Cancelled': '#DC3545'   
         }[order.orderStatus.toLowerCase()] || '#6c757d';  
 
         doc.rect(startX - 2, y - 2, 80, 16)

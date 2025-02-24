@@ -13,6 +13,7 @@ import wislistMangement from '../controller/user/wislistMangement.js'
 import walletController from '../controller/user/walletController.js'
 import couponController from '../controller/user/couponController.js'
 import offerController from '../controller/user/offerController.js'
+import checkOutmangement from '../controller/user/checkOutmangement.js'
 
 
 router.get('/', auth.cartCountMiddleware,userController.loadLogHomepage)
@@ -62,6 +63,7 @@ router.get("/order-success",auth.cartCountMiddleware,auth.userAuth,CheckOutmange
 router.get("/viewsorders",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.ViewOrder)
 router.put("/cancelorder",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.cancelOrder)
 router.put("/reorder",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.ReOrder)
+router.put("/order/OrderRefund",auth.userAuth,checkOutmangement.OrderRefund)
 
 //applied coupon
 router.post("/checkout/applyCoupon",auth.cartCountMiddleware,auth.userAuth,couponController.applyedCoupon) 
