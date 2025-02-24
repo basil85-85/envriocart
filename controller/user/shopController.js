@@ -1,7 +1,7 @@
 import User from '../../models/userSchema.js'
 import Product from '../../models/productSchema.js'
 import Category from '../../models/categorySchema.js'
-
+import Offer from '../../models/offerSchema.js'
 
 
 
@@ -35,7 +35,7 @@ const shoppage = async (req, res) => {
                   })
                   isLoggedIn = !!userData
             }
-
+          
             return res.render('shop', {
                   isLoggedIn,
                   products,
@@ -52,40 +52,127 @@ const shoppage = async (req, res) => {
 
 //product deatils
 const details = async (req, res) => {
-    try {
-        
-        let userId 
-        if(req.session.passport){
-          req.session.userId=req.session.passport.user;
-        } 
-        userId=req.session.userId;
-        const id =req.query.id
-        let products = await Product.findById(id).populate("variants").populate("categoryName")
-        const countCart =res.locals.cartCount
-        
-        let relatedProducts = await Product.find({
-            categoryName: products.categoryName, 
-            _id: { $ne: id } 
-        }).populate("variants")
-        .limit(4)
-        
-        
-        let isLoggedIn = false;
-        if (userId) {
-            const userData = await User.findOne({ _id: userId, isBlocked: false });
-
-            if (userData) {
-                isLoggedIn = true;
-            }
-        }
-
-        return res.render('details', { isLoggedIn, products,relatedProducts,countCart});
-
-    } catch (error) {
-        console.error('Error rendering home page:', error);
-        res.status(500).render("404");
-    }
-};
+      try {
+          // Get user ID from session
+          let userId;
+          if (req.session.passport) {
+              req.session.userId = req.session.passport.user;
+          }
+          userId = req.session.userId;
+          
+          const id = req.query.id;
+          
+          // Fetch main product with populated data
+          let product = await Product.findById(id)
+              .populate("variants")
+              .populate("categoryName")
+              .lean(); // Using lean() for better performance
+              
+          // Fetch active offers that might apply to this product
+          const activeOffers = await Offer.find({
+              status: "active",
+              endDate: { $gte: new Date() },
+              startDate: { $lte: new Date() },
+              $or: [
+                  { productIds: id }, // Check if product is directly in offer
+                  { 
+                      offerType: 'category',
+                      categoryId: product.categoryName._id // Check category offers
+                  }
+              ]
+          }).sort({ discountValue: -1 }); // Get highest value offer first
+  
+          // Calculate offer price for main product
+          let finalPrice = product.salePrice || product.regularPrice;
+          const applicableOffer = activeOffers.find(offer => 
+              offer.productIds.some(pid => pid.toString() === id) ||
+              (offer.offerType === 'category' && offer.categoryId.toString() === product.categoryName._id.toString())
+          );
+  
+          if (applicableOffer) {
+              if (applicableOffer.discountType === "fixed") {
+                  finalPrice = Math.max(0, finalPrice - applicableOffer.discountValue);
+              } else if (applicableOffer.discountType === "percentage") {
+                  finalPrice = Math.max(0, finalPrice - (finalPrice * applicableOffer.discountValue / 100));
+              }
+          }
+  
+          // Add offer details to product
+          product = {
+              ...product,
+              offerPrice: parseFloat(finalPrice.toFixed(2)),
+              originalPrice: product.salePrice || product.regularPrice,
+              hasOffer: !!applicableOffer,
+              offerDetails: applicableOffer ? {
+                  type: applicableOffer.discountType,
+                  value: applicableOffer.discountValue,
+                  name: applicableOffer.offerName,
+                  description: applicableOffer.description,
+                  endDate: applicableOffer.endDate
+              } : null
+          };
+  
+          // Fetch and process related products
+          let relatedProducts = await Product.find({
+              categoryName: product.categoryName._id,
+              _id: { $ne: id }
+          })
+          .populate("variants")
+          .limit(4)
+          .lean();
+  
+          // Calculate offers for related products
+          relatedProducts = await Promise.all(relatedProducts.map(async (relatedProduct) => {
+              let relatedFinalPrice = relatedProduct.salePrice || relatedProduct.regularPrice;
+              
+              // Find applicable offer for related product
+              const relatedOffer = activeOffers.find(offer => 
+                  offer.productIds.some(pid => pid.toString() === relatedProduct._id.toString()) ||
+                  (offer.offerType === 'category' && offer.categoryId.toString() === relatedProduct.categoryName.toString())
+              );
+  
+              if (relatedOffer) {
+                  if (relatedOffer.discountType === "fixed") {
+                      relatedFinalPrice = Math.max(0, relatedFinalPrice - relatedOffer.discountValue);
+                  } else if (relatedOffer.discountType === "percentage") {
+                      relatedFinalPrice = Math.max(0, relatedFinalPrice - (relatedFinalPrice * relatedOffer.discountValue / 100));
+                  }
+              }
+  
+              return {
+                  ...relatedProduct,
+                  offerPrice: parseFloat(relatedFinalPrice.toFixed(2)),
+                  originalPrice: relatedProduct.salePrice || relatedProduct.regularPrice,
+                  hasOffer: !!relatedOffer,
+                  offerDetails: relatedOffer ? {
+                      type: relatedOffer.discountType,
+                      value: relatedOffer.discountValue,
+                      name: relatedOffer.offerName
+                  } : null
+              };
+          }));
+  
+          // Check login status
+          let isLoggedIn = false;
+          if (userId) {
+              const userData = await User.findOne({ _id: userId, isBlocked: false });
+              if (userData) {
+                  isLoggedIn = true;
+              }
+          }
+        console.log(product)
+          return res.render('details', { 
+              isLoggedIn, 
+              products:product,
+              relatedProducts,
+              countCart: res.locals.cartCount
+          });
+  
+      } catch (error) {
+          console.error('Error rendering product details page:', error);
+          res.status(500).render("404");
+      }
+  };
 
 const filterCategory = async (req, res) => {
       try {

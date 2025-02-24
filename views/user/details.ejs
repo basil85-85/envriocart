@@ -275,12 +275,35 @@
                                 
                             </div>
                             <div class="price-text">
-                                <h3><span class="fw-normal">Rs:</span> <%= products.salePrice %>
-                                    <del> 
-                                      <%= products.regularPrice %></del><span class="discounted-price">        <%= ((products.regularPrice - products.salePrice) / products.regularPrice * 100).toFixed() %>% off  </span>
+                                <h3>
+                                    <% if (products.offerPrice && products.offerPrice < products.originalPrice) { %>
+                                        <span class="offer-price">Rs: <%= products.offerPrice %></span>
+                                        <del class="original-price">Rs: <%= products.originalPrice %></del>
+                            
+                                        <!-- Offer Badge -->
+                                        <span class="offer-badge" style="background-color: #ec4a4a; color: black; border-radius: 8px; padding: 5px 10px; font-weight: bold;">
+
+                                            <i class="ri-price-tag-3-fill"></i> 
+                                            <% if ((products.originalPrice - products.offerPrice) / products.originalPrice * 100 >= 1) { %>
+                                                <%= ((products.originalPrice - products.offerPrice) / products.originalPrice * 100).toFixed() %>% Off
+                                            <% } else { %>
+                                                Rs <%= (products.originalPrice - products.offerPrice) %> Off
+                                            <% } %>
+                                        </span>
+                                    <% } else { %>
+                                        <span class="regular-price">Rs: <%= products.originalPrice %></span>
+                                    <% } %>
                                 </h3>
-                                
+                            
+                                <% if (products.regularPrice > products.salePrice) { %>
+                                    <del class="regular-price">Rs: <%= products.regularPrice %></del>
+                                    <span class="discounted-price">
+                                        <%= ((products.regularPrice - products.salePrice) / products.regularPrice * 100).toFixed() %>% Off
+                                    </span>
+                                <% } %>
                             </div>
+                            
+                            
                             <p class="description-text">
                                 <%=products.description%>
                             </p>

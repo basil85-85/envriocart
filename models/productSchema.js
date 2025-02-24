@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
 import { Schema } from 'mongoose'
-
 const productSchema = new Schema(
       {
             productName: {
@@ -35,7 +34,7 @@ const productSchema = new Schema(
                   default: 'Avaiable',
             },
            categoryName :{
-                  type: mongoose.Schema.Types.ObjectId,
+                  type: mongoose.Schema.Types.ObjectId,       
                   ref:'Category',
                   required:true
             },

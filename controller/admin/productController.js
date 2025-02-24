@@ -140,6 +140,7 @@ const Addvariants = async (req, res) => {
 //adding the varinets of the its
 const Addingvariant = async (req, res) => {
       try {
+            console.log("sdncjsbxvjbh dsbh")
             const { color, sq, mq, lq, xlq, xxlq } = req.body
             const productId = req.query.id
             const images = []

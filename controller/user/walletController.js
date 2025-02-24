@@ -97,7 +97,6 @@ const createOrderWallet = async (req, res) => {
             await variant.save();
         }
         payment.status = 'Paid';
-        // Create and save order
         const order = await Order.create({
             userId,
             address,
@@ -109,8 +108,6 @@ const createOrderWallet = async (req, res) => {
             totalAmount,
             grandTotal
         });
-
-        // Clear cart
         await Cart.deleteOne({ userId });
         delete req.session.discountAmount
         return res.status(201).json({

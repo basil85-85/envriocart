@@ -11,6 +11,7 @@ import Category from '../../models/categorySchema.js'
 import Address from '../../models/addressSchema.js'
 
 import Cart from '../../models/cartSchema.js'
+import Offer from '../../models/offerSchema.js'
 
 const AddCart = async (req, res) => {
       try {
@@ -92,6 +93,7 @@ const AddCart = async (req, res) => {
 
                   await userCart.save()
             }
+
             const updatedCart = await Cart.findById(userCart._id)
                   .populate('items.verientId')
                   .populate('userId')
@@ -135,8 +137,7 @@ const deleteCart = async (req, res) => {
                 success: false,
                 message: "Cart ID is missing",
             });
-        }
-    
+        }  
         const cart = await Cart.findOne({ "items._id": id });
         if (!cart) {
             return res.status(404).json({
@@ -178,7 +179,7 @@ const quantityCart = async (req, res) => {
             const { productId, quantity, size } = req.body
             const userID = req.session.userId
 
-            // Validation checks...
+            
 
             const cart = await Cart.findOne({ userId: userID })
             const variant = await Verient.findById(productId)

@@ -73,7 +73,7 @@ const loadLogHomepage = async (req, res) => {
   
           const category = await Category.find({ isListed: true });
           const countCart =res.locals.cartCount
-        
+         
           let isLoggedIn = false;
           if (userId) {
               const userData = await User.findOne({ _id: userId, isBlocked: false });
@@ -82,6 +82,30 @@ const loadLogHomepage = async (req, res) => {
                   isLoggedIn = true;
               }
           }
+          products = products.map(product => {
+            let finalPrice = product.salePrice || product.regularPrice; 
+            const applicableOffer = offerProducts.find(offer => 
+                offer.productIds.some(p => p._id.equals(product._id)) || 
+                (offer.categoryId && offer.categoryId._id.equals(product.categoryName))
+            );
+        
+            if (applicableOffer) {
+                if (applicableOffer.discountType === "fixed") {
+                    finalPrice = Math.max(0, finalPrice - applicableOffer.discountValue);
+                } else if (applicableOffer.discountType === "percentage") {
+                    finalPrice = Math.max(0, finalPrice - (finalPrice * applicableOffer.discountValue / 100));
+                }
+            }
+        
+            return {
+                  ...product.toObject(),
+                  offerPrice: parseFloat(finalPrice.toFixed(2)),
+            };
+        });
+
+          products.forEach((val)=>{
+           console.log( val.offerPrice)
+          })
           return res.render('homei', { isLoggedIn, products:offerProducts, category ,countCart});
   
       } catch (error) {
@@ -89,6 +113,9 @@ const loadLogHomepage = async (req, res) => {
           res.status(500).render("404");
       }
   };
+
+
+
 // lodaing signup page
 const loadSignup = async (req, res) => {
       try {

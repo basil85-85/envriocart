@@ -103,5 +103,9 @@ router.delete("/coupon/delect",couponController.deleteCoupon)
 
 // sale report
 router.get("/sale-Report",saleController.getSalereport)
+router.post("/sale-report/filter",saleController.getSaleReportFiltering)
+
+
+
 
 export default router              

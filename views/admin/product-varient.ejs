@@ -362,7 +362,7 @@
            
                                    <!-- Category -->
                                    <div class="container">
-                                    <form id="variantForm" onsubmit="formSubmit(event)" enctype="multipart/form-data>
+                                    <form id="variantForm" onsubmit="formSubmit(event,'<%= findproduct._id %>')" enctype="multipart/form-data>
                                         <div id="variantContainer">
                                             <div class="color-section">
                                                 <div class="variant-header">
@@ -636,7 +636,8 @@
 
 
             
-async function formSubmit(event) {
+async function formSubmit(event,productID) {
+     console.log("sjacbhbshucb husb")
     event.preventDefault();
     let color = document.getElementById("colorPicker").value;
     let sq = document.getElementById("size-S-1").checked;
@@ -706,7 +707,7 @@ async function formSubmit(event) {
         const form = document.getElementById('variantForm')
         const formData = new FormData(form)
         try {
-            const response = await fetch("/admin/product/addverient?id=<%= findproduct._id %>",{
+            const response = await fetch(`/admin/product/addverient?id=${productID}`,{
                 method: "POST",
                 body: formData 
             });
