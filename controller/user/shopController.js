@@ -4,6 +4,36 @@ import Category from '../../models/categorySchema.js'
 import Offer from '../../models/offerSchema.js'
 
 
+const checkProductOffer = async (productId) => {
+      try {
+            const offer = await Offer.findOne({
+                  offerType: 'product',
+                  productIds: productId,
+                  status: 'active', 
+                  startDate: { $lte: new Date() }, 
+                  endDate: { $gte: new Date() }, 
+            })
+            return offer ? offer : null 
+      } catch (error) {
+            console.error('Error checking product offer:', error)
+            return null
+      }
+}
+const checkCategoryOffer = async (categoryId) => {
+      try {
+            const offer = await Offer.findOne({
+                  offerType: 'category', 
+                  categoryId: categoryId, 
+                  status: 'active', 
+                  startDate: { $lte: new Date() }, 
+                  endDate: { $gte: new Date() },
+            })
+            return offer ? offer : null 
+      } catch (error) {
+            console.error('Error checking category offer:', error)
+            return null
+      }
+}
 
 //shoping pages
 const shoppage = async (req, res) => {
@@ -11,8 +41,10 @@ const shoppage = async (req, res) => {
             const userId = req.session.userId
             let page = parseInt(req.query.page) || 1
             let limit = parseInt(req.query.limit) || 20
-            const countCart =res.locals.cartCount
+            const countCart = res.locals.cartCount
             let skip = (page - 1) * limit
+
+            // Fetch products
             const products = await Product.find({
                   isBlocked: false,
                   variants: { $exists: true, $ne: [] },
@@ -21,28 +53,41 @@ const shoppage = async (req, res) => {
                   .populate("categoryName")
                   .skip(skip)
                   .limit(limit)
+
+            // Check product-level and category-level offer
+            const productsWithOffers = await Promise.all(
+                  products.map(async (product) => {
+                        const productOffer = await checkProductOffer(product._id)
+                        const categoryOffer = await checkCategoryOffer(product.categoryName._id)
+
+                        return {
+                              ...product.toObject(),
+                              productOffer,
+                              categoryOffer,
+                        }
+                  })
+            )
+
             const totalProducts = await Product.countDocuments({
                   isBlocked: false,
                   variants: { $exists: true, $ne: [] },
             })
 
-            const category = await Category.find({  isListed: true })
+            const category = await Category.find({ isListed: true })
+
             let isLoggedIn = false
             if (userId) {
-                  const userData = await User.findOne({
-                        _id: userId,
-                        isBlocked: false,
-                  })
+                  const userData = await User.findOne({ _id: userId, isBlocked: false })
                   isLoggedIn = !!userData
             }
-          
+            console.log( productsWithOffers)
             return res.render('shop', {
                   isLoggedIn,
-                  products,
+                  products: productsWithOffers, // Send products with both offer details
                   category,
                   currentPage: page,
                   totalPages: Math.ceil(totalProducts / limit),
-                  countCart
+                  countCart,
             })
       } catch (error) {
             console.error('Error rendering shop page:', error)
@@ -74,15 +119,14 @@ const details = async (req, res) => {
               endDate: { $gte: new Date() },
               startDate: { $lte: new Date() },
               $or: [
-                  { productIds: id }, // Check if product is directly in offer
+                  { productIds: id }, 
                   { 
                       offerType: 'category',
-                      categoryId: product.categoryName._id // Check category offers
+                      categoryId: product.categoryName._id 
                   }
               ]
-          }).sort({ discountValue: -1 }); // Get highest value offer first
+          }).sort({ discountValue: -1 }); 
   
-          // Calculate offer price for main product
           let finalPrice = product.salePrice || product.regularPrice;
           const applicableOffer = activeOffers.find(offer => 
               offer.productIds.some(pid => pid.toString() === id) ||
@@ -97,7 +141,6 @@ const details = async (req, res) => {
               }
           }
   
-          // Add offer details to product
           product = {
               ...product,
               offerPrice: parseFloat(finalPrice.toFixed(2)),
@@ -112,7 +155,6 @@ const details = async (req, res) => {
               } : null
           };
   
-          // Fetch and process related products
           let relatedProducts = await Product.find({
               categoryName: product.categoryName._id,
               _id: { $ne: id }
@@ -121,11 +163,9 @@ const details = async (req, res) => {
           .limit(4)
           .lean();
   
-          // Calculate offers for related products
           relatedProducts = await Promise.all(relatedProducts.map(async (relatedProduct) => {
               let relatedFinalPrice = relatedProduct.salePrice || relatedProduct.regularPrice;
-              
-              // Find applicable offer for related product
+            
               const relatedOffer = activeOffers.find(offer => 
                   offer.productIds.some(pid => pid.toString() === relatedProduct._id.toString()) ||
                   (offer.offerType === 'category' && offer.categoryId.toString() === relatedProduct.categoryName.toString())

@@ -1,6 +1,15 @@
 <%- include('../partial/user/header') %>
     <!-- breadcrumb start -->
+<style>
+.offer-icon {
+    z-index: 1;
+    font-size: 0.85rem;
+}
 
+.offer-icon i {
+    margin-right: 4px;
+}
+</style>
 
     <div class="modal fade bd-example-modal-lg blackfriday-modal light-modal" id="cybermonday" tabindex="-1"
     role="dialog">
@@ -615,10 +624,29 @@
                                                         <div class="overflow-hidden">
                                                            
                                                             <div class="img-wrapper">
+                                                                <% if (val.productOffer) { %>
+                                                                    <div class="offer-icon position-absolute top-0 start-0 m-2 bg-danger text-white px-2 py-1 rounded">
+                                                          
+                                                                    <i class="ri-price-tag-3-fill"></i>Product Offer: <%= val.productOffer.discountValue %> 
+                                                                          <% if (val.productOffer.discountType === 'percentage') { %> % <% } else { %> $ <% } %>
+                                                                          off!
+                                                                    </i>
+                                                                    </div>
+                                                              <% } %>
+                                                                <% if (val.categoryOffer) { %>
+                                                                    <div class="offer-icon position-absolute top-0 start-0 m-2 bg-danger text-white px-2 py-1 rounded">
+                                                          
+                                                                    <i class="ri-price-tag-3-fill">Category Offer: <%= val.categoryOffer.discountValue %> 
+                                                                               <% if (val.categoryOffer.discountType === 'percentage') { %> % <% } else { %> $ <% } %>
+                                                                              off!
+                                                                    </i>
+                                                                    </div>
+                                                                 <% } %>
                                                                 <a href="/details?id=<%=val._id%>">
                                                                     <img src="/<%=val.variants[0].productImg[0]%>"
                                                                         class="w-100 img-fluid blur-up lazyload" alt="">
                                                                 </a>
+
                                                                 <div class="rating-label"><i
                                                                         class="ri-star-fill"></i><span>4.5</span>
                                                                 </div>
