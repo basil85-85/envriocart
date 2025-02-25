@@ -290,7 +290,7 @@ const generatePDF = async (res, orders) => {
     const averageOrderValue = totalSales / totalOrders;
     const completedOrders = orders.filter(order => order.orderStatus.toLowerCase() === 'completed').length;
     const pendingOrders = orders.filter(order => order.orderStatus.toLowerCase() === 'pending').length;
-    const cancelledOrders = orders.filter(order => order.orderStatus.toLowerCase() === 'cancelled').length;
+    const cancelledOrders = orders.filter(order => order.orderStatus.toLowerCase() === 'Cancelled').length;
 
     // Add summary box with border
     doc.rect(50, doc.y, 500, 180)
