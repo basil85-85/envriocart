@@ -64,7 +64,7 @@ router.get("/viewsorders",auth.cartCountMiddleware,auth.userAuth,CheckOutmangeme
 router.put("/cancelorder",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.cancelOrder)
 router.put("/reorder",auth.cartCountMiddleware,auth.userAuth,CheckOutmangement.ReOrder)
 router.put("/order/OrderRefund",auth.userAuth,checkOutmangement.OrderRefund)
-
+router.post("/order/downloadInvoice",auth.userAuth,checkOutmangement.downloadInvoice)
 //applied coupon
 router.post("/checkout/applyCoupon",auth.cartCountMiddleware,auth.userAuth,couponController.applyedCoupon) 
 router.delete("/checkout/removeCoupon",auth.cartCountMiddleware,auth.userAuth,couponController.removeCoupon) 
@@ -72,7 +72,9 @@ router.delete("/checkout/removeCoupon",auth.cartCountMiddleware,auth.userAuth,co
 
 router.post("/create-order",auth.userAuth,razorpay.createOrder)
 router.post('/verify-payment',auth.userAuth,razorpay.verifyPayment);
-router.post("/wallet",auth.cartCountMiddleware,auth.userAuth,walletController.createOrderWallet)    
+router.post('/repayment-razerPay',auth.userAuth,razorpay.RePayment)
+router.post("/wallet",auth.cartCountMiddleware,auth.userAuth,walletController.createOrderWallet)
+router.post("/VerifyRepayment",auth.userAuth,razorpay.RepaymentverifyPayment)    
 
 // cancel order the reson
 router.post("/profile/requestreturn",auth.userAuth,cancelresaon.reasonCancel)
@@ -81,6 +83,7 @@ router.post("/profile/requestreturn",auth.userAuth,cancelresaon.reasonCancel)
 router.post("/addWishlist",auth.userAuth,wislistMangement.addWishlist)
 router.get("/wishlist",auth.userAuth,wislistMangement.getWishlist)
 router.delete("/deleteWishlist",auth.userAuth,wislistMangement.deleteWishlist)
+router.post("/AddCartWislist",auth.userAuth,wislistMangement.AddCartWislist)
 
 //offer 
 router.get("/offers",offerController.getOffer)

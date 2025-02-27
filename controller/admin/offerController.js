@@ -62,7 +62,7 @@ const addOfferpage = async (req, res) => {
 
 const createOffer = async (req, res) => {
       try {
-            console.log(req.body)
+            // console.log(req.body)
             let {
                   status,
                   startDate,

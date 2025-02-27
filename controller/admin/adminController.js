@@ -1,37 +1,36 @@
 import User from '../../models/userSchema.js'
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
-import {promisify} from "util"
+import { promisify } from 'util'
 
 //404
- const pageNotfound =async (req,res) => {
+const pageNotfound = async (req, res) => {
       try {
-            return res.render("pages-404")
+            return res.render('pages-404')
       } catch (error) {
             console.log(`error ocur on the page not found on it ${error}`)
-            return res.status(500).json("internal server error")
+            return res.status(500).json('internal server error')
       }
- }
+}
 
- //rendering login page
+//rendering login page
 const loadlogin = (req, res) => {
       try {
-           
             if (req.session.admin) {
                   return res.redirect('/admin/dashboard')
             } else {
-                  return res.render('auth-signin', { message: null }) 
+                  return res.render('auth-signin', { message: null })
             }
       } catch (error) {
-            console.error('Error in loadlogin:', error) 
+            console.error('Error in loadlogin:', error)
             res.status(500).send('Something went wrong')
       }
-}                        
+}
 // in the post of login page
 const login = async (req, res) => {
       try {
             const { email, password } = req.body
-            
+
             const admin = await User.findOne({
                   email: email,
                   isAdmin: true,
@@ -52,9 +51,7 @@ const login = async (req, res) => {
                   })
             }
 
-            req.session.admin =admin._id
-          
-            
+            req.session.admin = admin._id
 
             return res.json({
                   success: true,
@@ -71,7 +68,7 @@ const login = async (req, res) => {
       }
 }
 // rendering dashboard after the login
-const dashboard=async (req,res) => {
+const dashboard = async (req, res) => {
       try {
             // Check if admin session exists
             if (req.session.admin) {
@@ -83,26 +80,22 @@ const dashboard=async (req,res) => {
             console.error('Error in loadlogin:', error) // Log errors for debugging
             res.status(500).send('Something went wrong') // Send a 500 status if an error occurs
       }
-}   
+}
 
 // for logout
 const logout = async (req, res) => {
       try {
-          req.session.destroy((err)=>{
-            if(err){
-                  console.log(`session errror due to ${err}`)
-                  return res.redirect("/page-error")
-            }
-            res.redirect("/admin/login")
-          })
-     
-
-          
-          
+            req.session.destroy(err => {
+                  if (err) {
+                        console.log(`session errror due to ${err}`)
+                        return res.redirect('/page-error')
+                  }
+                  res.redirect('/admin/login')
+            })
       } catch (error) {
-          console.log(`Error occurred during logout: ${error}`);
-          return res.redirect("/page-error");
+            console.log(`Error occurred during logout: ${error}`)
+            return res.redirect('/page-error')
       }
-  };
+}
 
-export default { loadlogin, login ,dashboard,pageNotfound,logout}
+export default { loadlogin, login, dashboard, pageNotfound, logout }

@@ -390,6 +390,7 @@
             <div class="summary-row">
                 <span>Subtotal</span>
                 <span><%=formattedOrder.summary.subtotal%></span>
+                
             </div>
             <div class="summary-row">
                 <span>Shipping</span>
@@ -406,20 +407,23 @@
             </div>
             
             <div class="action-buttons">
-                <button class="btn btn-primary">
+                <button type="button" onclick="dowloadingInvoice('<%=formattedOrder.orderId%>')" class="btn btn-primary">
                     <i class="ri-download-2-line"></i>
-                    Download Invoice
+                    Download Invoice to email
                 </button>
-                <button class="btn btn-secondary">
-                    <i class="ri-printer-line"></i>
-                    Print Order
-                </button>           
+                         
                     <% if (formattedOrder?.status === "Delivered" ) { %>
                         <button type="button" onclick="openModel()" class="btn btn-return" 
                             style="background-color: #f8f9fa; color: #dc3545; border: 1px solid #dc3545; font-weight: 500; transition: all 0.2s ease-in-out; padding: 8px 16px;">
                             <i class="ri-restart-line"></i> Request Return
                         </button>
-                    <% } %>
+
+                    <% } else if(formattedOrder.payment.status =="Failed") {%>
+                        <button type="button" onclick="initiateRepayment('<%= formattedOrder.orderId%>','<%= formattedOrder.userId._id%>')" class="btn btn-repay"
+                            style="background-color: #28a745; color: white; border: none; font-weight: 500; transition: all 0.2s ease-in-out; padding: 8px 16px; margin-bottom: 15px; display: block; width: 100%;">
+                            <i class="ri-bank-card-line"></i> Retry Payment
+                        </button>
+                        <%} %>
             </div>
         </div>
         <% }else {%>
@@ -670,8 +674,123 @@ function OrderRefund(orderId) {
         }
     });
 }
-</script>
 
+
+
+
+async function dowloadingInvoice(orderID) {
+    try{
+    const comform= await Swal.fire({
+        title: "Download Invoice?",
+        text: "Do you want to download the invoice for this order?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#28a745",  
+        cancelButtonColor: "#d33", 
+        confirmButtonText: "Yes, Download",
+        cancelButtonText: "No, Cancel"
+    });
+        if(comform.isConfirmed){
+          const response =await fetch(`/order/downloadInvoice?id=${orderID}`,{
+            method:"POST",
+            headers:{"content-Type":"application/json"}
+          })
+          const data = await response.json()
+          if(response.ok){
+            if(data.success){
+                showSuccessNotification(data.message)
+            }else{
+                showErrorNotification(data.message)
+            }
+          }else{
+            showErrorNotification(data.message)
+          }
+        }
+        else{
+            return
+        }
+    }
+    catch(error){
+        showErrorNotification(error)
+    }
+}
+
+
+
+async function initiateRepayment(orderID,userID) {
+    try {
+        const confirm = await Swal.fire({
+            title: "Repay Amount?",
+            text: "Do you want to proceed with the repayment for this order?",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#28a745",  
+            cancelButtonColor: "#d33", 
+            confirmButtonText: "Yes, Repay",
+            cancelButtonText: "No, Cancel"
+        });
+        if(confirm.isConfirmed){
+            const orderResponse = await fetch(`/repayment-razerPay?id=${orderID}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+        })
+        const orderData = await orderResponse.json();
+
+            if (!orderData.success) {
+                throw new Error(orderData.message);
+            }
+
+            const options = {
+                key: 'rzp_test_Bj3nLhzRxxOUEo', 
+                amount: orderData.amount,
+                currency: "INR",
+                name: "ENVRIO CART",
+                description: "Order Payment",
+                order_id: orderData.orderId,
+                handler: async function (response) {
+                    const verifyResponse = await fetch(`/VerifyRepayment?id=${userID}`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_signature: response.razorpay_signature,
+                           
+                        })
+                    });
+                    const verifyData = await verifyResponse.json();
+
+                    if (verifyData.success) {
+                        showSuccessNotification("Payment successful!");
+                        setTimeout(()=>{
+
+                            location.reload()
+                        } ,1500)
+                       
+                    } else {
+                        showErrorNotification("Payment verification failed!");
+                    }
+                },
+                
+                theme: {
+                    color: "#ff6600", 
+                    backdrop_color: "#f0f0f0", 
+                    hide_topbar: false 
+                }
+}
+
+            const rzp = new Razorpay(options);
+            rzp.open();
+
+       
+        }
+    } catch (error) {
+        showErrorNotification(error)
+    }
+}
+
+</script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </body>
 
 </html>

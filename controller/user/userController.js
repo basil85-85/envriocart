@@ -11,8 +11,7 @@ import crypto from 'crypto'
 import Product from '../../models/productSchema.js'
 import Verient from '../../models/verientSchema.js'
 import Category from '../../models/categorySchema.js'
-import Offer from '../../models/offerSchema.js' 
-
+import Offer from '../../models/offerSchema.js'
 
 // Create transporter
 const transporter = nodemailer.createTransport({
@@ -46,81 +45,101 @@ const pageNotfound = async (req, res) => {
       }
 }
 
-//loding the home dpage 
-const loadLogHomepage = async (req, res) => {
+//loding the home dpage
+const loadLogHomepage = async (req, res, next) => {
       try {
-          
-          let userId 
-          if(req.session.passport){
-            req.session.userId=req.session.passport.user;
-          } 
-          userId=req.session.userId;
-          const offerProducts = await Offer.find({ status: "active" })
-                  .sort({discountType: -1,      
-                        discountValue: -1    }) 
-                  .populate({
-                  path: "productIds",
-                  model: "Product",
-                  populate: {
-                        path: "variants",
-                        model: "Verient",
-                  },
-                  }).populate("categoryId")
-                 
-      //      console.log(offerProducts)
-          let products = await Product.find({ isBlocked: false }).populate("variants");
-          products = products.filter(product => product.variants.length > 0);
-  
-          const category = await Category.find({ isListed: true });
-          const countCart =res.locals.cartCount
-         
-          let isLoggedIn = false;
-          if (userId) {
-              const userData = await User.findOne({ _id: userId, isBlocked: false });
-  
-              if (userData) {
-                  isLoggedIn = true;
-              }
-          }
-          products = products.map(product => {
-            let finalPrice = product.salePrice || product.regularPrice; 
-            const applicableOffer = offerProducts.find(offer => 
-                offer.productIds.some(p => p._id.equals(product._id)) || 
-                (offer.categoryId && offer.categoryId._id.equals(product.categoryName))
-            );
-        
-            if (applicableOffer) {
-                if (applicableOffer.discountType === "fixed") {
-                    finalPrice = Math.max(0, finalPrice - applicableOffer.discountValue);
-                } else if (applicableOffer.discountType === "percentage") {
-                    finalPrice = Math.max(0, finalPrice - (finalPrice * applicableOffer.discountValue / 100));
-                }
+            let userId
+            if (req.session.passport) {
+                  req.session.userId = req.session.passport.user
             }
-        
-            return {
-                  ...product.toObject(),
-                  offerPrice: parseFloat(finalPrice.toFixed(2)),
-            };
-        });
+            userId = req.session.userId
+            const offerProducts = await Offer.find({ status: 'active' })
+                  .sort({ discountType: -1, discountValue: -1 })
+                  .populate({
+                        path: 'productIds',
+                        model: 'Product',
+                        populate: {
+                              path: 'variants',
+                              model: 'Verient',
+                        },
+                  })
+                  .populate('categoryId')
 
-          products.forEach((val)=>{
-           console.log( val.offerPrice)
-          })
-          return res.render('homei', { isLoggedIn, products:offerProducts, category ,countCart});
-  
+            //      console.log(offerProducts)
+            let products = await Product.find({ isBlocked: false }).populate(
+                  'variants'
+            )
+            products = products.filter(product => product.variants.length > 0)
+
+            const category = await Category.find({ isListed: true })
+            const countCart = res.locals.cartCount
+
+            let isLoggedIn = false
+            if (userId) {
+                  const userData = await User.findOne({
+                        _id: userId,
+                        isBlocked: false,
+                  })
+
+                  if (userData) {
+                        isLoggedIn = true
+                  }
+            }
+            products = products.map(product => {
+                  let finalPrice = product.salePrice || product.regularPrice
+                  const applicableOffer = offerProducts.find(
+                        offer =>
+                              offer.productIds.some(p =>
+                                    p._id.equals(product._id)
+                              ) ||
+                              (offer.categoryId &&
+                                    offer.categoryId._id.equals(
+                                          product.categoryName
+                                    ))
+                  )
+
+                  if (applicableOffer) {
+                        if (applicableOffer.discountType === 'fixed') {
+                              finalPrice = Math.max(
+                                    0,
+                                    finalPrice - applicableOffer.discountValue
+                              )
+                        } else if (
+                              applicableOffer.discountType === 'percentage'
+                        ) {
+                              finalPrice = Math.max(
+                                    0,
+                                    finalPrice -
+                                          (finalPrice *
+                                                applicableOffer.discountValue) /
+                                                100
+                              )
+                        }
+                  }
+
+                  return {
+                        ...product.toObject(),
+                        offerPrice: parseFloat(finalPrice.toFixed(2)),
+                  }
+            })
+
+            return res.render('homei', {
+                  isLoggedIn,
+                  products: offerProducts,
+                  category,
+                  countCart,
+            })
       } catch (error) {
-          console.error('Error rendering home page:', error);
-          res.status(500).render("404");
+            console.error('Error rendering home page:', error)
+            next(error)
       }
-  };
-
-
+}
 
 // lodaing signup page
-const loadSignup = async (req, res) => {
+const loadSignup = async (req, res, next) => {
       try {
-            const userId = req.session.userId;
-            console.log(userId)
+            const userId = req.session.userId
+            // console.log(userId)
             if (!userId) {
                   return res.render('register', { message: null })
             } else {
@@ -128,12 +147,12 @@ const loadSignup = async (req, res) => {
             }
       } catch (error) {
             console.log(`Register page not loaded: ${error}`)
-            res.status(500).render("404")
+            next(error)
       }
 }
 
 //old signup  using render
-const signup = async (req, res) => {
+const signup = async (req, res, next) => {
       try {
             const { name, email, phone, password } = req.body
 
@@ -180,17 +199,14 @@ const signup = async (req, res) => {
             })
       } catch (error) {
             console.error(`Error in signup: ${error}`)
-            return res.status(500).json({
-                  success: false,
-                  message: 'An error occurred during signup.',
-            })
+            next(error)
       }
 }
 
 // get the page of loginpage
-const Loadlogin = async (req, res) => {
+const Loadlogin = async (req, res, next) => {
       try {
-            if (! req.session.userId) {
+            if (!req.session.userId) {
                   return res.render('login', {
                         message: null,
                         passwordError: null,
@@ -200,20 +216,18 @@ const Loadlogin = async (req, res) => {
             }
       } catch (error) {
             console.log(`Register page not loaded: ${error}`)
-            res.status(500).render("404")
+            next(error)
       }
 }
 
 //post of the login
-const login = async (req, res) => {
+const login = async (req, res, next) => {
       try {
             const { emailOrPhone, password } = req.body
-            
 
             // Find user with email or phone, and make sure the user isn't blocked
             const Finduser = await User.findOne({
-                  $or: [{ email: emailOrPhone }, { phone: emailOrPhone }]
-                
+                  $or: [{ email: emailOrPhone }, { phone: emailOrPhone }],
             })
 
             if (!Finduser) {
@@ -224,8 +238,12 @@ const login = async (req, res) => {
                   })
             }
             if (Finduser.isBlocked) {
-                  return res.json({ success: false, message: "Your account is blocked. Please contact support." });
-              }
+                  return res.json({
+                        success: false,
+                        message:
+                              'Your account is blocked. Please contact support.',
+                  })
+            }
 
             // Check if the provided password matches the stored hash
             const isPasswordValid = await bcrypt.compare(
@@ -248,17 +266,14 @@ const login = async (req, res) => {
             })
       } catch (error) {
             console.error('Error during login:', error)
-            return res.status(500).json({
-                  success: false,
-                  message: 'An error occurred during login. Please try again.',
-            })
+            next(error)
       }
 }
 
 //loading page verify page
-const Loadverify = async (req, res) => {
+const Loadverify = async (req, res, next) => {
       try {
-            const userId = req.session.userId;
+            const userId = req.session.userId
             if (!userId) {
                   if (req.session.user) {
                         return res.render('verify')
@@ -269,12 +284,12 @@ const Loadverify = async (req, res) => {
             }
       } catch (error) {
             console.log(`Register page not loaded: ${error}`)
-            res.status(500).render("404")
+            next(error)
       }
 }
 
 //verify on resend and all the posting things
-const Verify = async (req, res) => {
+const Verify = async (req, res, next) => {
       try {
             const { action, code } = req.body
             if (!req.session || !req.session.Email) {
@@ -287,7 +302,7 @@ const Verify = async (req, res) => {
             if (action === 'resend') {
                   // Generate a new OTP
                   const newOtp = generateOTP()
-                  req.session.otp = newOtp.toString() 
+                  req.session.otp = newOtp.toString()
                   console.log(`new Otp generated sucessfully:  ${newOtp}`)
                   const mailOptions = {
                         from: process.env.AUTH_EMAIL,
@@ -302,7 +317,6 @@ const Verify = async (req, res) => {
                         message: 'New OTP has been sent successfully',
                   })
             } else if (action === 'verify') {
-            
                   const sessionOtp = req.session.otp
                         ? req.session.otp.toString().trim()
                         : ''
@@ -346,15 +360,12 @@ const Verify = async (req, res) => {
             }
       } catch (error) {
             console.error(`Error in OTP verification/resend:`, error)
-            return res.status(500).json({
-                  success: false,
-                  message: 'An error occurred during the process.',
-            })
+            next(error)
       }
 }
 
 //logout the user
-const logout = (req, res) => {
+const logout = (req, res, next) => {
       try {
             req.session.destroy(err => {
                   if (err) {
@@ -365,12 +376,12 @@ const logout = (req, res) => {
             })
       } catch (error) {
             console.error(`logout error${error}`)
-            res.redirect('/pageNotFound')
+            next(error)
       }
 }
-const forgotLoad = async (req,res) => {
+const forgotLoad = async (req, res, next) => {
       try {
-            const userId = req.session.userId;
+            const userId = req.session.userId
             console.log(userId)
             if (!userId) {
                   return res.render('forgot')
@@ -379,42 +390,52 @@ const forgotLoad = async (req,res) => {
             }
       } catch (error) {
             console.log(`forgot page not loaded: ${error}`)
-            res.status(500).render("404")
-      }    
-}
-
-const checkingEmail = async (req,res) => {
-      try {
-            const { email } = req.body
-            const user = await User.findOne({email:email})
-            if(!user){
-                  return res.status(401).json({success:false,message:"User is not founding"})
-            }
-             // Generate OTP
-             const otp = generateOTP()
-
-             // Send OTP via email
-             const mailOptions = {
-                   from: process.env.AUTH_EMAIL,
-                   to: email,
-                   subject: 'Your OTP for Forgot password',
-                   text: `Your OTP is: ${otp}. `,
-             }
-             req.session.EmailOPtion = mailOptions
- 
-             await transporter.sendMail(mailOptions)
-             console.log('OTP sent successfully:', otp)
-             req.session.otp = otp
-             req.session.Email = email
-            return res.status(201).json({success:true,message:"Otp is sending sucessfulyy"})
-      } catch (error) {
-            console.log(`forgot page not posting email: ${error}`)
-            res.status(500).render("404")
+            next(error)
       }
 }
-const OtpFogot = async (req,res) => {
+
+const checkingEmail = async (req, res, next) => {
       try {
-            const userId = req.session.userId;
+            const { email } = req.body
+            const user = await User.findOne({ email: email })
+            if (!user) {
+                  return res
+                        .status(401)
+                        .json({
+                              success: false,
+                              message: 'User is not founding',
+                        })
+            }
+            // Generate OTP
+            const otp = generateOTP()
+
+            // Send OTP via email
+            const mailOptions = {
+                  from: process.env.AUTH_EMAIL,
+                  to: email,
+                  subject: 'Your OTP for Forgot password',
+                  text: `Your OTP is: ${otp}. `,
+            }
+            req.session.EmailOPtion = mailOptions
+
+            await transporter.sendMail(mailOptions)
+            console.log('OTP sent successfully:', otp)
+            req.session.otp = otp
+            req.session.Email = email
+            return res
+                  .status(201)
+                  .json({
+                        success: true,
+                        message: 'Otp is sending sucessfulyy',
+                  })
+      } catch (error) {
+            console.log(`forgot page not posting email: ${error}`)
+            next(error)
+      }
+}
+const OtpFogot = async (req, res, next) => {
+      try {
+            const userId = req.session.userId
             console.log(userId)
             if (!userId && req.session.otp) {
                   return res.render('Otpforgot')
@@ -423,10 +444,10 @@ const OtpFogot = async (req,res) => {
             }
       } catch (error) {
             console.log(`forgot page not loaded: ${error}`)
-            res.status(500).render("404")
-      }  
+            next(error)
+      }
 }
-const checkingOtp = async (req,res) => {
+const checkingOtp = async (req, res, next) => {
       try {
             const { action, code } = req.body
             if (!req.session || !req.session.Email) {
@@ -439,7 +460,7 @@ const checkingOtp = async (req,res) => {
             if (action === 'resend') {
                   // Generate a new OTP
                   const newOtp = generateOTP()
-                  req.session.otp = newOtp.toString() 
+                  req.session.otp = newOtp.toString()
                   console.log(`new Otp generated sucessfully:  ${newOtp}`)
                   const mailOptions = {
                         from: process.env.AUTH_EMAIL,
@@ -454,7 +475,6 @@ const checkingOtp = async (req,res) => {
                         message: 'New OTP has been sent successfully',
                   })
             } else if (action === 'verify') {
-            
                   const sessionOtp = req.session.otp
                         ? req.session.otp.toString().trim()
                         : ''
@@ -470,8 +490,7 @@ const checkingOtp = async (req,res) => {
                               message: 'Invalid or expired OTP',
                         })
                   }
-                  
-                  
+
                   delete req.session.otp
 
                   return res.status(200).json({
@@ -486,33 +505,45 @@ const checkingOtp = async (req,res) => {
             }
       } catch (error) {
             console.log(`forgot page not checking otp: ${error}`)
-            res.status(500).render("404")
+            next(error)
       }
 }
-const forgotPassword = async (req,res) => {
- try {
-      const { password } = req.body;
-      const email = req.session.Email;
+const forgotPassword = async (req, res, next) => {
+      try {
+            const { password } = req.body
+            const email = req.session.Email
 
-      if (!email) {
-          return res.status(400).json({ success: false, message: "Session expired. Please request OTP again." });
+            if (!email) {
+                  return res
+                        .status(400)
+                        .json({
+                              success: false,
+                              message:
+                                    'Session expired. Please request OTP again.',
+                        })
+            }
+            const user = await User.findOne({ email })
+
+            if (!user) {
+                  return res
+                        .status(404)
+                        .json({ success: false, message: 'User not found.' })
+            }
+            const salt = await bcrypt.genSalt(10)
+            const hashedPassword = await bcrypt.hash(password, salt)
+            user.password = hashedPassword
+            await user.save()
+
+            return res
+                  .status(200)
+                  .json({
+                        success: true,
+                        message: 'Password updated successfully.',
+                  })
+      } catch (error) {
+            console.log(`error occur on the Pasward saving du to:${error}`)
+            next(error)
       }
-      const user = await User.findOne({ email });
-
-      if (!user) {
-          return res.status(404).json({ success: false, message: "User not found." });
-      }
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
-      user.password = hashedPassword;
-      await user.save();
-
-      return res.status(200).json({ success: true, message: "Password updated successfully." });
-
- } catch (error) {
-      console.log(`error occur on the Pasward saving du to:${error}`)
-      return res.render("404")
- }      
 }
 export default {
       loadLogHomepage,
@@ -528,5 +559,5 @@ export default {
       checkingEmail,
       OtpFogot,
       checkingOtp,
-      forgotPassword
+      forgotPassword,
 }

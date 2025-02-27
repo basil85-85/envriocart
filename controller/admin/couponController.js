@@ -50,7 +50,7 @@ const getAddcoupon = async (req, res) => {
 
 const addingCoupon = async (req, res) => {
       try {
-            console.log(req.body)
+            // console.log(req.body)
 
             const {
                   status,
@@ -76,7 +76,7 @@ const addingCoupon = async (req, res) => {
                         .reverse()
                         .join('-')
             )
-            console.log(formattedStartDate)
+            // console.log(formattedStartDate)
             if (formattedStartDate > formattedEndDate) {
                   return res.status(400).json({
                         success: false,

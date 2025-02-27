@@ -50,7 +50,7 @@ const getOffer = async (req, res) => {
                 offerPrice: finalPrice.toFixed(2) // Add offer price
             };
         });
-console.log(products)
+// console.log(products)
         const offerImage = offer.image ? offer.image : "/images/default-offer.jpg";
 
         return res.render("offer", { offer, isLoggedIn, countCart, offerImage, products });

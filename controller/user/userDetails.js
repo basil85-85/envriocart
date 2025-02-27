@@ -7,7 +7,7 @@ import Category from '../../models/categorySchema.js'
 import Address from '../../models/addressSchema.js'
 import moment from 'moment'
 import Wallet from '../../models/walletSchema.js'
-const profile = async (req, res) => {
+const profile = async (req, res, next) => {
       try {
             let isLoggedIn = true
 
@@ -82,15 +82,14 @@ const profile = async (req, res) => {
                         previousPage: page - 1,
                         nextPage: page + 1,
                   },
-            
-            });
+            })
       } catch (error) {
             console.error('Error rendering profile page:', error)
-            res.status(500).render('404')
+            next(error)
       }
 }
 
-const editDetails = async (req, res) => {
+const editDetails = async (req, res, next) => {
       try {
             const { name, phone } = req.body
             const id = req.query.id
@@ -112,7 +111,7 @@ const editDetails = async (req, res) => {
             })
       } catch (error) {
             console.error('Error updating user:', error)
-            res.status(500).render(404)
+            next(error)
       }
 }
 
@@ -148,7 +147,7 @@ const changePassword = async (req, res) => {
             return res.render('404')
       }
 }
-const Addaddress = async (req, res) => {
+const Addaddress = async (req, res, next) => {
       try {
             const {
                   title,
@@ -167,7 +166,7 @@ const Addaddress = async (req, res) => {
                         message: 'User not found. Try logging in again.',
                   })
             }
-            console.log(req.body)
+            // console.log(req.body)
 
             const newAddress = new Address({
                   userId,
@@ -194,10 +193,10 @@ const Addaddress = async (req, res) => {
             }
       } catch (error) {
             console.error(`Error occurred while adding address: ${error}`)
-            return res.status(500).render(404)
+            next(error)
       }
 }
-const deleteAddress = async (req, res) => {
+const deleteAddress = async (req, res, next) => {
       try {
             const id = req.query.id
             if (!id) {
@@ -220,10 +219,10 @@ const deleteAddress = async (req, res) => {
             console.log(
                   `eror occur on the deleting the address due to ${error}`
             )
-            return res.render('404')
+            next(error)
       }
 }
-const editAddress = async (req, res) => {
+const editAddress = async (req, res, next) => {
       try {
             const Id = req.query.id
             const { title, address, city, pincode, phone, state } = req.body
@@ -253,7 +252,7 @@ const editAddress = async (req, res) => {
             console.log(
                   `eror occur on the editting the address due to ${error}`
             )
-            return res.render('404')
+            next(error)
       }
 }
 export default {

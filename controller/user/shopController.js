@@ -36,7 +36,7 @@ const checkCategoryOffer = async (categoryId) => {
 }
 
 //shoping pages
-const shoppage = async (req, res) => {
+const shoppage = async (req, res,next) => {
       try {
             const userId = req.session.userId
             let page = parseInt(req.query.page) || 1
@@ -80,7 +80,7 @@ const shoppage = async (req, res) => {
                   const userData = await User.findOne({ _id: userId, isBlocked: false })
                   isLoggedIn = !!userData
             }
-            console.log( productsWithOffers)
+            // console.log( productsWithOffers)
             return res.render('shop', {
                   isLoggedIn,
                   products: productsWithOffers, // Send products with both offer details
@@ -91,12 +91,12 @@ const shoppage = async (req, res) => {
             })
       } catch (error) {
             console.error('Error rendering shop page:', error)
-            res.status(500).render('404')
+            next(error)
       }
 }
 
 //product deatils
-const details = async (req, res) => {
+const details = async (req, res,next) => {
       try {
           // Get user ID from session
           let userId;
@@ -200,7 +200,7 @@ const details = async (req, res) => {
                   isLoggedIn = true;
               }
           }
-        console.log(product)
+      //   console.log(product)
           return res.render('details', { 
               isLoggedIn, 
               products:product,
@@ -210,16 +210,16 @@ const details = async (req, res) => {
   
       } catch (error) {
           console.error('Error rendering product details page:', error);
-          res.status(500).render("404");
+          next(error)
       }
   };
 
-const filterCategory = async (req, res) => {
+const filterCategory = async (req, res,next) => {
       try {
         const categoryName = req.query.name; // Get category name from query
         const sortOption = req.query.sort;
         
-        console.log(`Filtering by category name: ${categoryName}, Sort: ${sortOption}`);
+      //   console.log(`Filtering by category name: ${categoryName}, Sort: ${sortOption}`);
 
         const category = await mongoose.model('Category').findOne({
           name: { $regex: categoryName, $options: 'i' } 
@@ -274,7 +274,7 @@ const filterCategory = async (req, res) => {
         
       } catch (error) {
         console.log(`Error filtering by category name: ${error}`);
-        return res.status(500).json({ success: false, message: "Server error" });
+       next(error)
       }
     };
 

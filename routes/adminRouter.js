@@ -86,25 +86,25 @@ router.put("/order/approvel",auth.adminAuth,orderController.approvel)
 
 
 //offer mangement controller
-router.get("/offer",offerController.getOffer)
-router.get("/offer/add",offerController.addOfferpage)
-router.post("/offer/create",offerController.createOffer)
-router.put("/offer/changeState",offerController.changeState)
-router.get("/offer/addphoto",offerController.getofferphoto)
-router.post("/offer/addphoto",upload.single('image'), offerController.photo);
+router.get("/offer",auth.adminAuth,offerController.getOffer)
+router.get("/offer/add",auth.adminAuth,offerController.addOfferpage)
+router.post("/offer/create",auth.adminAuth,offerController.createOffer)
+router.put("/offer/changeState",auth.adminAuth,offerController.changeState)
+router.get("/offer/addphoto",auth.adminAuth,offerController.getofferphoto)
+router.post("/offer/addphoto",auth.adminAuth,upload.single('image'), offerController.photo);
 
 //coupon mangement controller
-router.get("/coupon",couponController.getCoupon)
-router.get("/coupon/add",couponController.getAddcoupon)
-router.post("/coupon/add",couponController.addingCoupon)
-router.put("/coupon/changeState",couponController.changeSate)
-router.delete("/coupon/delect",couponController.deleteCoupon)
+router.get("/coupon",auth.adminAuth,couponController.getCoupon)
+router.get("/coupon/add",auth.adminAuth,couponController.getAddcoupon)
+router.post("/coupon/add",auth.adminAuth,couponController.addingCoupon)
+router.put("/coupon/changeState",auth.adminAuth,couponController.changeSate)
+router.delete("/coupon/delect",auth.adminAuth,couponController.deleteCoupon)
 
 
 // sale report
-router.get("/sale-Report",saleController.getSalereport)
+router.get("/sale-Report",auth.adminAuth,saleController.getSalereport)
 router.post("/sale-report/filter",saleController.getSaleReportFiltering)
-router.get('/sale-report/download', saleController.downloadReport);
+router.get('/sale-report/download',auth.adminAuth,saleController.downloadReport);
 
 
 

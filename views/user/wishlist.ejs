@@ -279,7 +279,7 @@
                                         <button type="button" onclick="deleteWishlit('<%=wishlist._id%>','<%=item._id%>')" class="icon-button">
                                             <i class="ri-close-line"></i>
                                         </button>
-                                        <button type="button" onclick="addToCart('<%= item.verientId._id %>', '<%= item.productName %>', '<%= item.price %>', '<%= item.size %>', '<%= item.color %>', '<%= item.image %>')" class="cart-button">
+                                        <button type="button" onclick="addToCart('<%= item.verientId._id %>', '<%= item.productName %>', '<%= item.price %>', '<%= item.size %>', '<%= item.color %>','<%= item.image %>','<%=wishlist._id%>','<%=item._id%>')" class="cart-button">
                                             <i class="ri-shopping-cart-line"></i>
                                         </button>
                                     </div>
@@ -920,16 +920,16 @@
 
 
 
-        async function addToCart(variantId, productName, price, size, color, image) {
+        async function addToCart(variantId, productName, price, size, color, image,wishlistID,productID) {
     try {
-        if (!size) {  // Check if size is null, undefined, or empty
+        if (!size) {  
             showErrorNotification("OUT OF STOCK");
             return;
         }
 
         const cartItem = { variantId, productName, price, size, color, image , quantity: 1};
 
-        const response = await fetch("/addCart", {
+        const response = await fetch(`/AddCartWislist?wishlistId=${wishlistID}&productId=${productID}`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(cartItem),
@@ -939,6 +939,9 @@
 
         if (response.ok && data.success) {
             showSuccessNotification(data.message);
+            setTimeout(()=>{
+                location.reload()
+            },1500)
         } else {
             showErrorNotification(data.message || "Unable to add item to cart!");
         }

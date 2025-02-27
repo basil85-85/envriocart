@@ -168,7 +168,7 @@ async function getSaleReportFiltering(req, res) {
 
         // Set content type explicitly
         res.setHeader('Content-Type', 'text/html');
-        console.log( result.orders)
+        // console.log( result.orders)
         // Render response
         return res.render("sale-report", {
             report: reportData,
@@ -199,7 +199,7 @@ const downloadReport = async (req, res) => {
     try {
         // console.log(req.params.id)
         const { format, filter, startDate, endDate } = req.query;
-        console.log(req.query.id)
+        // console.log(req.query.id)
         let matchCondition = {
             orderStatus: { $nin: ['Cancelled', 'rejected'] }
         };

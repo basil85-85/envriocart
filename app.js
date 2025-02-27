@@ -3,22 +3,47 @@ import env from 'dotenv/config'
 import db from './config/db.js'
 import path from 'path'
 import session from 'express-session'
-
+import errorMiddleware from './MiddleWare/ErrorHandlingMiddleWare.js'
 import { passport } from './config/googleauth.js'
-
+import errorHandling from './MiddleWare/errorHandling.js'
 import { fileURLToPath } from 'url'
 import userRoute from './routes/userRouter.js'
 import adminRoute from "./routes/adminRouter.js"
 import nocache from 'nocache'
 import auth from "./MiddleWare/auth.js"
-
+import morgan from 'morgan'
+import fs from "fs"
+// import helmet from 'helmet'
 
 const app = express()
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+const accessLogStream = fs.createWriteStream(path.join(__dirname, "access.log"), { flags: "a" });
 
+morgan.token("custom-header", (req) => req.headers["user-agent"] || "No User-Agent");
+
+
+app.use(
+  morgan(':method :url :status :response-time ms - :res[content-length] - :custom-header', {
+    stream: accessLogStream, 
+  })
+);
+
+// app.use(
+//       helmet({
+//         contentSecurityPolicy: {
+//           directives: {
+//             defaultSrc: ["'self'"],  
+//             scriptSrc: ["'self'", "https://checkout.razorpay.com"], 
+//             frameSrc: ["'self'", "https://api.razorpay.com"], 
+//             imgSrc: ["'self'", "data:", "https://*.razorpay.com"], 
+//           },
+//         },
+//       })
+//     );
+app.use(morgan("dev")); 
 app.use(express.json({limit: '50mb'})) 
 app.use(express.urlencoded({ limit: '50mb',extended: true }))
 
