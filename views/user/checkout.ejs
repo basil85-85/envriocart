@@ -71,6 +71,11 @@
             background: #f8d7da;
             color: #721c24;
         }
+        #walletBalance {
+            display: none; /* Initially hidden */
+            color: green;
+            font-weight: bold;
+        }
 
 </style>
     <div class="breadcrumb-section">
@@ -183,8 +188,13 @@
                                                                    Wallet
                                                                 </label>
                                                             </div>
+                                                       
                                                         </div>
-
+                                                        <% if(balancewallet){ %>
+                                                            <p id="walletBalance">Wallet Balance: ₹ <%=balancewallet.wallet%></p> 
+                                                            <% } else {%>
+                                                                <p id="walletBalance">Wallet Balance: ₹ 00 </p> 
+                                                                <%}%>
                                                       
                                                       
                                                     </div>
@@ -1546,43 +1556,56 @@ async function placeOrder(e, userId) {
             }
 
             const options = {
-                key: 'rzp_test_Bj3nLhzRxxOUEo', 
-                amount: orderData.amount,
-                currency: "INR",
-                name: "ENVRIO CART",
-                description: "Order Payment",
-                order_id: orderData.orderId,
-                handler: async function (response) {
-                    const verifyResponse = await fetch(`/verify-payment?id=${userId}`, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_signature: response.razorpay_signature,
-                            address: Address,
-                            cartItems: cartItems
-                        })
-                    });
-                    const verifyData = await verifyResponse.json();
+                    key: 'rzp_test_Bj3nLhzRxxOUEo', 
+                    amount: orderData.amount,
+                    currency: "INR",
+                    name: "ENVRIO CART",
+                    description: "Order Payment",
+                    order_id: orderData.orderId,
+                    handler: async function (response) {
+                        const verifyResponse = await fetch(`/verify-payment?id=${userId}`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_signature: response.razorpay_signature,
+                                address: Address,
+                                cartItems: cartItems
+                            })
+                        });
 
-                    if (verifyData.success) {
-                        showSuccessNotification("Payment successful!");
-                        window.location.href = "/order-success";
-                    } else {
-                        showErrorNotification("Payment verification failed!");
+                        const verifyData = await verifyResponse.json();
+                        console.log(verifyData.order);
+
+                        if (verifyData.success) {
+                            if (verifyData.order.payment.status === "Failed") {
+                                window.location.href = '/profile';
+                            } else {
+                                showSuccessNotification("Payment successful!");
+                                window.location.href = "/order-success";
+                            }
+                        } else {
+                            showErrorNotification("Payment verification failed!");
+                            window.location.href = "/profile"; // Redirect on verification failure
+                        }
+                    },
+                    prefill: {
+                        name: Address.name,
+                        contact: Address.phone
+                    },
+                    theme: {
+                        color: "#ff6600", 
+                        backdrop_color: "#f0f0f0", 
+                        hide_topbar: false 
+                    },
+                    modal: {
+                        ondismiss: function() {
+                            console.log("Payment popup closed.");
+                            window.location.href = "/profile"; // Redirect on modal close
+                        }
                     }
-                },
-                prefill: {
-                    name: Address.name,
-                    contact: Address.phone
-                },
-                theme: {
-                    color: "#ff6600", 
-                    backdrop_color: "#f0f0f0", 
-                    hide_topbar: false 
-                }
-}
+                };
 
             const rzp = new Razorpay(options);
             rzp.open();
@@ -1992,8 +2015,17 @@ document.addEventListener('DOMContentLoaded', () => {
  
 
 
+document.getElementById("wallet").addEventListener("click", function () {
+            document.getElementById("walletBalance").style.display = "block";
+        });
 
+        document.getElementById("cash_on_delivery").addEventListener("click", function () {
+            document.getElementById("walletBalance").style.display = "none";
+        });
 
+        document.getElementById("razorpay").addEventListener("click", function () {
+            document.getElementById("walletBalance").style.display = "none";
+        });
 
  </script>
 </body>

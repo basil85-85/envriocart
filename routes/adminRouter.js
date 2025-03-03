@@ -45,7 +45,7 @@ const upload = multer({
 
 router.get('/login', adminController.loadlogin)
 router.post('/login', adminController.login)
-router.get('/dashboard',auth.adminAuth,adminController.dashboard)
+router.get('/dashboard',adminController.dashboard)
 router.get("/page-error",adminController.pageNotfound)
 router.get("/logout",adminController.logout)
 

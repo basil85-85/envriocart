@@ -9,7 +9,7 @@ import Verient from '../../models/verientSchema.js'
 
 import Category from '../../models/categorySchema.js'
 import Address from '../../models/addressSchema.js'
-
+import Wallet from '../../models/walletSchema.js'
 import Cart from '../../models/cartSchema.js'
 import Offer from '../../models/offerSchema.js'
 
@@ -122,6 +122,9 @@ const getCart = async (req, res) => {
             const userID = req.session.userId
             const cartItems = await Cart.findOne({ userId: userID })
             const countCart = res.locals.cartCount
+            
+
+            
             return res.render('cart', { isLoggedIn, cartItems, countCart })
       } catch (error) {
             console.log(`error on page rendering the cart${error}`)

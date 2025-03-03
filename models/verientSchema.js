@@ -28,7 +28,6 @@ const verientSchema = new Schema(
                         required: true,
                         default: 0,
                   },
-
                   XL: {
                         type: Number,
                         required: true,

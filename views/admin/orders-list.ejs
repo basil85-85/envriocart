@@ -671,7 +671,7 @@
                                    
                                      <td>Rs: <%= order.grandTotal.toFixed(2) %></td>
                                      <td>
-                                         <span class="badge <%= order.payment.status === 'Paid' ? 'bg-success' : 'bg-light text-dark' %> px-2 py-1 fs-13">
+                                         <span id="paymentStatus-<%= order._id %>" class="badge <%= order.payment.status === 'Paid' ? 'bg-success' : 'bg-light text-dark' %> px-2 py-1 fs-13">
                                              <%= order.payment.status %>
                                          </span>
                                      </td>
@@ -807,7 +807,7 @@
 
      async function changeStatus(orderId) {
           const statusElement = document.querySelector(`#orderStatusID-${orderId}`);
-         
+          const paymentStatus=document.querySelector(`#paymentStatus-${orderId}`)
     try {
         const response = await fetch(`/admin/order/changestatus?id=${orderId}`, {
             method: "PUT", 
@@ -818,10 +818,25 @@
         });
 
         const result = await response.json();
-
+        console.log(result)
         if (response.ok) {
             showSuccessNotification(result.message||"status changed sucessfully")
             statusElement.innerHTML= result.order.orderStatus
+            paymentStatus.innerHTML=result.order.payment.status
+            paymentStatus.classList.remove('bg-success', 'bg-light', 'text-dark');
+
+               let newclass = 'bg-light text-dark';
+
+               switch (result.order.payment.status) {
+               case 'Paid':
+                    newclass = 'bg-success';
+                    break;
+               case 'unpaid':
+                    newclass = 'bg-light text-dark';
+                    break;
+               }
+
+               paymentStatus.classList.add(...newclass.split(/\s+/)); // Using regex to split by spaces safely
 
              statusElement.classList.remove(
                 "bg-success", "bg-primary", "bg-warning", 

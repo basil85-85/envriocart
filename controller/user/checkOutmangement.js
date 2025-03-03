@@ -29,6 +29,7 @@ const getCheckout = async (req, res) => {
             // console.log(coupon)
             const cart = await Cart.findOne({ userId: userID })
             const details = await Address.find({ userId: userID })
+            const balancewallet = await Wallet.findOne({ userId: userID });
             if (cart) {
                   return res.render('checkout', {
                         isLoggedIn,
@@ -36,6 +37,7 @@ const getCheckout = async (req, res) => {
                         coupon,
                         cart,
                         details,
+                        balancewallet
                   })
             } else {
                   return res.redirect('/cart')
@@ -284,7 +286,30 @@ const cancelOrder = async (req, res) => {
                         message: 'Delivered orders cannot be cancelled',
                   })
             }
-            // console.log(order)
+            const updatePromises = order.cartItems.map(async (item) => {
+                  try {
+                    const variant = await Verient.findById(item.verientId);
+                    
+                    if (!variant) {
+                      console.log(`Variant not found for ID: ${item.verientId}`);
+                      return;
+                    }
+                    
+                    if (variant.size && variant.size[item.size]) {
+                     
+                      await variant.save();
+                      
+                  //     return res.status(401).json({message:`Restored ${item.quantity} units to ${item.size} size for variant ${variant._id}`});
+                    } else {
+                  //     return res.status(401).json({success:false,message:`Size ${item.size} not found in variant ${variant._id}`});
+                    }
+                  } catch (variantError) {
+                    console.error(`Error updating variant ${item.verientId}: ${variantError}`);
+                  }
+                });
+                
+                // Wait for all inventory updates to complete
+                await Promise.all(updatePromises);
             order.orderStatus = 'Cancelled'
             await order.save()
 
@@ -363,6 +388,14 @@ const OrderRefund = async (req, res) => {
             )
             order.orderStatus = 'Cancelled'
             order.payment.status = 'refunded'
+
+            for (const item of order.cartItems) {
+                  await Verient.findByIdAndUpdate(
+                      item.verientId,
+                      { $inc: { [`size.${item.size}`]: item.quantity } },
+                      { new: true }
+                  );
+              }
             await order.save()
 
             return res
@@ -381,7 +414,7 @@ const OrderRefund = async (req, res) => {
 }
 const downloadInvoice = async (req, res, next) => {
       try {
-            console.log(req.query)
+            // console.log(req.query)
             const orderId = req.query.id
 
             if (!orderId) {
@@ -537,7 +570,7 @@ const downloadInvoice = async (req, res, next) => {
                   xPosition += columnWidths[i]
             })
 
-            doc.strokeColor('#cccccc')
+            doc.strokeColor('#999999')
                   .lineWidth(1)
                   .moveTo(50, tableTop + 15)
                   .lineTo(550, tableTop + 15)
@@ -580,8 +613,17 @@ const downloadInvoice = async (req, res, next) => {
                   })
                   xPosition += columnWidths[0]
 
+                  function colorNameToHex(color) {
+                    const colors = {
+                      'red': '#FF0000',
+                      'green': '#008000',
+                      'blue': '#0000FF',
+                    };
+                    return colors[color.toLowerCase()] || color || '#000000';
+                  }
+                  
                   doc.rect(xPosition + 10, tableRowY + 5, 10, 10).fill(
-                        item.color || '#000000'
+                    colorNameToHex(item.color)
                   )
                   doc.text('', xPosition, tableRowY, { width: columnWidths[1] })
                   xPosition += columnWidths[1]
@@ -590,7 +632,7 @@ const downloadInvoice = async (req, res, next) => {
                         width: columnWidths[2],
                   })
                   xPosition += columnWidths[2]
-
+ 
                   doc.text(item.quantity.toString(), xPosition, tableRowY, {
                         width: columnWidths[3],
                   })
@@ -609,7 +651,7 @@ const downloadInvoice = async (req, res, next) => {
             }
 
             // Line after items
-            doc.strokeColor('#cccccc')
+            doc.strokeColor('#999999')
                   .lineWidth(1)
                   .moveTo(50, tableRowY - 10)
                   .lineTo(550, tableRowY - 10)

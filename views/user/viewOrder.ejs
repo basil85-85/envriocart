@@ -270,16 +270,11 @@
                   <% } %>
                 <span class="order-status"> <%=formattedOrder.status%></span>
             </h1>
-            
             <div class="order-meta">
                 <div class="meta-item">
                     Order Date
                     <td><span class="date"><%= moment(formattedOrder.orderDate).format("DD MMM YYYY hh:mm A") %></span>
                 </div>
-                
-               
-                
-                
                 <div class="meta-item">
                     Payment Method
                     <span> <%=formattedOrder.payment.method%></span>
@@ -292,9 +287,7 @@
                     <span><%=formattedOrder.address.phone%></span>
                 </div>
             </div>
-            
         </div>
-
         <div class="order-items">
             <h2>Order Items</h2>
             <table class="item-table">
@@ -320,7 +313,6 @@
                                 </div>
                             </div>
                         </td>
-                       
                         <td><%=item.price%></td>
                         <td>
                             <button 
@@ -339,18 +331,18 @@
             </table>
         </div>
         <div id="returnModal" style="
-    display: none;
-    position: fixed;
-    top: 10%;
-    left: 50%;
-    transform: translate(-50%, 0);
-    background: white;
-    padding: 20px;
-    width: 90%;
-    max-width: 400px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
-    z-index: 1000;">
+            display: none;
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translate(-50%, 0);
+            background: white;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0,0,0,0.2);
+            z-index: 1000;">
     
     <h2>Return Request</h2>
     <p>Select a reason for return:</p>
@@ -374,16 +366,16 @@
 </div>
 
 <!-- Overlay to Disable Background Clicks -->
-<div id="overlay" style="
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 999;">
-</div>
+                <div id="overlay" style="
+                    display: none;
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.5);
+                    z-index: 999;">
+                </div>
 
         <div class="price-summary">
             <h2>Price Summary</h2>
@@ -506,21 +498,18 @@
     });
 }
 
-
-
-
 function openModel() {
         document.getElementById("returnModal").style.display = "block";
         document.getElementById("overlay").style.display = "block";
     }
 
-    function closeModal() {
+function closeModal() {
         document.getElementById("returnModal").style.display = "none";
         document.getElementById("overlay").style.display = "none";
     }
 
     // Show custom reason input if "Others" is selected
-    document.getElementById("returnReason").addEventListener("change", function() {
+document.getElementById("returnReason").addEventListener("change", function() {
         if (this.value === "Others") {
             document.getElementById("customReason").style.display = "block";
         } else {
@@ -528,7 +517,7 @@ function openModel() {
         }
     });
 
-    async function submitReturn(orderID) {
+async function submitReturn(orderID) {
     try {
         let isValid = true;
         const reasonElement = document.getElementById("returnReason");

@@ -84,6 +84,7 @@ const createOrder = async (req, res) => {
             })
             req.session.orderID = order.id
             // console.log(req.session.orderID)
+            await Cart.deleteOne({ userId })
             res.json({
                   success: true,
                   orderId: razorpayOrder.id,
@@ -100,7 +101,7 @@ const createOrder = async (req, res) => {
       }
 }
 
-const verifyPayment = async (req, res) => {
+const verifyPayment = async (req, res, next) => {
       try {
             const {
                   razorpay_payment_id,
@@ -176,11 +177,11 @@ const verifyPayment = async (req, res) => {
                         variant.size[item.size] -= item.quantity
                         await variant.save()
                   }
-
                   await Cart.deleteOne({ userId })
                   res.json({
                         success: true,
                         message: 'Payment verified successfully',
+                        order,
                   })
             } else {
                   await Order.findOneAndUpdate(
@@ -200,10 +201,7 @@ const verifyPayment = async (req, res) => {
             }
       } catch (error) {
             console.error('Error in verifyPayment:', error)
-            res.status(500).json({
-                  success: false,
-                  message: 'Payment verification failed',
-            })
+            next(error)
       }
 }
 
@@ -240,7 +238,7 @@ const RePayment = async (req, res, next) => {
             next(error)
       }
 }
-const RepaymentverifyPayment = async (req, res) => {
+const RepaymentverifyPayment = async (req, res, next) => {
       try {
             const {
                   razorpay_payment_id,
@@ -301,17 +299,17 @@ const RepaymentverifyPayment = async (req, res) => {
 
                         // Uncomment if you want to update stock
                         if (variant.size[item.size] < item.quantity) {
-                            return res.status(400).json({
-                                success: false,
-                                message: `${item.name} (Size: ${item.size}) is out of stock!`,
-                            });
+                              return res.status(400).json({
+                                    success: false,
+                                    message: `${item.name} (Size: ${item.size}) is out of stock!`,
+                              })
                         }
 
-                        variant.size[item.size] -= item.quantity;
+                        variant.size[item.size] -= item.quantity
                         await variant.save()
                   }
 
-                  await Cart.deleteOne({ userId })
+                  // await Cart.deleteOne({ userId })
 
                   return res.json({
                         success: true,
@@ -335,10 +333,7 @@ const RepaymentverifyPayment = async (req, res) => {
             }
       } catch (error) {
             console.error('Error in verifyPayment:', error)
-            return res.status(500).json({
-                  success: false,
-                  message: 'Payment verification failed',
-            })
+            next(error)
       }
 }
 // Changed to named exports

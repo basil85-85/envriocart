@@ -1,6 +1,8 @@
 import Order from '../../models/orderSchema.js'
 import moment from 'moment'
 import Wallet from '../../models/walletSchema.js'
+import Verient from '../../models/verientSchema.js'
+
 
 const getOrders = async (req, res) => {
       try {
@@ -76,14 +78,15 @@ const changeStatus = async (req, res) => {
             }
 
             let newStatus = ''
-            let newSate = 'Unpaid'
+          
             if (order.orderStatus === 'Pending') {
                   newStatus = 'Processing'
             } else if (order.orderStatus === 'Processing') {
                   newStatus = 'Shipped'
             } else if (order.orderStatus === 'Shipped') {
                   newStatus = 'Delivered'
-                  newSate = 'Paid'
+                  order.payment.status='Paid'
+                  await order.save()
             } else {
                   return res.status(400).json({
                         success: false,
@@ -93,7 +96,7 @@ const changeStatus = async (req, res) => {
 
             const updatedOrder = await Order.findByIdAndUpdate(
                   orderId,
-                  { orderStatus: newStatus, 'payment.status': newSate },
+                  { orderStatus: newStatus},
                   { new: true }
             )
 
@@ -107,38 +110,90 @@ const changeStatus = async (req, res) => {
             return res.render('pages-404')
       }
 }
-const cancelOrder = async (req, res) => {
+const cancelOrder = async (req, res, next) => {
       try {
-            const OrderID = req.query.id
-            if (!OrderID) {
-                  return res.status(401).json({
-                        success: false,
-                        message: 'There is not founding the page of it',
-                  })
-            }
-            const order = await Order.findById(OrderID)
-
-            if (order.orderStatus === 'Delivered') {
-                  return res.status(400).json({
-                        success: false,
-                        message: 'Delivered orders cannot be cancelled',
-                  })
-            }
-            order.orderStatus = 'Cancelled'
-
-            await order.save()
-
-            return res.status(200).json({
-                  success: true,
-                  message: 'Order has been cancelled',
-                  order,
-            })
+          const OrderID = req.query.id;
+          if (!OrderID) {
+              return res.status(400).json({
+                  success: false,
+                  message: 'Order ID is required',
+              });
+          }
+  
+          const order = await Order.findById(OrderID);
+          if (!order) {
+              return res.status(404).json({
+                  success: false,
+                  message: 'Order not found',
+              });
+          }
+  
+          if (order.orderStatus === 'Delivered') {
+              return res.status(400).json({
+                  success: false,
+                  message: 'Delivered orders cannot be cancelled',
+              });
+          }
+  
+          if (order.payment.method === 'Wallet' || order.payment.method === 'RAZOR PAY') {
+              let wallet = await Wallet.findOneAndUpdate(
+                  { userId: order.userId },
+                  {
+                      $inc: { wallet: order.grandTotal },
+                      $push: {
+                          transactions: {
+                              transactionType: 'credit',
+                              amount: order.grandTotal,
+                              description: `Refund for Order ID: ${order.orderId}`,
+                          },
+                      },
+                  },
+                  { new: true }
+              );
+  
+              if (!wallet) {
+                  wallet = new Wallet({
+                      userId: order.userId,
+                      wallet: order.grandTotal,
+                      transactions: [
+                          {
+                              transactionType: 'credit',
+                              amount: order.grandTotal,
+                              description: `Refund for Order ID: ${order.orderId}`,
+                          },
+                      ],
+                  });
+  
+                  await wallet.save();
+              }
+          }
+  
+          if (order.payment.status === 'Paid') {
+              order.payment.status = 'refunded';
+          }
+  
+          for (const item of order.cartItems) {
+              await Verient.findByIdAndUpdate(
+                  item.verientId,
+                  { $inc: { [`size.${item.size}`]: item.quantity } },
+                  { new: true }
+              );
+          }
+  
+          order.orderStatus = 'Cancelled';
+          await order.save();
+  
+          return res.status(200).json({
+              success: true,
+              message: 'Order has been cancelled, and stock has been updated.',
+              order,
+          });
       } catch (error) {
-            console.log(
-                  `error occur on the updating the order to cancel the orderr due to :${error}`
-            )
+          console.log(`Error while cancelling order: ${error}`);
+          next(error);
       }
-}
+  };
+  
 
 const reasonCancel = async (req, res) => {
       try {
