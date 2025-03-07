@@ -50753,3 +50753,173 @@ GET /admin/dashboard?range=365 200 93.440 ms - 19630 - Mozilla/5.0 (Windows NT 1
 GET /admin/dashboard?range=30 200 96.276 ms - 2545 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
 GET /admin/dashboard?range=365 200 144.822 ms - 19630 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
 GET /admin/dashboard?range=30 200 135.126 ms - 2545 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /admin/dashboard 302 15.983 ms - 41 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /admin/login 200 32.715 ms - 10295 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets/css/vendor.min.css 200 28.703 ms - 128257 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets/css/swal.css 200 30.841 ms - 1331 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets/js/config.js 200 32.914 ms - 1764 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets/images/font/icon.svg 200 35.483 ms - 1055 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets/css/icons.min.css 200 33.864 ms - 353140 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets/images/small/img-10.jpg 200 15.171 ms - 175960 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets/css/app.min.css 200 48.910 ms - 547874 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets/js/app.js 200 5.672 ms - 35144 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets/js/vendor.js 200 12.455 ms - 2091058 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets/images/font/icon.svg 200 2.604 ms - 1055 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets/images/favicon.svg 200 2.881 ms - 879 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET / 200 135.832 ms - 87617 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets/css/swal.css 200 4.145 ms - 1331 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets/js/config.js 200 5.123 ms - 1764 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/slick.css 200 5.061 ms - 3898 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/animate.css 200 7.676 ms - 63252 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/themify-icons.css 200 7.459 ms - 14359 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/bootstrap.css 200 6.952 ms - 298391 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/logo.svg 200 8.322 ms - 2875 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/logoof%20env.png 200 12.050 ms - 190273 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/style.css 200 6.042 ms - 1076547 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /images/offers/1740736503490-property-67c187e9af9eaeb471c1c6e0-1740736503449.jpg 200 2.736 ms - 107216 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /images/offers/1740736573153-property-67c18822af9eaeb471c1c6f7-1740736573130.jpg 200 2.908 ms - 80659 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /images/offers/1740736637340-property-67c18872af9eaeb471c1c70c-1740736637313.jpg 200 3.055 ms - 73978 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/jquery-3.3.1.min.js 200 3.806 ms - 105294 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/slick.js 200 3.938 ms - 90128 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/slick-animation.min.js 200 2.781 ms - 1775 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/menu.js 200 3.229 ms - 45305 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/lazysizes.min.js 200 3.729 ms - 6508 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/bootstrap.bundle.min.js 200 3.237 ms - 113324 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/bootstrap-notify.min.js 200 14.870 ms - 9051 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/theme-setting.js 200 19.404 ms - 2521 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/script.js 200 22.229 ms - 61300 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /resized/1739591808676-green.jpg 200 36.175 ms - 16040 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /images/offers/1740737052752-property-67c189d5af9eaeb471c1c758-1740737052730.jpg 200 37.055 ms - 42282 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /resized/1739590743970-black-1.jpg 200 43.624 ms - 11829 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/custom-slick-animated.js 200 32.689 ms - 831 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/payment.png 200 32.401 ms - 9562 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /resized/1740246072888-1.jpg 200 50.005 ms - 14828 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion-1/product/1.jpg 200 26.211 ms - 23253 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion-4/full-banner/2.png 200 32.282 ms - 140081 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion-1/product/11.jpg 200 32.263 ms - 21846 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion-1/product/5.jpg 200 21.658 ms - 26891 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion-1/product/15.jpg 200 25.524 ms - 22007 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion-1/product/13.jpg 200 29.754 ms - 23253 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/logoof%20env.png 200 4.620 ms - 190273 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/modal/cybermonday.jpg 404 4.664 ms - 181 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /details?id=67b0051351ea335befbe49a6 200 65.097 ms - 108128 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets/css/swal.css 200 5.609 ms - 1331 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets/js/config.js 200 10.526 ms - 1764 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/slick.css 200 11.587 ms - 3898 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/themify-icons.css 200 9.621 ms - 14359 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/animate.css 200 16.247 ms - 63252 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/bootstrap.css 200 14.850 ms - 298391 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/logo.svg 200 12.340 ms - 2875 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/logoof%20env.png 200 12.293 ms - 190273 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/style.css 200 13.343 ms - 1076547 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /resized/1739591808676-green.jpg 200 10.226 ms - 16040 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /resized/1739591808676-beige-3.jpg 200 12.624 ms - 16594 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/menu.js 200 12.185 ms - 45305 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/lazysizes.min.js 200 13.426 ms - 6508 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/jquery-3.3.1.min.js 200 7.623 ms - 105294 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/sticky-cart-bottom.js 200 15.051 ms - 292 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/bootstrap-notify.min.js 200 10.595 ms - 9051 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/theme-setting.js 200 9.995 ms - 2521 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/jquery.elevatezoom.js 200 15.413 ms - 59816 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/bootstrap.bundle.min.js 200 10.302 ms - 113324 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/script.js 200 16.465 ms - 61300 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /resized/1739591755755-black-6.jpg 200 21.876 ms - 8578 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion/product/55.jpg 200 16.844 ms - 50321 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/payment_cart.png 200 18.655 ms - 7707 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /resized/1739592028881-brown-2.jpg 200 31.452 ms - 19799 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /resized/1739591808676-beige-2.jpg 200 29.625 ms - 15453 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/payment.png 200 26.510 ms - 9562 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion/product/1.jpg 200 28.628 ms - 34504 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion/product/34.jpg 200 18.995 ms - 21651 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion/product/19.jpg 200 8.002 ms - 48190 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion-1/product/1.jpg 200 11.057 ms - 23253 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion-1/product/1-1.jpg 200 13.382 ms - 12859 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion/product/13.jpg 200 19.879 ms - 90628 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/product-details/product/3.jpg 200 15.847 ms - 131128 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion-1/product/1-2.jpg 200 4.845 ms - 16305 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion/pro/1.jpg 200 7.588 ms - 106874 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /resized/1739591808676-green.jpg 200 9.324 ms - 16040 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/logoof%20env.png 200 6.509 ms - 190273 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion-1/product/1.jpg 200 11.755 ms - 23253 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion-1/product/1-1.jpg 200 8.706 ms - 12859 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/fashion-1/product/1-2.jpg 200 10.156 ms - 16305 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/product-details/product/3.jpg 200 11.411 ms - 131128 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /resized/1739591808676-green.jpg 200 3.923 ms - 16040 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets/css/swal.css 200 2.888 ms - 1331 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/slick.css 200 6.638 ms - 3898 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/themify-icons.css 200 7.044 ms - 14359 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/animate.css 200 8.287 ms - 63252 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/bootstrap.css 200 8.446 ms - 298391 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/style.css 200 7.574 ms - 1076547 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/bootstrap.bundle.min.js.map 404 3.858 ms - 183 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/themify-icons.css.map 404 5.075 ms - 186 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/style.css.map 404 7.541 ms - 170 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/bootstrap.min.css.map 404 8.381 ms - 186 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/slick.css.map 404 6.122 ms - 178 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/animate.css.map 404 7.371 ms - 180 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/themify-icons.css.map 404 5.048 ms - 186 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/style.css.map 404 7.280 ms - 170 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/animate.css.map 404 11.716 ms - 180 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/bootstrap.min.css.map 404 9.810 ms - 186 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/slick.css.map 404 7.705 ms - 178 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/js/bootstrap.bundle.min.js.map 404 7.832 ms - 183 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /details?id=67b0051351ea335befbe49a6 200 48.534 ms - 108014 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets/css/swal.css 200 6.914 ms - 1331 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets/js/config.js 200 5.951 ms - 1764 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/css/vendors/slick.css 200 5.095 ms - 3898 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/css/vendors/animate.css 200 9.326 ms - 63252 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/css/vendors/themify-icons.css 200 10.835 ms - 14359 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/logo.svg 200 12.595 ms - 2875 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/css/vendors/bootstrap.css 200 12.373 ms - 298391 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/logoof%20env.png 200 11.904 ms - 190273 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/css/style.css 200 12.987 ms - 1076547 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/js/menu.js 200 8.396 ms - 45305 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /resized/1739591808676-beige-3.jpg 200 16.448 ms - 16594 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /resized/1739591808676-green.jpg 200 17.507 ms - 16040 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/js/jquery-3.3.1.min.js 200 8.361 ms - 105294 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/js/sticky-cart-bottom.js 200 14.952 ms - 292 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/js/bootstrap.bundle.min.js 200 14.687 ms - 113324 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/js/lazysizes.min.js 200 11.121 ms - 6508 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/js/bootstrap-notify.min.js 200 11.776 ms - 9051 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/js/theme-setting.js 200 12.180 ms - 2521 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/js/script.js 200 12.732 ms - 61300 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/js/jquery.elevatezoom.js 200 13.560 ms - 59816 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /resized/1739591808676-beige-2.jpg 200 23.026 ms - 15453 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/payment.png 200 9.512 ms - 9562 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/fashion/product/55.jpg 200 8.549 ms - 50321 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /resized/1739591755755-black-6.jpg 200 20.972 ms - 8578 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /resized/1739592028881-brown-2.jpg 200 16.654 ms - 19799 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/payment_cart.png 200 11.140 ms - 7707 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/fashion/product/1.jpg 200 10.788 ms - 34504 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/fashion/product/34.jpg 200 12.551 ms - 21651 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/fashion/product/19.jpg 200 12.460 ms - 48190 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/fashion-1/product/1.jpg 200 12.688 ms - 23253 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/fashion/product/13.jpg 200 12.239 ms - 90628 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/fashion-1/product/1-1.jpg 200 12.744 ms - 12859 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/fashion-1/product/1-2.jpg 200 4.005 ms - 16305 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/product-details/product/3.jpg 200 3.991 ms - 131128 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/fashion/pro/1.jpg 200 5.897 ms - 106874 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/css/style.css.map 404 2.655 ms - 170 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/slick.css.map 404 6.062 ms - 178 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/bootstrap.min.css.map 404 7.358 ms - 186 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/animate.css.map 404 8.272 ms - 180 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/css/vendors/themify-icons.css.map 404 8.861 ms - 186 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /resized/1739591808676-green.jpg 200 5.132 ms - 16040 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/logoof%20env.png 200 3.906 ms - 190273 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/fashion-1/product/1.jpg 200 9.590 ms - 23253 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/fashion-1/product/1-1.jpg 200 10.154 ms - 12859 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/fashion-1/product/1-2.jpg 200 9.981 ms - 16305 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/images/product-details/product/3.jpg 200 11.119 ms - 131128 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets%20copy/js/bootstrap.bundle.min.js.map 404 1.765 ms - 183 - Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Safari/537.36 Norton/132.0.0.0
+GET /assets%20copy/images/favicon.svg 200 4.025 ms - 1099 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+POST /addWishlist 302 21.420 ms - 23 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET / 200 67.075 ms - 87617 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /login 200 6.181 ms - 22576 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /images/products/white-12.jpg 200 14.245 ms - 44158 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /images/products/kid-11.jpg 200 20.337 ms - 30979 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /images/products/black-2.jpg 200 21.641 ms - 30361 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /images/products/black-15.jpg 200 21.560 ms - 14992 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /images/products/dark-blue-2.jpg 200 19.158 ms - 27401 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /assets/images/product/p-3.png 200 23.020 ms - 196849 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /images/collections/collection-34.jpg 200 16.541 ms - 46215 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
+GET /images/shop/gallery/gallery-12.jpg 200 10.653 ms - 24818 - Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/132.0.0.0 Mobile Safari/537.36
