@@ -221,19 +221,254 @@
             background: rgba(255, 0, 0, 0.1); /* Light red hover effect */
             transform: scale(1.1); /* Slight zoom effect */
         }
-        .back-button {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: #f5f5f5;
-    border: none;
-    padding: 8px 12px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
+        .ultra-premium-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 28px;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.5px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: none;
+  overflow: hidden;
+  cursor: pointer;
+  gap: 12px;
+  color: white;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15), 0 3px 6px rgba(0, 0, 0, 0.1), inset 0 -2px 5px rgba(0, 0, 0, 0.2);
 }
-.back-button:hover {
-    background: #e0e0e0;
+
+.ultra-premium-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.18), 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.ultra-premium-btn:active {
+  transform: translateY(1px) scale(0.98);
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  width: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  padding: 6px;
+}
+
+.btn-shine {
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(30deg);
+  animation: shine 3s infinite;
+  pointer-events: none;
+}
+
+.confirm-btn {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8, #3b82f6);
+  border-bottom: 3px solid #1e40af;
+}
+
+.refund-btn {
+  background: linear-gradient(135deg, #dc2626, #b91c1c, #ef4444);
+  border-bottom: 3px solid #991b1b;
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 0.1;
+  }
+  40% {
+    opacity: 0.2;
+  }
+  60% {
+    opacity: 0.3;
+  }
+  80% {
+    opacity: 0.1;
+  }
+  100% {
+    left: 100%;
+    opacity: 0;
+  }
+}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap');
+
+.ultra-luxury-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 32px;
+  border-radius: 16px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  color: white;
+  background: linear-gradient(135deg, #7f1d1d, #b91c1c, #dc2626);
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  box-shadow: 
+    0 12px 24px rgba(220, 38, 38, 0.3),
+    0 6px 12px rgba(0, 0, 0, 0.2),
+    inset 0 2px 6px rgba(255, 255, 255, 0.2),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.ultra-luxury-btn:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 
+    0 20px 25px rgba(220, 38, 38, 0.4),
+    0 10px 15px rgba(0, 0, 0, 0.2),
+    inset 0 2px 6px rgba(255, 255, 255, 0.3),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.ultra-luxury-btn:active {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 
+    0 5px 10px rgba(220, 38, 38, 0.4),
+    0 3px 6px rgba(0, 0, 0, 0.2),
+    inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.btn-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 36px;
+  width: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+  margin-right: 12px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.btn-icon {
+  height: 24px;
+  width: 24px;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+.btn-text {
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.btn-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.ultra-luxury-btn:hover .btn-glow {
+  opacity: 0.5;
+  animation: pulse 2s infinite;
+}
+
+.btn-particles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.btn-reflection {
+  position: absolute;
+  top: -100%;
+  left: -200%;
+  width: 400%;
+  height: 200%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 45%,
+    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.1) 55%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(30deg);
+  animation: shine-effect 5s infinite;
+  pointer-events: none;
+}
+
+.cancel-order-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0.4;
+    transform: scale(1);
+  }
+}
+
+@keyframes shine-effect {
+  0% {
+    top: -100%;
+    left: -200%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.3;
+  }
+  65% {
+    opacity: 0.2;
+  }
+  100% {
+    top: 100%;
+    left: 200%;
+    opacity: 0;
+  }
 }
     </style>
 </head>
@@ -252,20 +487,29 @@
             <h1>
                 OrderId: <%=formattedOrder.orderId%>
                 <% if(formattedOrder?.status !== "Delivered" && formattedOrder.payment.status !=="Paid" && formattedOrder?.status!=='Cancelled'  && formattedOrder.payment.status !=="refunded" ){ %>
-                <button class="cancel-btn" onclick="OrderCancel('<%=formattedOrder.orderId%>')" title="Cancel the order">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="10" stroke="red"></circle>
-                        <path d="M15 9L9 15M9 9l6 6" stroke="red"></path>
-                    </svg>
+                <button class="ultra-luxury-btn cancel-order-btn" onclick="OrderCancel('<%=formattedOrder.orderId%>')" title="Cancel the order">
+                    <span class="btn-glow"></span>
+                    <span class="btn-particles"></span>
+                    <div class="btn-icon-wrapper">
+                      <svg class="btn-icon" viewBox="0 0 24 24" width="24" height="24">
+                        <path fill="currentColor" d="M12,2C17.53,2 22,6.47 22,12C22,17.53 17.53,22 12,22C6.47,22 2,17.53 2,12C2,6.47 6.47,2 12,2M15.59,7L12,10.59L8.41,7L7,8.41L10.59,12L7,15.59L8.41,17L12,13.41L15.59,17L17,15.59L13.41,12L17,8.41L15.59,7Z"></path>
+                      </svg>
+                    </div>
+                    <span class="btn-text">Cancel Order</span>
+                    <div class="btn-reflection"></div>
                 </button>
                 <% } else if(formattedOrder?.status !== "Delivered"  && formattedOrder?.payment?.status ==="Paid" ){ %>
-                    <button class="refund-btn" onclick="OrderRefund('<%=formattedOrder.orderId%>')" title="Process refund for this perfume order">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M9 6v0a3 3 0 0 1 6 0v0" stroke="green"></path>
-                        <path d="M6 8h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2z" stroke="green"></path>
-                        <path d="M9 12c0 .6.4 1 1 1h4c.6 0 1-.4 1-1" stroke="green"></path>
-                      </svg>
-                      <span class="refund-text">Refund for Cancel</span>
+                    <button class="ultra-premium-btn refund-btn" onclick="OrderRefund('<%=formattedOrder.orderId%>')" title="Process refund for this dress order">
+                        <div class="btn-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                              <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                              <path d="M17 16l-5-5-5 5"></path>
+                            </svg>
+                          </div>
+                          <span>Refund for Cancel</span>
+                          <div class="btn-shine"></div>
+                    
                     </button>
                   <% } %>
                 <span class="order-status"> <%=formattedOrder.status%></span>

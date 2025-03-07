@@ -108,7 +108,7 @@ const verifyPayment = async (req, res, next) => {
                   razorpay_order_id,
                   razorpay_signature,
             } = req.body
-            console.log(req.body)
+            // console.log(req.body)
 
             const userId = req.query.id
 
@@ -214,7 +214,7 @@ const RePayment = async (req, res, next) => {
                         .status(404)
                         .json({ success: false, message: 'Order not found' })
             }
-            console.log(order)
+            // console.log(order)
             const grandTotal = order.totalAmount
             const receiptId = order.payment.id
             const options = {
@@ -245,7 +245,7 @@ const RepaymentverifyPayment = async (req, res, next) => {
                   razorpay_order_id,
                   razorpay_signature,
             } = req.body
-            console.log(req.body)
+            // console.log(req.body)
 
             const userId = req.query.id
 

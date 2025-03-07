@@ -168,7 +168,7 @@ async function getSaleReportFiltering(req, res) {
 
         // Set content type explicitly
         res.setHeader('Content-Type', 'text/html');
-        // console.log( result.orders)
+      
         // Render response
         return res.render("sale-report", {
             report: reportData,
@@ -242,7 +242,7 @@ const downloadReport = async (req, res) => {
         console.error('Download error:', error);
         res.status(500).json({ message: 'Error generating report' });
     }
-};
+}
 const generatePDF = async (res, orders) => {
     const doc = new PDFDocument({ 
         margin: 50,
@@ -284,13 +284,13 @@ const generatePDF = async (res, orders) => {
 
     doc.moveDown(3);
 
-    // Add summary statistics with more metrics
+    // Add summary statistics with payment status metrics
     const totalSales = orders.reduce((sum, order) => sum + order.grandTotal, 0);
     const totalOrders = orders.length;
     const averageOrderValue = totalSales / totalOrders;
-    const completedOrders = orders.filter(order => order.orderStatus.toLowerCase() === 'completed').length;
-    const pendingOrders = orders.filter(order => order.orderStatus.toLowerCase() === 'pending').length;
-    const cancelledOrders = orders.filter(order => order.orderStatus.toLowerCase() === 'Cancelled').length;
+    const paidOrders = orders.filter(order => order.payment?.status?.toLowerCase() === 'paid').length;
+    const pendingPayments = orders.filter(order => order.payment?.status?.toLowerCase() === 'pending').length;
+    const failedPayments = orders.filter(order => order.payment?.status?.toLowerCase() === 'failed').length;
 
     // Add summary box with border
     doc.rect(50, doc.y, 500, 180)
@@ -308,9 +308,9 @@ const generatePDF = async (res, orders) => {
             ['Total Orders', totalOrders],
             ['Total Sales', `${totalSales.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`],
             ['Average Order Value', `${averageOrderValue.toLocaleString('en-IN', { minimumFractionDigits: 2 })}`],
-            ['Completed Orders', `${completedOrders} (${((completedOrders/totalOrders) * 100).toFixed(1)}%)`],
-            ['Pending Orders', `${pendingOrders} (${((pendingOrders/totalOrders) * 100).toFixed(1)}%)`],
-            ['Cancelled Orders', `${cancelledOrders} (${((cancelledOrders/totalOrders) * 100).toFixed(1)}%)`]
+            ['Paid Orders', `${paidOrders} (${((paidOrders/totalOrders) * 100).toFixed(1)}%)`],
+            ['Pending Payments', `${pendingPayments} (${((pendingPayments/totalOrders) * 100).toFixed(1)}%)`],
+            ['Failed Payments', `${failedPayments} (${((failedPayments/totalOrders) * 100).toFixed(1)}%)`]
         ]
     };
 
@@ -353,8 +353,8 @@ const generatePDF = async (res, orders) => {
     doc.moveDown(0.5);
 
    
-    const tableHeaders = ['Order ID', 'Date', 'Customer', 'Status', 'Amount'];
-    const columnWidths = [45, 100, 150, 100, 80];
+    const tableHeaders = ['Order ID', 'Date', 'Customer', 'Payment Status', 'Amount'];
+    const columnWidths = [45, 100, 130, 120, 80];
     let startX = 60;  
     let y = doc.y;
     doc.rect(50, y - 5, 500, 25)
@@ -453,16 +453,31 @@ const generatePDF = async (res, orders) => {
         });
         startX += columnWidths[2];
 
-        const statusColor = {
-            'Delivered': '#4CAF50', 
-            'pending': '#FF9800',    
-            'Cancelled': '#DC3545'   
-        }[order.orderStatus.toLowerCase()] || '#6c757d';  
+        const paymentStatusConfig = {
+            'paid': {
+                bgColor: '#E6F3E6',  // Light green background
+                textColor: '#2E7D32'  // Dark green text
+            },
+            'pending': {
+                bgColor: '#FFF3E0',  // Light orange background
+                textColor: '#F57C00'  // Dark orange text
+            },
+            'failed': {
+                bgColor: '#FFEBEE',  // Light red background
+                textColor: '#D32F2F'  // Dark red text
+            }
+        };
 
-        doc.rect(startX - 2, y - 2, 80, 16)
-           .fill(statusColor + '20'); 
-        doc.fillColor(statusColor)
-           .text(order.orderStatus, startX, y, { 
+        const statusKey = order.payment?.status?.toLowerCase() || 'pending';
+        const statusStyle = paymentStatusConfig[statusKey] || {
+            bgColor: '#F5F5F5',     // Light gray background
+            textColor: '#616161'     // Dark gray text
+        };
+
+        doc.rect(startX - 2, y - 2, 120, 16)
+           .fill(statusStyle.bgColor); 
+        doc.fillColor(statusStyle.textColor)
+           .text(order.payment?.status || 'N/A', startX, y, { 
                 width: columnWidths[3], 
                 align: 'left' 
             });
@@ -494,8 +509,10 @@ const generatePDF = async (res, orders) => {
     addPageNumbers();
     doc.end();
 };
+
 const generateExcel = async (res, orders) => {
     const workbook = new ExcelJS.Workbook();
+    
     const worksheet = workbook.addWorksheet('Sales Report');
     worksheet.columns = [
         { header: 'Order ID', key: 'orderId', width: 10 },
@@ -507,6 +524,7 @@ const generateExcel = async (res, orders) => {
         { header: 'Total Amount', key: 'amount', width: 12 },
         { header: 'Payment Method', key: 'paymentMethod', width: 30 }
     ];
+
     orders.forEach(order => {
         worksheet.addRow({
             orderId: order.orderId,
@@ -519,7 +537,58 @@ const generateExcel = async (res, orders) => {
             paymentMethod: order.payment.method
         });
     });
+
     worksheet.getRow(1).font = { bold: true };
+
+    const summaryWorksheet = workbook.addWorksheet('Summary');
+    
+    const summaryStats = {
+        totalOrders: orders.length,
+        totalRevenue: orders.reduce((sum, order) => sum + order.grandTotal, 0),
+        averageOrderValue: orders.reduce((sum, order) => sum + order.grandTotal, 0) / orders.length,
+        totalItems: orders.reduce((sum, order) => sum + order.cartItems.length, 0),
+        paymentMethodBreakdown: orders.reduce((acc, order) => {
+            acc[order.payment.method] = (acc[order.payment.method] || 0) + 1;
+            return acc;
+        }, {}),
+        statusBreakdown: orders.reduce((acc, order) => {
+            acc[order.orderStatus] = (acc[order.orderStatus] || 0) + 1;
+            return acc;
+        }, {})
+    };
+
+    summaryWorksheet.columns = [
+        { header: 'Metric', key: 'metric', width: 30 },
+        { header: 'Value', key: 'value', width: 20 }
+    ];
+
+    summaryWorksheet.addRow({ metric: 'Total Number of Orders', value: summaryStats.totalOrders });
+    summaryWorksheet.addRow({ metric: 'Total Revenue', value: `$${summaryStats.totalRevenue.toFixed(2)}` });
+    summaryWorksheet.addRow({ metric: 'Average Order Value', value: `$${summaryStats.averageOrderValue.toFixed(2)}` });
+    summaryWorksheet.addRow({ metric: 'Total Items Sold', value: summaryStats.totalItems });
+
+    summaryWorksheet.addRow({ metric: 'Payment Method Breakdown', value: '' });
+    Object.entries(summaryStats.paymentMethodBreakdown).forEach(([method, count]) => {
+        summaryWorksheet.addRow({ 
+            metric: `  - ${method}`, 
+            value: `${count} (${((count / summaryStats.totalOrders) * 100).toFixed(2)}%)` 
+        });
+    });
+
+    summaryWorksheet.addRow({ metric: 'Order Status Breakdown', value: '' });
+    Object.entries(summaryStats.statusBreakdown).forEach(([status, count]) => {
+        summaryWorksheet.addRow({ 
+            metric: `  - ${status}`, 
+            value: `${count} (${((count / summaryStats.totalOrders) * 100).toFixed(2)}%)` 
+        });
+    });
+
+    summaryWorksheet.getRow(1).font = { bold: true };
+    summaryWorksheet.eachRow((row, rowNumber) => {
+        if (rowNumber > 1) {
+            row.getCell(1).font = { italic: rowNumber > 5 };
+        }
+    });
 
     res.setHeader(
         'Content-Type',
@@ -529,9 +598,10 @@ const generateExcel = async (res, orders) => {
         'Content-Disposition',
         `attachment; filename=sales_report_${Date.now()}.xlsx`
     );
+
+    // Write workbook to response
     await workbook.xlsx.write(res);
 };
-
 
 export default {
     getSalereport,

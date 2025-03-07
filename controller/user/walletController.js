@@ -46,7 +46,7 @@ const createOrderWallet = async (req, res, next) => {
 
             let grandTotal =
                   totalAmount + (deliveryCharge || 0) - (discount || 0)
-            console.log(grandTotal)
+            // console.log(grandTotal)
             if (payment.method === 'Wallet') {
                   const wallet = await Wallet.findOne({ userId })
 
@@ -56,7 +56,7 @@ const createOrderWallet = async (req, res, next) => {
                               message: 'Insufficient wallet balance',
                         })
                   }
-                  console.log(grandTotal)
+                  // console.log(grandTotal)
                   const updatedWallet = await Wallet.findOneAndUpdate(
                         { userId: userId },
                         {

@@ -636,9 +636,9 @@
                            <div class="filter-controls">
                              <div class="date-filters">
                                <div class="filter-group">
-                                 <button  type="button" onclick="FIlterBtb('7')" class="filter-button" data-range="7">Week</button>
-                                 <button type="button" onclick="FIlterBtb('30')" class="filter-button" data-range="30">Month</button>
-                                 <button type="button" onclick="FIlterBtb('365')" class="filter-button" data-range="365">Year</button>
+                                   <button type="button" onclick="FilterByRange('7')" class="filter-button" data-range="7">Week</button>
+                                   <button type="button" onclick="FilterByRange('30')" class="filter-button" data-range="30">Month</button>
+                                   <button type="button" onclick="FilterByRange('365')" class="filter-button" data-range="365">Year</button>
                                </div>
                              </div>
                              <!-- <button id="seed-data-btn" class="action-button">
@@ -897,37 +897,41 @@ async function fetchAndRenderRevenueChart() {
 }
 
 function renderRevenueTrendChart(salesData) {
-    console.log('Sales data for chart:', salesData);
-    const dates = Object.keys(salesData);
-    if (!dates.length) {
-        console.warn("No sales data available for the chart.");
-        return;
-    }
-
+    const dates = Object.keys(salesData).sort();
     const revenues = dates.map(date => salesData[date]?.revenue || 0);
-    const maxRevenue = revenues.length ? Math.max(...revenues) : 0;
 
+    const maxRevenue = Math.max(...revenues, 0);
     const canvas = document.getElementById("revenue-trend-chart");
+    
     if (!canvas) {
         console.error("Canvas element not found!");
         return;
     }
 
-    if (window.revenueChart) {
+    // Destroy existing chart if it exists
+    if (window.revenueChart instanceof Chart) {
         window.revenueChart.destroy();
     }
 
     const ctx = canvas.getContext("2d");
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(79, 70, 229, 0.7)');
+    gradient.addColorStop(1, 'rgba(79, 70, 229, 0.1)');
+
     window.revenueChart = new Chart(ctx, {
-        type: "bar",
+        type: 'line',
         data: {
             labels: dates,
             datasets: [{
-                label: "Revenue (₹)",
+                label: "Daily Revenue",
                 data: revenues,
                 borderColor: "#4F46E5",
-                backgroundColor: "rgba(79, 70, 229, 0.7)",
-                borderWidth: 1
+                backgroundColor: gradient,
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: "#4F46E5",
+                pointRadius: 5,
+                pointHoverRadius: 8
             }]
         },
         options: {
@@ -935,71 +939,180 @@ function renderRevenueTrendChart(salesData) {
             maintainAspectRatio: false,
             scales: {
                 x: {
-                    type: "category",
-                    title: { display: true, text: "Date" },
-                    ticks: { autoSkip: false }
+                    title: { 
+                        display: true, 
+                        text: "Date" 
+                    },
+                    ticks: { 
+                        autoSkip: true,
+                        maxTicksLimit: 10
+                    }
                 },
                 y: {
-                    title: { display: true, text: "Revenue (₹)" },
+                    title: { 
+                        display: true, 
+                        text: "Revenue (₹)" 
+                    },
                     beginAtZero: true,
-                    suggestedMax: maxRevenue * 1.1 || 1000,
                     ticks: {
-                        stepSize: Math.ceil(maxRevenue / 5) || 500,
-                        callback: val => `₹${new Intl.NumberFormat('en-IN').format(val)}`
+                        callback: (value) => `₹${new Intl.NumberFormat('en-IN').format(value)}`
                     }
                 }
             },
             plugins: {
                 tooltip: {
+                    mode: 'index',
+                    intersect: false,
                     callbacks: {
-                        label: context => `₹${context.raw.toFixed(2)}`
+                        label: (context) => `Revenue: ₹${context.parsed.y.toLocaleString()}`
                     }
                 }
             }
         }
     });
 }
- 
 
 
+function parseAndFormatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
 
-async function FIlterBtb(Range) {
-     try {
-          const result = await Swal.fire({
-               title: "Confirm Action",
-               text: "Are you sure you want to proceed with this filter?",
-               icon: "question",
-               showCancelButton: true,
-               confirmButtonColor: "#3085d6",
-               cancelButtonColor: "#d33",
-               confirmButtonText: "Yes, filter!",
-               cancelButtonText: "Cancel"
-          });
-              if(result.isConfirmed){
-                    const response = await fetch(`/admin/dashboard?range=${Range}`,{
-                         headers: { 'Accept': 'application/json' }
-                    })
 
-                    if (!response.ok) throw new Error("Failed to fetch sales data");
+async function FilterByRange(range) {
+    try {
+        const result = await Swal.fire({
+            title: "Confirm Filter",
+            text: `Are you sure you want to view sales data for the last ${range} days?`,
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Apply Filter",
+            cancelButtonText: "Cancel"
+        });
 
-                    const data = await response.json();
-                    if (!data.salesData || typeof data.salesData !== "object") {
-                    return;
-                    }
-                    document.getElementById("total-orders").innerText = data.summary.totalOrders || 0;
-                    document.getElementById("total-revenue").innerText = "₹" + (data.summary.totalRevenue || 0).toLocaleString();
-                    document.getElementById("avg-order-value").innerText = "₹" + (data.summary.avgOrderValue || 0).toLocaleString();
-                    document.getElementById("pending-orders").innerText = data.summary.pendingOrders || 0;
-                    console.log(data.salesData)
-                    renderRevenueTrendChart(data.salesData);
-             }
+        if (result.isConfirmed) {
+            const response = await fetch(`/admin/dashboard?range=${range}`, {
+                headers: { 'Accept': 'application/json' }
+            });
 
-        
+            if (!response.ok) throw new Error("Failed to fetch sales data");
+
+            const { summary, salesData } = await response.json();
+
+            // Update summary statistics
+            document.getElementById("total-orders").innerText = summary.totalOrders || 0;
+            document.getElementById("total-revenue").innerText = `₹${(summary.totalRevenue || 0).toLocaleString()}`;
+            document.getElementById("avg-order-value").innerText = `₹${(summary.avgOrderValue || 0).toLocaleString()}`;
+            document.getElementById("pending-orders").innerText = summary.pendingOrders || 0;
+
+            // For year-based data, adjust the display
+            if (parseInt(range) >= 365) {
+                renderRevenueTrendChartForYear(salesData);
+            } else {
+                renderRevenueTrendChart(salesData);
+            }
+        }
     } catch (error) {
         console.error("Error fetching sales data:", error);
         document.getElementById("error-message").style.display = "block";
     }
-     
+}
+
+// Add a specialized function for year display
+function renderRevenueTrendChartForYear(salesData) {
+    const dates = Object.keys(salesData).sort();
+    const revenues = dates.map(date => salesData[date]?.revenue || 0);
+    
+    // For year view, we might want to show monthly aggregates instead
+    const monthlyData = {};
+    
+    dates.forEach(date => {
+        const month = date.substring(0, 7); // Get YYYY-MM
+        if (!monthlyData[month]) {
+            monthlyData[month] = 0;
+        }
+        monthlyData[month] += salesData[date]?.revenue || 0;
+    });
+    
+    const monthLabels = Object.keys(monthlyData).sort();
+    const monthlyRevenues = monthLabels.map(month => monthlyData[month]);
+    
+    const canvas = document.getElementById("revenue-trend-chart");
+    
+    if (!canvas) {
+        console.error("Canvas element not found!");
+        return;
+    }
+
+    // Destroy existing chart if it exists
+    if (window.revenueChart instanceof Chart) {
+        window.revenueChart.destroy();
+    }
+
+    const ctx = canvas.getContext("2d");
+    const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+    gradient.addColorStop(0, 'rgba(79, 70, 229, 0.7)');
+    gradient.addColorStop(1, 'rgba(79, 70, 229, 0.1)');
+
+    window.revenueChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: monthLabels.map(month => {
+                const [year, monthNum] = month.split('-');
+                return new Date(year, monthNum - 1).toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            }),
+            datasets: [{
+                label: "Monthly Revenue",
+                data: monthlyRevenues,
+                borderColor: "#4F46E5",
+                backgroundColor: gradient,
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: "#4F46E5",
+                pointRadius: 5,
+                pointHoverRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    title: { 
+                        display: true, 
+                        text: "Month" 
+                    },
+                    ticks: { 
+                        autoSkip: false
+                    }
+                },
+                y: {
+                    title: { 
+                        display: true, 
+                        text: "Revenue (₹)" 
+                    },
+                    beginAtZero: true,
+                    ticks: {
+                        callback: (value) => `₹${new Intl.NumberFormat('en-IN').format(value)}`
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    callbacks: {
+                        label: (context) => `Revenue: ₹${context.parsed.y.toLocaleString()}`
+                    }
+                }
+            }
+        }
+    });
 }
         </script>
        

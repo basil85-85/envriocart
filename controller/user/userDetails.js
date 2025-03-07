@@ -115,7 +115,7 @@ const editDetails = async (req, res, next) => {
       }
 }
 
-const changePassword = async (req, res) => {
+const changePassword = async (req, res,next) => {
       try {
             const { oldPassword, newPassword } = req.body
             const id = req.query.id
@@ -144,7 +144,7 @@ const changePassword = async (req, res) => {
             })
       } catch (error) {
             console.log(`error occur on the chnageing password ${error}`)
-            return res.render('404')
+            next(error)
       }
 }
 const Addaddress = async (req, res, next) => {

@@ -58,7 +58,6 @@ const placeOrder = async (req, res) => {
                   discount,
                   deliveryCharge,
             } = req.body
-        //    console.log(req.body)
             if (
                   !userId ||
                   !address ||
@@ -152,32 +151,7 @@ const placeOrder = async (req, res) => {
       }
 }
 
-//render the order sucess page for oder render this page
-// const getOrderSuccess = async (req, res) => {
-//     try {
-//         if (!req.session || !req.session.userId) {
-//             return res.redirect("/login");
-//         }
 
-//         const countCart = res.locals.cartCount || 0;
-//         const userID = req.session.userId;
-//         const orders = await Order.findOne({ userId: userID }).sort({ createdAt: -1 });
-//       console.log(orders)
-//         if (orders) {
-//             return res.render("order-success", {
-//                 isLoggedIn: true,
-//                 countCart,
-//                 orders
-//             });
-//         } else {
-//             return res.redirect("/");
-//         }
-
-//     } catch (error) {
-//         console.error(`Error fetching order success page: ${error.message}`);
-//         return res.render("404");
-//     }
-// };
 const getOrderSuccess = async (req, res) => {
       try {
             if (!req.session || !req.session.userId) {
@@ -190,7 +164,7 @@ const getOrderSuccess = async (req, res) => {
             const orders = await Order.findOne({ userId: userID }).sort({
                   createdAt: -1,
             })
-            //  console.log(orders)
+            
             if (orders) {
                   return res.render('order-success', {
                         isLoggedIn: true,
@@ -219,7 +193,7 @@ const ViewOrder = async (req, res) => {
             const order = await Order.findOne({ orderId })
                   .populate('userId', 'name email')
                   .lean()
-            //   console.log(order)
+         
             if (!order) {
                   return res.redirect('/profile')
             }
@@ -262,7 +236,7 @@ const ViewOrder = async (req, res) => {
                         email: order.userId?.email || 'Unknown',
                   },
             }
-            console.log(formattedOrder)
+      
             return res.render('viewOrder', { formattedOrder, moment })
       } catch (error) {
             console.error('Error viewing order:', error)

@@ -76,7 +76,68 @@
             color: green;
             font-weight: bold;
         }
+        .packing-spinner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    margin-top: 10px;
+}
 
+.box {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    background: #ffcc00;
+    border-radius: 5px;
+    animation: boxBounce 1s infinite alternate;
+}
+
+.lid {
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    background: #e6b800;
+    top: -10px;
+    animation: lidMove 1s infinite alternate;
+}
+
+.tape {
+    position: absolute;
+    width: 10px;
+    height: 100%;
+    background: #c09000;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.shadow {
+    position: absolute;
+    width: 50px;
+    height: 5px;
+    background: rgba(0, 0, 0, 0.2);
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    animation: shadowBounce 1s infinite alternate;
+}
+
+/* Keyframes */
+@keyframes boxBounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-10px); }
+}
+
+@keyframes lidMove {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(10deg); }
+}
+
+@keyframes shadowBounce {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.2); }
+}
 </style>
     <div class="breadcrumb-section">
         <div class="container">
@@ -330,9 +391,19 @@
                                             <li>Total <span id="totalCartPrice" class="count">Rs : <%=cart.totalPrice  %>.00 </span></li>
                                         </ul>
                                         <div class="text-end">
-                                            <button class="btn order-btn" type="button" onclick="placeOrder(event,'<%=cart.userId%>')">Place Order</button>
+                                            <button class="btn order-btn" type="button" onclick="placeOrder(event,'<%=cart.userId%>')" id="placeOrderBtn">
+                                                Place Order
+                                            </button>
+                                            
+                                            <!-- Packing Spinner -->
+                                            <div id="spinner" class="packing-spinner" style="display: none;">
+                                                <div class="box">
+                                                    <div class="lid"></div>
+                                                    <div class="tape"></div>
+                                                    <div class="shadow"></div>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -1468,8 +1539,9 @@ function showErrorNotification(message) {
 async function placeOrder(e, userId) {
     e.preventDefault();
     let isvaild = true;
-
-    // Get selected address
+    event.target.disabled = true; 
+    document.getElementById("spinner").style.display = "flex"; 
+    
     const selectedAddress = document.querySelector('input[name="flexRadioDefault"]:checked');
     if (!selectedAddress) {
         isvaild = false;

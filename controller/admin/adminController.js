@@ -162,70 +162,70 @@ const dashboard = async (req, res, next) => {
                   ])
             )
             const topProducts = await Order.aggregate([
-                  { $unwind: "$cartItems" }, 
+                  { $unwind: '$cartItems' },
                   {
                         $group: {
-                              _id: "$cartItems.verientId", 
-                              totalSold: { $sum: "$cartItems.quantity" },
-                              productDetails: { $first: "$cartItems" }
-                        }
+                              _id: '$cartItems.verientId',
+                              totalSold: { $sum: '$cartItems.quantity' },
+                              productDetails: { $first: '$cartItems' },
+                        },
                   },
                   { $sort: { totalSold: -1 } },
                   { $limit: 10 },
                   {
                         $lookup: {
-                              from: "verients", 
-                              localField: "_id",
-                              foreignField: "_id",
-                              as: "productInfo"
-                        }
+                              from: 'verients',
+                              localField: '_id',
+                              foreignField: '_id',
+                              as: 'productInfo',
+                        },
                   },
-                  { $unwind: "$productInfo" }, 
+                  { $unwind: '$productInfo' },
                   {
                         $project: {
-                              _id: 0, 
-                              productId: "$_id",
+                              _id: 0,
+                              productId: '$_id',
                               totalSold: 1,
-                              name: "$productDetails.name",
-                              color: "$productDetails.color",
-                              size: "$productDetails.size",
-                              price: "$productDetails.price",
-                              image: "$productDetails.image",
-                              categoryId: "$productInfo.categoryName", 
-                              productInfo: 1, 
-                        }
-                  }
-            ]);
+                              name: '$productDetails.name',
+                              color: '$productDetails.color',
+                              size: '$productDetails.size',
+                              price: '$productDetails.price',
+                              image: '$productDetails.image',
+                              categoryId: '$productInfo.categoryName',
+                              productInfo: 1,
+                        },
+                  },
+            ])
             const topCategories = await Product.aggregate([
                   {
                         $group: {
-                              _id: "$categoryName",
-                              productCount: { $sum: 1 }
-                        }
+                              _id: '$categoryName',
+                              productCount: { $sum: 1 },
+                        },
                   },
                   { $sort: { productCount: -1 } },
                   { $limit: 10 },
                   {
                         $lookup: {
-                              from: "categories",
-                              localField: "_id",
-                              foreignField: "_id",
-                              as: "categoryDetails"
-                        }
+                              from: 'categories',
+                              localField: '_id',
+                              foreignField: '_id',
+                              as: 'categoryDetails',
+                        },
                   },
-                  { $unwind: "$categoryDetails" },
+                  { $unwind: '$categoryDetails' },
                   {
                         $project: {
                               _id: 0,
-                              categoryId: "$_id",
-                              categoryName: "$categoryDetails.name",
-                              productCount: 1
-                        }
-                  }
-            ]);
-            
-            console.log(topCategories);
-           
+                              categoryId: '$_id',
+                              categoryName: '$categoryDetails.name',
+                              productCount: 1,
+                        },
+                  },
+            ])
+
+            // console.log(topCategories);
+
             const dashboardData = {
                   summary: {
                         totalOrders: orders.length,
@@ -245,11 +245,11 @@ const dashboard = async (req, res, next) => {
                   req.headers.accept &&
                   req.headers.accept.includes('application/json')
             ) {
-                  return res.json(dashboardData,topProducts,topCategories)
+                  return res.json(dashboardData, topProducts, topCategories)
             }
             //      console.log("top product",topProducts)
-                 console.log("top category",topCategories)
-            res.render('index', { dashboardData,topProducts,topCategories})
+            //      console.log("top category",topCategories)
+            res.render('index', { dashboardData, topProducts, topCategories })
       } catch (error) {
             console.error('Error generating dashboard data:', error)
             next(error)
