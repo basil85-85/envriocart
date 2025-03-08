@@ -225,7 +225,7 @@ const login = async (req, res, next) => {
       try {
             const { emailOrPhone, password } = req.body
 
-            // Find user with email or phone, and make sure the user isn't blocked
+     
             const Finduser = await User.findOne({
                   $or: [{ email: emailOrPhone }, { phone: emailOrPhone }],
             })
