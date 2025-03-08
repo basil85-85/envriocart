@@ -688,7 +688,28 @@
             });
         }
     } catch (error) {
-        showError('global-error', error.message || "An error occurred during registration");
+        Swal.fire({
+                title: 'Failed!',
+                text: error,
+                icon: 'error',
+                position: 'top-end',
+                toast: true,
+                customClass: {
+                    popup: 'swal-custom-popup',
+                    title: 'swal2-title',
+                    content: 'swal2-content',
+                    confirmButton: 'swal2-confirm'
+                },
+                showConfirmButton: true,
+                confirmButtonText: 'Retry',
+                width: '300px',
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer);
+                    toast.addEventListener('mouseleave', Swal.resumeTimer);
+                }
+            });
     } finally {
         submitButton.disabled = false;
     }
