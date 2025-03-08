@@ -30,16 +30,14 @@ morgan.token(
       req => req.headers['user-agent'] || 'No User-Agent'
 )
 
-app.use(
-      morgan(
-            ':method :url :status :response-time ms - :res[content-length] - :custom-header',
-            {
-                  stream: accessLogStream,
-            }
-      )
-)
-
-
+// app.use(
+//       morgan(
+//             ':method :url :status :response-time ms - :res[content-length] - :custom-header',
+//             {
+//                   stream: accessLogStream,
+//             }
+//       )
+// )
 
 
 app.use(morgan('dev'))
