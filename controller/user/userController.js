@@ -154,11 +154,11 @@ const loadSignup = async (req, res, next) => {
 const signup = async (req, res, next) => {
       try {
             const { name, email, phone, password } = req.body
-
+            console.log(req.body)
             const existingUser = await User.findOne({
                   $or: [{ email: email }, { phone: phone }],
             })
-
+            console.log("dshjbshucb ")
             if (existingUser) {
                   return res.json({
                         success: false,
@@ -167,7 +167,7 @@ const signup = async (req, res, next) => {
             }
 
             const otp = generateOTP()
-
+            console.log(otp)
             const mailOptions = {
                   from: process.env.AUTH_EMAIL,
                   to: email,
@@ -175,12 +175,12 @@ const signup = async (req, res, next) => {
                   text: `Your OTP is: ${otp}. `,
             }
             req.session.EmailOPtion = mailOptions
-
+            console.log("node mailer")
             await transporter.sendMail(mailOptions)
             console.log('OTP sent successfully:', otp)
             req.session.otp = otp
             req.session.Email = email
-
+            console.log("fined")
             req.session.user = {
                   name,
                   email,
