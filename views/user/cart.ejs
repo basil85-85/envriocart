@@ -67,7 +67,13 @@
                                                         <%= Items.quantity <= 1 ? 'disabled' : '' %>>
                                                         -
                                                       </button>
-
+                                                      <input 
+                                                      type="text" 
+                                                      id="quantity-<%= Items.verientId %>-<%=Items.size %>" 
+                                                      class="form-control text-center mx-1" 
+                                                      value="<%= Items.quantity %>" 
+                                                      readonly 
+                                                      style="width: 50px; min-width: 50px;">
 
                                                     <button 
                                                         class="btn btn-sm btn-light border px-1 increase" 
@@ -94,7 +100,9 @@
                                 </div>
                             </td>
                             <td class="table-price">
-                                <h2 id="sizeqty"><%=Items.size%></h2>
+                                <h2 class="td-color" id="SubTotal-<%= Items.verientId %>-<%=Items.size %>" data-price="<%= Items.total %>">
+                                    Rs: <%= Items.total  %>
+                                </h2>
                             </td>
                             <td class="table-price">
                                 <h2>Rs: <%=Items.price%></h2>
