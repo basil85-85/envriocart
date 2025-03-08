@@ -88,7 +88,9 @@
                                         </div>
                                     </div>
                                     <div class="col table-price">
-                                        <h2 class="td-color">Rs: <%=Items.price%></h2>
+                                        <h2 class="td-color" id="SubTotal-<%= Items.verientId %>-<%=Items.size %>" data-price="<%= Items.total %>">
+                                            Rs: <%= Items.total  %>
+                                        </h2>
                                     </div>
                                     <div class="col">
                                         <h2 class="td-color">
@@ -100,9 +102,7 @@
                                 </div>
                             </td>
                             <td class="table-price">
-                                <h2 class="td-color" id="SubTotal-<%= Items.verientId %>-<%=Items.size %>" data-price="<%= Items.total %>">
-                                    Rs: <%= Items.total  %>
-                                </h2>
+                               
                             </td>
                             <td class="table-price">
                                 <h2>Rs: <%=Items.price%></h2>
