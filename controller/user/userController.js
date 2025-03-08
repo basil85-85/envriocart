@@ -139,7 +139,6 @@ const loadLogHomepage = async (req, res, next) => {
 const loadSignup = async (req, res, next) => {
       try {
             const userId = req.session.userId
-            // console.log(userId)
             if (!userId) {
                   return res.render('register', { message: null })
             } else {
@@ -156,7 +155,6 @@ const signup = async (req, res, next) => {
       try {
             const { name, email, phone, password } = req.body
 
-            // Check if user already exists
             const existingUser = await User.findOne({
                   $or: [{ email: email }, { phone: phone }],
             })
@@ -168,10 +166,8 @@ const signup = async (req, res, next) => {
                   })
             }
 
-            // Generate OTP
             const otp = generateOTP()
 
-            // Send OTP via email
             const mailOptions = {
                   from: process.env.AUTH_EMAIL,
                   to: email,
