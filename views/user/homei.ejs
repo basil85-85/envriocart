@@ -111,34 +111,7 @@
                     <h2 class="title-inner1 font-cormorant">OFFERS products</h2>
                 </div>
              </div>
-           <div class="col-xl-2">
-                <!-- category start -->
-                <header class="top-header">
-                    <div class="sidebar-top-section">
-                        <div class="sidenav-menu">
-                            <nav class="sidebar-nav">
-                                <div class="sidebar-menu-wrapper">
-                                    <ul id="sub-menu" class="sm pixelstrap sm-vertical sidebar-menu">
-                                        <% products.forEach(offer => { %>
-                                            <% if (offer.image) { %>
-                                                <li class="sidebar-menu-item position-relative">
-                                                    <div class="offer-icon position-absolute top-0 start-0 m-2 bg-danger text-white px-2 py-1 rounded">
-                                                        <i class="ri-price-tag-3-fill"></i> Offer
-                                                    </div>
-                                                    <a href="/offers?id=<%= offer._id %>" class="d-block p-2 ps-4 text-dark fw-bold sidebar-link">
-                                                        <%= offer.offerName %>
-                                                    </a>
-                                                </li>
-                                            <% } %>
-                                        <% }); %>
-                                    </ul>
-                                </div>
-                            </nav>
-                        </div>
-                    </div>
-                </header>
-                <!-- category end-->
-             </div>  
+         
             <div class="col-xl-10">
                 <!-- Product Section -->
                 <div class="ratio_asos">
