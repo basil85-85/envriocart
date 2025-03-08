@@ -699,14 +699,14 @@
 //show the error
 function showError(id, message) {
 const errorElement = document.getElementById(id)
-errorElement.textContent = message
+errorElement.innerText = message
 errorElement.style.color = 'red'
 }
 
 //for the clear
 function clearError(id) {
 const errorElement = document.getElementById(id)
-errorElement.textContent = ''
+errorElement.innerText = ''
 }
 //in the field change the backgroud of the field if the error occur(valition)
 function styleError(fieldId) {
