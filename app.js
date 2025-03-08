@@ -20,15 +20,15 @@ const app = express()
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-const accessLogStream = fs.createWriteStream(
-      path.join(__dirname, 'access.log'),
-      { flags: 'a' }
-)
+// const accessLogStream = fs.createWriteStream(
+//       path.join(__dirname, 'access.log'),
+//       { flags: 'a' }
+// )
 
-morgan.token(
-      'custom-header',
-      req => req.headers['user-agent'] || 'No User-Agent'
-)
+// morgan.token(
+//       'custom-header',
+//       req => req.headers['user-agent'] || 'No User-Agent'
+// )
 
 // app.use(
 //       morgan(
@@ -40,7 +40,7 @@ morgan.token(
 // )
 
 
-app.use(morgan('dev'))
+// app.use(morgan('dev'))
 app.use(express.json({ limit: '50mb' }))
 app.use(express.urlencoded({ limit: '50mb', extended: true }))
 
