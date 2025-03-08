@@ -77,19 +77,19 @@
                                         wishlist</a></li>
                                 <li class="onhover-dropdown mobile-account"><a href="/profile"></a><i class="ri-user-fill"></i> My
                                     Account
-                
+                                    <% if (isLoggedIn) { %>
+                                        <li class="onhover-dropdown mobile-account">
+                                            <i class="ri-user-fill"></i> 
+                                            <a href="/logout">Logout</a>
+                                        </li>
+                                    <% } else { %>
+                                        <li class="onhover-dropdown mobile-account">
+                                            <i class="ri-user-fill"></i> 
+                                            <a href="/login">Login</a>
+                                        </li>
+                                    <% } %>
                                 </li>
-                                <% if (isLoggedIn) { %>
-                                    <li class="onhover-dropdown mobile-account">
-                                        <i class="ri-user-fill"></i> 
-                                        <a href="/logout">Logout</a>
-                                    </li>
-                                <% } else { %>
-                                    <li class="onhover-dropdown mobile-account">
-                                        <i class="ri-user-fill"></i> 
-                                        <a href="/login">Login</a>
-                                    </li>
-                                <% } %>
+                               
                             </ul>
                         </div>
                     </div>
@@ -117,16 +117,15 @@
                                             </li>
                                             <li><a href="/">Home</a></li>
                                             <li class="mega">
-                                                <a href="#!">feature <div class="lable-nav">new</div></a>
+                                                
                                             </li>
                                             <li>
                                                 <a href="/shop">shop</a>
                                             </li>
                                             <li>
-                                                <a href="#!">product</a>
+                                                <a href="/profile">MY Account</a>
                                             </li>
-                                            <li><a href="#!">pages</a></li>
-                                            <li><a href="#!">blog</a></li>
+                                            
                                         </ul>
                                     </nav>
                                 </div>
@@ -280,12 +279,7 @@
                 <div class="col-sm-12">
                     <div class="main-menu">
                         <div class="menu-left around-border">
-                            <div class="navbar d-xl-none">
-                                <a href="javascript:void(0)" onclick="openNav()">
-                                    <div class="bar-style"><i class="ri-bar-chart-horizontal-line sidebar-bar"></i>
-                                    </div>
-                                </a>
-                            </div>
+                            
                             <div class="main-menu-right">
                                 <nav id="main-nav">
                                     <div class="toggle-nav"><i class="ri-bar-chart-horizontal-line sidebar-bar"></i>
@@ -307,13 +301,21 @@
                                            
                                            
                                         </li> -->
-                                        <li><a href="#!">pages</a>
-                                            
-                                        </li>
                                         <li>
-                                            <a href="#!">blog</a>
-                                          
+                                            <a href="/profile">MY Account</a>
                                         </li>
+                                        <% if (isLoggedIn) { %>
+                                            <li class="onhover-dropdown mobile-account">
+                                               
+                                                <a href="/logout">Logout</a>
+                                            </li>
+                                        <% } else { %>
+                                            <li class="onhover-dropdown mobile-account">
+                                                
+                                                <a href="/login">Login</a>
+                                            </li>
+                                        <% } %>
+                                        
                                     </ul>
                                 </nav>
                             </div>
