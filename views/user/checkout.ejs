@@ -1539,8 +1539,7 @@ function showErrorNotification(message) {
 async function placeOrder(e, userId) {
     e.preventDefault();
     let isvaild = true;
-    event.target.disabled = true; 
-    document.getElementById("spinner").style.display = "flex"; 
+   
     
     const selectedAddress = document.querySelector('input[name="flexRadioDefault"]:checked');
     if (!selectedAddress) {
@@ -1651,6 +1650,7 @@ async function placeOrder(e, userId) {
                         console.log(verifyData.order);
 
                         if (verifyData.success) {
+                           
                             if (verifyData.order.payment.status === "Failed") {
                                 window.location.href = '/profile';
                             } else {
