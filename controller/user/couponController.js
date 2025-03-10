@@ -6,7 +6,7 @@ import cron from "node-cron"
 
 const applyedCoupon = async (req, res) => {
     try {
-        // console.log(req.body);
+    
         const { couponCode} = req.body;
         let userId = req.session.userId;
         const cart = await Cart.findOne({userId:req.session.userId})

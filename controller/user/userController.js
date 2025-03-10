@@ -167,7 +167,6 @@ const signup = async (req, res, next) => {
             }
 
             const otp = generateOTP()
-            console.log(otp)
             const mailOptions = {
                   from: process.env.AUTH_EMAIL,
                   to: email,
@@ -175,12 +174,11 @@ const signup = async (req, res, next) => {
                   text: `Your OTP is: ${otp}. `,
             }
             req.session.EmailOPtion = mailOptions
-            console.log("node mailer")
+            console.log(mailOptions)
             await transporter.sendMail(mailOptions)
             console.log('OTP sent successfully:', otp)
             req.session.otp = otp
             req.session.Email = email
-            console.log("fined")
             req.session.user = {
                   name,
                   email,
