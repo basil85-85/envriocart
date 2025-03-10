@@ -154,7 +154,7 @@ const loadSignup = async (req, res, next) => {
 const signup = async (req, res, next) => {
       try {
             const { name, email, phone, password } = req.body
-            console.log(req.body)
+            
             const existingUser = await User.findOne({
                   $or: [{ email: email }, { phone: phone }],
             })
@@ -174,7 +174,7 @@ const signup = async (req, res, next) => {
                   text: `Your OTP is: ${otp}. `,
             }
             req.session.EmailOPtion = mailOptions
-            console.log(mailOptions)
+            
             await transporter.sendMail(mailOptions)
             console.log('OTP sent successfully:', otp)
             req.session.otp = otp

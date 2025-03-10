@@ -148,7 +148,7 @@
                             </td>
                           
                             <td>
-                                <h2 class="td-color" id="SubTotal-<%= Items.verientId %>-<%=Items.size %>" data-price="<%= Items.total %>">
+                                <h2 class="td-color" id="SubTotal2-<%= Items.verientId %>-<%=Items.size %>" data-price="<%= Items.total %>">
                                     Rs: <%= Items.total  %>
                                 </h2>
                             </td>
@@ -396,6 +396,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function handleQuantityUpdate(productId, change, size) {
     const quantityElement = document.getElementById(`quantity-${productId}-${size}`);
     const subTotalElement = document.getElementById(`SubTotal-${productId}-${size}`)
+    const subTotalElement2 = document.getElementById(`SubTotal2-${productId}-${size}`)
     const total = document.getElementById("totalPrice")
     console.log(total)
     let currentQuantity = parseInt(quantityElement.value);
@@ -424,6 +425,7 @@ async function handleQuantityUpdate(productId, change, size) {
             quantityElement.value = data.quantity
             total.innerText = `Rs: ${data.newTotal}`
              subTotalElement.innerText = `Rs : ${data.subtotal}`
+               subTotalElement2.innerText = `Rs : ${data.subtotal}`
            
         } else {
             showErrorNotification(data.message)
